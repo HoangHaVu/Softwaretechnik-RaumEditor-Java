@@ -13,10 +13,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-    Label label = new Label("RooomieBoomie");
-    Scene scene = new Scene(label);
-    primaryStage.setTitle("RoomieBoomie");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+        Label label = new Label("RooomieBoomie");
+        Scene scene = new Scene(label);
+        primaryStage.setTitle("RoomieBoomie");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
