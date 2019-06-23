@@ -4,6 +4,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.Scene;
+import roomieboomie.business.user.User;
+import roomieboomie.business.user.UserMap;
+import roomieboomie.persistence.*;
+
+import java.util.HashMap;
 
 public class Main extends Application {
 

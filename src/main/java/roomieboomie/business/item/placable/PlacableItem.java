@@ -4,7 +4,7 @@ import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.RoomItem;
 
 /**
- * Platzierbares Pbjekt fuer ein Spiel
+ * Platzierbares Objekt fuer ein Spiel
  */
 public class PlacableItem extends RoomItem {
     private PlacableItemType type;
