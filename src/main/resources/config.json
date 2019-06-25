@@ -1,4 +1,6 @@
 {
-  "usersPath":"src/main/resources/users/",
-  "secondsPerItem":"5"
+  "usersPath": "src/main/resources/users/",
+  "secondsPerItem": "5",
+  "maxWidth": "60",
+  "maxHeight": "60"
 }
