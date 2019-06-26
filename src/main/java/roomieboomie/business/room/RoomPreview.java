@@ -13,7 +13,7 @@ public class RoomPreview {
     private int highestScore;
     private int neededScore;
     private boolean level;
-    private HighscoreList highscoreList;
+    private HighscoreList highscoreList = new HighscoreList();
     private JsonHandler jsonHandler;
     private int height; //Hoehe des Raums, wird createLayout gesetzt
     private int width; //Breite des Raums, wird createLayout gesetzt
