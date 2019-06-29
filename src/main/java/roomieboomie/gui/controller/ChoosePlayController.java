@@ -8,9 +8,11 @@ public class ChoosePlayController {
 
 
     public void creativePlayMod(){
+        switcher.setCreative(true);
         switcher.switchView("SelectRoom");
     }
     public void LevelPlayMod(){
+        switcher.setCreative(false);
         switcher.switchView("SelectRoom");
     }
     public void setSwitcher(RootController rootController){

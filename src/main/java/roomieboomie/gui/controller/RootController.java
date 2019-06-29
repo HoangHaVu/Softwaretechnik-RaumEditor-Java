@@ -12,6 +12,7 @@ import java.io.IOException;
 public class RootController {
     private Stage primaryStage;
     private RoomieBoomieManager roomieBoomieManager;
+    private boolean creative;
 
 
     public void switchView(String scene){
@@ -100,6 +101,7 @@ public class RootController {
                     SelectRoomController selectRoomController= loader.getController();
                     selectRoomController.setSwitcher(this);
                     selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
+                    selectRoomController.setCreative(creative);
                     primaryStage.setScene(s);
                     primaryStage.show();
                 } catch (IOException e) {
@@ -169,5 +171,8 @@ public class RootController {
 
     public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
         this.roomieBoomieManager = roomieBoomieManager;
+    }
+    public void setCreative(boolean value){
+        this.creative = value;
     }
 }
