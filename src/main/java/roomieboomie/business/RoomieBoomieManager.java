@@ -2,6 +2,7 @@ package roomieboomie.business;
 
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.game.Game;
+import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.room.Room;
@@ -20,6 +21,7 @@ public class RoomieBoomieManager {
     private RoomMaps roomMaps; //TODO
     private UserMap userMap; //TODO
     private User currentUser; //TODO
+    private HighscoreList highscoreListRanked; // TODO
     private HashMap<String, PlacableItem> placableItemMap; //TODO
     private HashMap<String, LayoutItem> layoutItemMap; //TODO
 
@@ -42,6 +44,12 @@ public class RoomieBoomieManager {
     public void setCurrentUser(User user){
         this.currentUser = user;
     }
+    public RoomMaps getRoomMaps(){
+        return  roomMaps;
+    }
+    public HighscoreList getHighscoreListRanked(){
+        return  highscoreListRanked;
+    }
 
 
     public void init(){
@@ -57,6 +65,11 @@ public class RoomieBoomieManager {
             HashMap level = jsonHandler.getRoomMapLevel();
             HashMap creative = jsonHandler.getRoomMapCreative();
             this.roomMaps = new RoomMaps(level,creative);
+        } catch (JsonLoadingException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.highscoreListRanked = jsonHandler.getHighscoreRanked();
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }

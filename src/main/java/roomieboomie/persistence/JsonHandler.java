@@ -1,5 +1,6 @@
 package roomieboomie.persistence;
 
+import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.user.User;
@@ -87,6 +88,10 @@ public class JsonHandler {
     public HashMap<String,RoomPreview>getRoomMapCreative()throws JsonLoadingException{
         HashMap<String,RoomPreview> creativeRoomMap = new HashMap<>();
         return creativeRoomMap;
+    }
+    public HighscoreList getHighscoreRanked() throws  JsonLoadingException{
+        HighscoreList highscoreList = new HighscoreList();
+        return highscoreList;
     }
 
     /**
