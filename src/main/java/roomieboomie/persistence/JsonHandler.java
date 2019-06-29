@@ -80,6 +80,14 @@ public class JsonHandler {
         }
         return userMap;
     }
+   public HashMap<String,RoomPreview>getRoomMapLevel()throws JsonLoadingException{
+        HashMap<String,RoomPreview> levelRoomMap = new HashMap<>();
+        return levelRoomMap;
+   }
+    public HashMap<String,RoomPreview>getRoomMapCreative()throws JsonLoadingException{
+        HashMap<String,RoomPreview> creativeRoomMap = new HashMap<>();
+        return creativeRoomMap;
+    }
 
     /**
      * Speichert ein User-Objekt in ein JSON-File

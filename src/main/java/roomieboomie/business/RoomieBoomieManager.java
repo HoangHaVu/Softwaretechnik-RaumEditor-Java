@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class RoomieBoomieManager {
     private Game game; //TODO
     private RoomEditor roomEditor; //TODO
-    private JsonHandler jsonHandler = new JsonHandler();
+    private JsonHandler jsonHandler;
     private RoomMaps roomMaps; //TODO
     private UserMap userMap; //TODO
     private User currentUser; //TODO
@@ -24,14 +24,44 @@ public class RoomieBoomieManager {
     private HashMap<String, LayoutItem> layoutItemMap; //TODO
 
     public RoomieBoomieManager(){
+      init();
+    }
+    public UserMap getUserMap(){
+        return userMap;
+    }
+    public User getCurrentUser(){
+        return currentUser;
+    }
+    public RoomEditor getRoomEditor(){
+        return roomEditor;
+    }
+    public Game getGame(){
+        return game;
+    }
+
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
+
+
+    public void init(){
+        this.roomEditor = new RoomEditor();
+        this.jsonHandler = new JsonHandler();
+
         try {
-            userMap = new UserMap(jsonHandler.getUserMap());
+            this.userMap = new UserMap(jsonHandler.getUserMap());
+        } catch (JsonLoadingException e) {
+            e.printStackTrace();
+        }
+        try {
+            HashMap level = jsonHandler.getRoomMapLevel();
+            HashMap creative = jsonHandler.getRoomMapCreative();
+            this.roomMaps = new RoomMaps(level,creative);
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }
     }
 
-    public void init(){} //TODO
     public void initGame(){} //TODO
     public Room createRoom(){ //TODO
         return null;

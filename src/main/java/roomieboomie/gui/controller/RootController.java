@@ -10,7 +10,7 @@ import roomieboomie.business.user.User;
 import java.io.IOException;
 
 public class RootController {
-    static Stage primaryStage;
+    private Stage primaryStage;
     private RoomieBoomieManager roomieBoomieManager;
 
 
@@ -134,6 +134,7 @@ public class RootController {
                 break;
             case "Play":
                 break;
+
             case "GameOver":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/GameOverView.fxml"));
@@ -162,5 +163,11 @@ public class RootController {
                 break;
         }
     }
+    public void setPrimaryStage(Stage stage){
+        this.primaryStage = stage;
+    }
 
+    public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
+        this.roomieBoomieManager = roomieBoomieManager;
+    }
 }
