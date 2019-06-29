@@ -8,12 +8,18 @@ public class PlaceableEditorController {
 
 
     public void saveRoom(){
-
+        switcher.switchView("MainMenu");
     }
     public void backToLayout(){
-
+        switcher.switchView("SelectRoom");
     }
     public void addPlaceableItem(){
 
+    }
+    public void setSwitcher(RootController rootController){
+        this.switcher = rootController;
+    }
+    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+        this.roomieBoomieManager = roomieBoomieManager;
     }
 }
