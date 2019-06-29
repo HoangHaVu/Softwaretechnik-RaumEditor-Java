@@ -64,4 +64,9 @@ public class HighscoreRecord implements Comparable{
     public String toString(){
         return "User: " + user.getName() + ", Punkte: " + points + ", Zeit: " + time;
     }
+
+    @Override
+    public int hashCode() {
+        return time * points * user.getName().hashCode();
+    }
 }

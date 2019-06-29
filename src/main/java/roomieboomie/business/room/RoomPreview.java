@@ -1,6 +1,8 @@
 package roomieboomie.business.room;
 
 import roomieboomie.business.highscore.HighscoreList;
+import roomieboomie.business.highscore.HighscoreRecord;
+import roomieboomie.business.user.User;
 import roomieboomie.persistence.JsonHandler;
 
 /**
@@ -13,10 +15,10 @@ public class RoomPreview {
     private int highestScore;
     private int neededScore;
     private boolean level;
-    private HighscoreList highscoreList = new HighscoreList();
+    private HighscoreList highscoreList;
     private JsonHandler jsonHandler;
-    private int height; //Hoehe des Raums, wird createLayout gesetzt
-    private int width; //Breite des Raums, wird createLayout gesetzt
+    private int height; //Hoehe des Raums, wird bei createLayout() gesetzt
+    private int width; //Breite des Raums, wird bei createLayout() gesetzt
 
     /**
      * Erstellt einen neues RoomPreview-Objekt.
@@ -27,13 +29,13 @@ public class RoomPreview {
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
      * @param highscoreList Highscore-Liste fuer den Room
      */
-    public RoomPreview(String name, String thumbnail, int highestScore, int neededScore, boolean level, HighscoreList highscoreList) {
+    public RoomPreview(String name, String thumbnail, HighscoreList highscoreList, int neededScore, boolean level) {
         this.name = name;
         this.thumbnail = thumbnail;
-        this.highestScore = highestScore;
+        this.highscoreList = highscoreList;
+        this.highestScore = highscoreList.getHighestScore();
         this.neededScore = neededScore;
         this.level = level;
-        this.highscoreList = highscoreList;
     }
 
     /**
@@ -69,14 +71,6 @@ public class RoomPreview {
     }
 
     /**
-     * @param highestScore Hoechster erreichter Score
-     */
-    public void setHighestScore(int highestScore) {
-        //TODO das muesste aus der HighscoreList berechnet werden, wenn neuer Eintrag
-        this.highestScore = highestScore;
-    }
-
-    /**
      * @return Score, der benoetigt wird, um den Raum zu bestehen
      */
     public int getNeededScore() {
@@ -88,6 +82,13 @@ public class RoomPreview {
      */
     public void setNeededScore(int neededScore) {
         this.neededScore = neededScore;
+    }
+
+    /**
+     * @return HighscoreList des Rooms
+     */
+    public HighscoreList getHighscoreList() {
+        return highscoreList;
     }
 
     /**
@@ -131,8 +132,18 @@ public class RoomPreview {
     /**
      * Fuegt einen neuen Highscore-Eintrag ein
      */
-    public void addHighscoreRecord(){
-        //TODO highscoreList. ...()
-        setHighestScore(0); //TODO
+    public void addHighscoreRecord(int time, int points, User user){
+        highscoreList.addRecord(new HighscoreRecord(time, points, user));
+        highestScore = highscoreList.getHighestScore();
+    }
+
+    //TODO comment
+    public static int testHash(String name, String thumbnail, int neededScore, boolean level, HighscoreList highscoreList) {
+        return name.hashCode() * thumbnail.hashCode() * neededScore * Boolean.hashCode(level) * highscoreList.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return testHash(name, thumbnail, neededScore, level, highscoreList);
     }
 }

@@ -1,8 +1,10 @@
 package roomieboomie.business.room;
 
+import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.placable.PlacableItem;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -151,6 +153,11 @@ public class Room {
         this.roomPreview.setLevel(value);
     }
 
+    @Override
+    public int hashCode() {
+        return roomPreview.hashCode() * Arrays.hashCode(layout) * itemList.hashCode();
+    }
+
     /**
      * @return Pfad zum Thumbnail-Bild //TODO ?
      */
@@ -172,4 +179,10 @@ public class Room {
         return roomPreview.getNeededScore();
     }
 
+    /**
+     * @return HighscoreList des Rooms
+     */
+    public HighscoreList getHighscoreList() {
+        return roomPreview.getHighscoreList();
+    }
 }
