@@ -1,5 +1,6 @@
 package roomieboomie.controller;
 
+import javafx.fxml.FXML;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.room.RoomMaps;
 
@@ -14,9 +15,11 @@ public class SelectRoomController {
     private Collection creativeRooms;
     private Collection showRooms;
 
+    @FXML
     public void backToMenu(){
         switcher.switchView("MainMenu");
     }
+    @FXML
     public void loadRoom(){
         switcher.switchView("LayoutEditor");
 
