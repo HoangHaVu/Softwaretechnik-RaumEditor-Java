@@ -1,25 +1,23 @@
 package roomieboomie.business.highscore;
 
-import roomieboomie.business.user.User;
-
 /**
  * Eintrag in einer HighscoreList mit User, Zeit und erreichten Punkten
  */
 public class HighscoreRecord implements Comparable{
     private int time;
     private int points;
-    private User user;
+    private String username;
 
     /**
      * Erstellt neuen HighscoreRecord
      * @param time Zeit, die benoetigt wurde
      * @param points Erreichte Punkte
-     * @param user User, der gespielt hat
+     * @param username User, der gespielt hat
      */
-    public HighscoreRecord(int time, int points, User user) {
+    public HighscoreRecord(int time, int points, String username) {
         this.time = time;
         this.points = points;
-        this.user = user;
+        this.username = username;
     }
 
     /**
@@ -39,15 +37,15 @@ public class HighscoreRecord implements Comparable{
     /**
      * @return User, der gespielt hat
      */
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
     /**
      * Vergleicht zwei {@link HighscoreRecord}s miteinander anhand ihrer Punktzahl.
      * Ist die Punktzahl gleich,
      * @param o HighscoreRecord, der verglichen werden soll
-     * @return
+     * @return Vergleichs-int
      */
     @Override
     public int compareTo(Object o) {
@@ -62,11 +60,11 @@ public class HighscoreRecord implements Comparable{
     //TEST
     @Override
     public String toString(){
-        return "User: " + user.getName() + ", Punkte: " + points + ", Zeit: " + time;
+        return "User: " + username + ", Punkte: " + points + ", Zeit: " + time;
     }
 
     @Override
     public int hashCode() {
-        return time * points * user.getName().hashCode();
+        return time * points * username.hashCode();
     }
 }

@@ -128,8 +128,8 @@ public class RoomPreview {
     /**
      * Fuegt einen neuen Highscore-Eintrag ein
      */
-    public void addHighscoreRecord(int time, int points, User user){
-        highscoreList.addRecord(new HighscoreRecord(time, points, user));
+    public void addHighscoreRecord(int time, int points, String username){
+        highscoreList.addRecord(new HighscoreRecord(time, points, username));
         highestScore = highscoreList.getHighestScore();
     }
 
