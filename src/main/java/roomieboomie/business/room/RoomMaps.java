@@ -11,10 +11,16 @@ public class RoomMaps {
     private HashMap<String, RoomPreview> levelRooms = new HashMap<>();
     private HashMap<String, RoomPreview> creativeRooms = new HashMap<>();
 
-    public RoomMaps(HashMap<String,RoomPreview>level,HashMap<String,RoomPreview>creative){
-        this.levelRooms = level;
-        this.creativeRooms = creative;
+    /**
+     * Neue RoomMaps, die Level-Rooms und Creative-Rooms verwaltet
+     * @param levelMap HashMap mit Level-Rooms
+     * @param creativeMap HashMap Creative-Rooms
+     */
+    public RoomMaps(HashMap<String,RoomPreview> levelMap, HashMap<String,RoomPreview> creativeMap) {
+        this.levelRooms = levelMap;
+        this.creativeRooms = creativeMap;
     }
+
     /**
      * Fuegt eine RoomPreview in die Level-Map ein
      * @param room RoomPreview, die hinzugefuegt werden soll
