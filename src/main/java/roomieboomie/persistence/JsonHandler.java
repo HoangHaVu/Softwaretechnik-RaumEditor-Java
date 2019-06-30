@@ -1,39 +1,223 @@
 package roomieboomie.persistence;
 
+import roomieboomie.business.highscore.HighscoreList;
+import roomieboomie.business.highscore.HighscoreRecord;
+import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.user.User;
-
+import roomieboomie.business.user.UserMap;
 
 import javax.json.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
+/**
+ * Schnittstelle zu persistenten Dateien. Kann sowohl gespeicherte {@link User} und {@link Room}s laden und speichern
+ * als auch ueber getConfigAttribute Attribute aus der Konfigurationsdatei laden
+ */
 public class JsonHandler {
     private HashMap<String,String> configMap = new HashMap<>();
     private final String RESOURCESPATH = "src/main/resources/";
     private final String CONFIGNAME = "config.json";
-    private String usersPath;
 
+    /**
+     * Erstellt einen neuen JsonHandler
+     */
     public JsonHandler(){
         //configMap erstellen
         JsonObject jsonObject = loadFromJson(RESOURCESPATH + CONFIGNAME);
         for (String s : jsonObject.keySet()){
             configMap.put(s,jsonObject.getString(s));
         }
-        usersPath = getConfigAttribute("usersPath");
-        //
     }
 
-    public Room getRoom(String name){//TODO
-        return null;
+    /**
+     * Laedt den angegebenen Level-Room aus dem Dateisystem und gibt ihn als Objekt zurueck
+     * @param roomName Name des Raums
+     * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
+     * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
+     * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     */
+    public Room getLevelRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException {
+        return loadRoom( getConfigAttribute("levelRoomPath") + roomName + ".json", roomPreview);
     }
 
-    public void saveRoom(Room room){}//TODO
+    /**
+     * Laedt den angegebenen Creative-Room aus dem Dateisystem und gibt ihn als Objekt zurueck
+     * @param roomName Name des Raums
+     * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
+     * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
+     * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     */
+    public Room getCreativeRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException {
+        return loadRoom( getConfigAttribute("creativeRoomPath") + roomName + ".json", roomPreview);
+    }
+
+    /**
+     * Gibt ein Room-Objekt nach Angabe des Pfades inklusive Dateinamen zurueck
+     * @param fullPath Pfad mit Datenamen und -endung
+     * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
+     * @return Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     * @throws JsonValidatingException
+     */
+    private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException {
+        JsonObject jsonObject = loadFromJson(fullPath);
+        //layout
+        JsonArray layoutsArrays = jsonObject.getJsonArray("layout");
+        int x = layoutsArrays.size();
+        int y = ((JsonArray) layoutsArrays.get(0)).size();
+        byte[][] jLayout = new byte[x][y];
+        for (int i = 0; i < x; i++) {
+            JsonArray outerArray = (JsonArray) layoutsArrays.get(i);
+            for (int j = 0; j < y; j++) {
+                byte b = Byte.valueOf(String.valueOf(outerArray.get(j)));
+                jLayout[i][j] = b;
+            }
+        }
+
+        //itemList
+        JsonArray itemArray = jsonObject.getJsonArray("itemList");
+        ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
+        for (JsonValue value : itemArray) {
+            String str = String.valueOf(value).replace("\"","");
+            PlacableItemType type = PlacableItemType.valueOf(str);
+            placableItemsList.add(new PlacableItem(type));
+        }
+
+        if(jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)){
+            throw new JsonValidatingException();
+        } else {
+            return new Room(roomPreview, jLayout, placableItemsList);
+        }
+    }
+
+    /**
+     * Speichert einen Raum persistent ab
+     * @param room Raum, der gespeichert werden soll
+     * @throws JsonWritingException Bei Problemen während des Abspeicherns
+     */
+    public void saveRoom(Room room) throws JsonWritingException {
+        //layout
+        JsonArrayBuilder jLayoutArrBuilder = Json.createArrayBuilder();
+        byte[][] layout = room.getLayout();
+        for (int i=0; i < layout.length; i++){
+            JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+            for (int j = 0; j < layout[i].length; j++) {
+                arrBuilder.add(layout[i][j]);
+            }
+            jLayoutArrBuilder.add(arrBuilder);
+        }
+        JsonArray jLayout = jLayoutArrBuilder.build();
+
+        //PlacableItems
+        JsonArrayBuilder jItemArrBuilder = Json.createArrayBuilder();
+        for (PlacableItem item : room.getItemList()){
+            jItemArrBuilder.add(item.getType().toString());
+        }
+        JsonArray jItemList = jItemArrBuilder.build();
+
+        //HighscoreList
+        JsonArrayBuilder jHighscoreArrBuilder = Json.createArrayBuilder();
+        HighscoreList highscoreList = room.getHighscoreList();
+        for (HighscoreRecord record : highscoreList.getList()){
+            JsonObject recordObject = Json.createObjectBuilder()
+                    .add("time", record.getTime())
+                    .add("points", record.getPoints())
+                    .add("username", record.getUser().getName())
+                    .build();
+            jHighscoreArrBuilder.add(recordObject);
+        }
+        JsonArray jHighscores = jHighscoreArrBuilder.build();
+
+        //JsonObject erstellen
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("roomHash", room.hashCode())
+                .add("previewHash", room.getRoomPreview().hashCode())
+                .add("name", room.getName())
+                .add("neededScore", room.getNeededScore())
+                .add("level", room.isLevel())
+                .add("layout", jLayout)
+                .add("itemList", jItemList)
+                .add("highscoreList", jHighscores)
+                .build();
+
+        String filename = room.getName() + ".json";
+        if(room.isLevel()){
+            saveAsJson(jsonObject,configMap.get("levelRoomPath") + filename);
+        }else{
+            saveAsJson(jsonObject,configMap.get("creativeRoomPath") + filename);
+        }
+    }
+
+    /**
+     * Laedt die angegebenen Level-RoomPreview aus dem Dateisystem und gibt sie als Objekt zurueck
+     * @param roomName Name des Raums
+     * @param userMap UserMap mit allen Usern. Wird benoetigt um die HighscoreList bereitzustellen
+     * @return RoomPreview-Objekt
+     * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     */
+    public RoomPreview getLevelRoomPreview(String roomName, UserMap userMap) throws JsonValidatingException{
+        return loadRoomPreview(getConfigAttribute("levelRoomPath") + roomName + ".json", userMap);
+    }
+
+    /**
+     * Laedt die angegebenen Creative-RoomPreview aus dem Dateisystem und gibt sie als Objekt zurueck
+     * @param roomName Name des Raums
+     * @param userMap UserMap mit allen Usern. Wird benoetigt um die HighscoreList bereitzustellen
+     * @return RoomPreview-Objekt
+     * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     */
+    public RoomPreview getCreativeRoomPreview(String roomName, UserMap userMap) throws JsonValidatingException{
+        return loadRoomPreview(getConfigAttribute("creativeRoomPath") + roomName + ".json", userMap);
+    }
+
+    /**
+     * Gibt ein Room-Objekt nach Angabe des Pfades inklusive Dateinamen zurueck
+     * @param fullPath Pfad mit Datenamen und -endung
+     * @param userMap UserMap mit allen Usern. Wird benoetigt um die HighscoreList bereitzustellen
+     * @return RoomPreview-Objekt
+     * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
+     */
+    private RoomPreview loadRoomPreview(String fullPath, UserMap userMap) throws JsonValidatingException {
+        JsonObject jsonObject = loadFromJson(fullPath);
+
+        //name
+        String jName = jsonObject.getString("name");
+
+        //thumbnail
+        String jThumbnail = "";//TODO
+
+        //highscoreList
+        JsonArray highscoreArray = jsonObject.getJsonArray("highscoreList");
+        HighscoreList jHighscoreList = new HighscoreList();
+        for (JsonValue value : highscoreArray){
+            JsonObject object = (JsonObject) value;
+            int time = object.getInt("time");
+            int points = object.getInt("points");
+            User user = userMap.getUser(object.getString("username"));
+            jHighscoreList.addRecord(new HighscoreRecord(time, points, user));
+        }
+
+        //neededScore
+        int jNeededScore = jsonObject.getInt("neededScore");
+
+        //level
+        boolean jLevel = jsonObject.getBoolean("level");
+
+        if(jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)){
+            throw new JsonValidatingException();
+        } else {
+            RoomPreview roomPreview = new RoomPreview(jName, jThumbnail, jHighscoreList, jNeededScore, jLevel, this);
+            return roomPreview;
+        }
+    }
 
     public void delRoom(){//TODO
     }
@@ -46,7 +230,7 @@ public class JsonHandler {
      * In diesem Fall wurde das File ausserhalb des Programms bearbeitet.
      */
     public User getUser(String name) throws JsonValidatingException{//TODO exceptions
-        JsonObject jsonObject = loadFromJson(usersPath + name + ".json");
+        JsonObject jsonObject = loadFromJson(configMap.get("userPath") + name + ".json");
         String jName = jsonObject.getString("name");
         int jReachedLevel = jsonObject.getInt("reachedLevel");
 
@@ -65,7 +249,7 @@ public class JsonHandler {
      */
     public HashMap<String, User> getUserMap() throws JsonLoadingException {
         HashMap<String, User> userMap = new HashMap<>();
-        try (Stream<Path> paths = Files.walk(Paths.get(configMap.get("usersPath")))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(configMap.get("userPath")))) {
             paths.filter(Files::isRegularFile).forEach(u -> {
                         try {
                             User user = getUser(String.valueOf(u.getFileName()).replace(".json",""));
@@ -86,35 +270,37 @@ public class JsonHandler {
      * @param user User, der gespeichert werden soll
      */
     public void saveUser(User user) throws JsonWritingException {
-        JsonObjectBuilder builder = Json.createObjectBuilder()
-                .add("hash",user.hashCode())
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("hash", user.hashCode())
                 .add("name", user.getName())
-                .add("reachedLevel",user.getReachedLevel());
+                .add("reachedLevel", user.getReachedLevel())
+                .build();
 
-        JsonObject jsonObject = builder.build();
-        saveAsJson(jsonObject, usersPath + user.getName() + ".json");
+        saveAsJson(jsonObject, configMap.get("userPath") + user.getName() + ".json");
     }
 
+    /**
+     * Loescht die JSON-Datei eines Users
+     * @param user User-Objekt
+     * @throws JsonDeletingException Bei Loesch-Problemen auf Dateiebene
+     */
     public void delUser(User user) throws JsonDeletingException {
         try {
-            Files.delete(Paths.get(usersPath + user.getName() + ".json"));
+            Files.delete(Paths.get(configMap.get("userPath") + user.getName() + ".json"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new JsonDeletingException();
         }
     }
 
-    public RoomPreview loadLevelRoomPreview(){//TODO
-        return null;
-    }//TODO
-
-    public RoomPreview loadCreativeRoomPreview(){//TODO
-        return null;
-    }//TODO
-
     public String getConfigAttribute(String attributeName){
-        //TODO extra Exception?
-        return configMap.get(attributeName);
+        try {
+            return configMap.get(attributeName);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            System.err.println(String.format("Config-Attribut \"%a\" konnte nicht gefunden werden.", attributeName));
+        }
+        return "ATTRIBUTE_NOT_FOUND";
     }
 
     /**
@@ -122,7 +308,7 @@ public class JsonHandler {
      * @param source Quellpfad des Files inklusive Dateinamen
      * @return aus dem File generiertes JsonObject
      */
-    private JsonObject loadFromJson(String source){
+    private static JsonObject loadFromJson(String source){
         FileInputStream in = null;
         try {
             in = new FileInputStream(source);
@@ -131,8 +317,7 @@ public class JsonHandler {
         }
 
         JsonReader jsonReader = Json.createReader(in);
-        JsonObject jsonObject = jsonReader.readObject();
-        return jsonObject;
+        return jsonReader.readObject();
     }
 
     /**
@@ -146,7 +331,7 @@ public class JsonHandler {
         try {
             out = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            throw new JsonWritingException();
+            throw new JsonWritingException(e.getMessage());
         }
 
         JsonWriter writer = Json.createWriter(out);

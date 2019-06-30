@@ -44,8 +44,12 @@ public class HighscoreList {
     /**
      * @return Sortierte Liste mit allen {@link HighscoreRecord}s
      */
-    public ArrayList<HighscoreRecord> getHighscoreList(){
+    public ArrayList<HighscoreRecord> getList(){
         return highscoreList;
+    }
+
+    public int getHighestScore() {
+        return highscoreList.get(0).getPoints();
     }
 
     //TEST
@@ -56,5 +60,10 @@ public class HighscoreList {
             s += r.toString() + "\n";
         }
         return s;
+    }
+
+    @Override
+    public int hashCode() {
+        return highscoreList.hashCode();
     }
 }

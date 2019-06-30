@@ -21,4 +21,9 @@ public class LayoutItem {
     public LayoutItemType getType() {
         return type;
     }
+
+    @Override
+    public int hashCode() {
+        return type.toString().hashCode();
+    }
 }

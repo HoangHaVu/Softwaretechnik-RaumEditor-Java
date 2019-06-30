@@ -6,23 +6,17 @@ package roomieboomie.business.item;
 public class RoomItem {
     private int x;
     private int y;
-    private int length;
-    private int width;
     private Orientation orientation;
 
     /**
      * Neuer RoomItem
      * @param x x-Koordinate
      * @param y y-Koordinate
-     * @param length Laenge
-     * @param width Breite
      * @param orientation Richtung
      */
-    public RoomItem(int x, int y, int length, int width, Orientation orientation) {
+    public RoomItem(int x, int y, Orientation orientation) {
         this.x = x;
         this.y = y;
-        this.length = length;
-        this.width = width;
         this.orientation = orientation;
     }
 
@@ -56,38 +50,6 @@ public class RoomItem {
      */
     public void setY(int y) {
         this.y = y;
-    }
-
-    /**
-     *
-     * @return Laenge des Items
-     */
-    public int getLength() {
-        return length;
-    }
-
-    /**
-     *
-     * @param length Laenge des Items
-     */
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    /**
-     *
-     * @return Breite des Items
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     *
-     * @param width Breite des Items
-     */
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     /**
