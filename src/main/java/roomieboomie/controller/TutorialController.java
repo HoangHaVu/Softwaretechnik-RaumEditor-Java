@@ -1,4 +1,4 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 
 public class TutorialController {

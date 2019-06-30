@@ -1,17 +1,20 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 import roomieboomie.business.RoomieBoomieManager;
 
-public class ChooseEditorController {
+public class GameOverController {
     private RootController switcher;
     private RoomieBoomieManager roomieBoomieManager;
 
-    public void createNewRoom(){
-        switcher.switchView("LayoutEditor");
+
+    public void playAgain(){
+
     }
-    public void loadRoom(){
-        switcher.setCreative(true);
-        switcher.switchView("SelectRoom");
+    public void backToMenu(){
+        switcher.switchView("MainMenu");
+    }
+    public void rageQuit(){
+
     }
     public void setSwitcher(RootController rootController){
         this.switcher = rootController;
@@ -19,8 +22,4 @@ public class ChooseEditorController {
     public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
         this.roomieBoomieManager = roomieBoomieManager;
     }
-    public void backToMenu(){
-        switcher.switchView("MainMenu");
-    }
-
 }

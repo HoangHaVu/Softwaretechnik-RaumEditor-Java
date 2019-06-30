@@ -1,11 +1,10 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import roomieboomie.business.RoomieBoomieManager;
-import roomieboomie.business.user.User;
 
 import java.io.IOException;
 
@@ -19,7 +18,7 @@ public class RootController {
         switch (scene){
             case "Login":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/LoginView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/LoginView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                      LoginController loginController= loader.getController();
                      loginController.setSwitcher(this);
@@ -32,7 +31,7 @@ public class RootController {
                 break;
             case "MainMenu":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/MainMenuView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/MainMenuView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     MainMenuController mainMenuController= loader.getController();
                     mainMenuController.setSwitcher(this);
@@ -45,7 +44,7 @@ public class RootController {
                 break;
             case "Tutorial":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/TutorialView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/TutorialView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     TutorialController tutorialController= loader.getController();
                     tutorialController.setSwitcher(this);
@@ -57,7 +56,7 @@ public class RootController {
                 break;
             case "ChooseEdit":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/ChooseEditView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/ChooseEditView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     ChooseEditorController chooseEditorController= loader.getController();
                     chooseEditorController.setSwitcher(this);
@@ -70,7 +69,7 @@ public class RootController {
                 break;
             case "ChoosePlay":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/ChoosePlayView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/ChoosePlayView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     ChoosePlayController choosePlayController= loader.getController();
                     choosePlayController.setSwitcher(this);
@@ -83,7 +82,7 @@ public class RootController {
                 break;
             case "Highscore":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/Highscore.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/Highscore.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     HighscoreController highscoreController= loader.getController();
                     highscoreController.setSwitcher(this);
@@ -96,7 +95,7 @@ public class RootController {
                 break;
             case "SelectRoom":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/SelectRoomView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/SelectRoomView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     SelectRoomController selectRoomController= loader.getController();
                     selectRoomController.setSwitcher(this);
@@ -110,7 +109,7 @@ public class RootController {
                 break;
             case "LayoutEditor":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/LayoutEditorView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/LayoutEditorView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     LayoutEditorController layoutEditorController= loader.getController();
                     layoutEditorController.setSwitcher(this);
@@ -123,7 +122,7 @@ public class RootController {
                 break;
             case "PlaceableEditor":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/PlaceableEditorEditorView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/PlaceableEditorEditorView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     PlaceableEditorController placeableEditorController= loader.getController();
                     placeableEditorController.setSwitcher(this);
@@ -139,7 +138,7 @@ public class RootController {
 
             case "GameOver":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/GameOverView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/GameOverView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     GameOverController gameOverController= loader.getController();
                     gameOverController.setSwitcher(this);
@@ -152,7 +151,7 @@ public class RootController {
                 break;
             case "WinLevel":
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/WinLevelView.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/WinLevelView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 800, 500);
                     WinLevelController winLevelController= loader.getController();
                     winLevelController.setSwitcher(this);
