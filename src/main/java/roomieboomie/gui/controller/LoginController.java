@@ -10,6 +10,12 @@ public class LoginController {
     public void chooseWhichUser(String username){
     }
     public void toMenu(){
-
+        switcher.switchView("MainMenu");
+    }
+    public void setSwitcher(RootController rootController){
+        this.switcher = rootController;
+    }
+    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+        this.roomieBoomieManager = roomieBoomieManager;
     }
 }

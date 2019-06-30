@@ -8,9 +8,15 @@ public class ChoosePlayController {
 
 
     public void creativePlayMod(){
-
+        switcher.switchView("SelectRoom");
     }
     public void LevelPlayMod(){
-
+        switcher.switchView("SelectRoom");
+    }
+    public void setSwitcher(RootController rootController){
+        this.switcher = rootController;
+    }
+    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+        this.roomieBoomieManager = roomieBoomieManager;
     }
 }
