@@ -10,8 +10,9 @@ import roomieboomie.business.user.User;
 import java.io.IOException;
 
 public class RootController {
-    static Stage primaryStage;
+    private Stage primaryStage;
     private RoomieBoomieManager roomieBoomieManager;
+    private boolean creative;
 
 
     public void switchView(String scene){
@@ -100,6 +101,7 @@ public class RootController {
                     SelectRoomController selectRoomController= loader.getController();
                     selectRoomController.setSwitcher(this);
                     selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
+                    selectRoomController.setCreative(creative);
                     primaryStage.setScene(s);
                     primaryStage.show();
                 } catch (IOException e) {
@@ -134,6 +136,7 @@ public class RootController {
                 break;
             case "Play":
                 break;
+
             case "GameOver":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/views/GameOverView.fxml"));
@@ -162,5 +165,14 @@ public class RootController {
                 break;
         }
     }
+    public void setPrimaryStage(Stage stage){
+        this.primaryStage = stage;
+    }
 
+    public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
+        this.roomieBoomieManager = roomieBoomieManager;
+    }
+    public void setCreative(boolean value){
+        this.creative = value;
+    }
 }

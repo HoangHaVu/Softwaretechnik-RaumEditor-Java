@@ -1,10 +1,12 @@
 package roomieboomie.gui.controller;
 
 import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.business.editor.RoomEditor;
 
 public class LayoutEditorController {
     private RootController switcher;
     private RoomieBoomieManager roomieBoomieManager;
+    private RoomEditor roomEditor;
 
 
     public void nextToPlaceObject(){
@@ -21,6 +23,12 @@ public class LayoutEditorController {
     }
     public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
         this.roomieBoomieManager = roomieBoomieManager;
+        init();
     }
-
+    public void init(){
+        setRoomEditor(roomieBoomieManager.getRoomEditor());
+    }
+    public void setRoomEditor(RoomEditor roomEditor){
+        this.roomEditor=roomEditor;
+    }
 }

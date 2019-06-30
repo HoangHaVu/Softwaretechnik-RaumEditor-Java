@@ -10,6 +10,7 @@ public class ChooseEditorController {
         switcher.switchView("LayoutEditor");
     }
     public void loadRoom(){
+        switcher.setCreative(true);
         switcher.switchView("SelectRoom");
     }
     public void setSwitcher(RootController rootController){
