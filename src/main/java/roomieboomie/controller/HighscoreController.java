@@ -1,4 +1,4 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.highscore.HighscoreList;

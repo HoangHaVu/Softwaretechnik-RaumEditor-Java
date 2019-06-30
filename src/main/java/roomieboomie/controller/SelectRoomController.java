@@ -1,7 +1,6 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 import roomieboomie.business.RoomieBoomieManager;
-import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomMaps;
 
 import java.util.Collection;

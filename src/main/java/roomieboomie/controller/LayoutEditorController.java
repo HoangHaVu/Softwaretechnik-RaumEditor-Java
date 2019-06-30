@@ -1,21 +1,21 @@
-package roomieboomie.gui.controller;
+package roomieboomie.controller;
 
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.editor.RoomEditor;
 
-public class PlaceableEditorController {
-    private RoomieBoomieManager roomieBoomieManager;
+public class LayoutEditorController {
     private RootController switcher;
+    private RoomieBoomieManager roomieBoomieManager;
     private RoomEditor roomEditor;
 
 
-    public void saveRoom(){
-        switcher.switchView("MainMenu");
+    public void nextToPlaceObject(){
+        switcher.switchView("PlaceableEditor");
     }
-    public void backToLayout(){
-        switcher.switchView("SelectRoom");
+    public void backToMenu(){
+        switcher.switchView("MainManu");
     }
-    public void addPlaceableItem(){
+    public void addLayoutItem(){
 
     }
     public void setSwitcher(RootController rootController){
@@ -28,7 +28,7 @@ public class PlaceableEditorController {
     public void init(){
         setRoomEditor(roomieBoomieManager.getRoomEditor());
     }
-    public void setRoomEditor (RoomEditor roomEditor){
-        this.roomEditor = roomEditor;
+    public void setRoomEditor(RoomEditor roomEditor){
+        this.roomEditor=roomEditor;
     }
 }
