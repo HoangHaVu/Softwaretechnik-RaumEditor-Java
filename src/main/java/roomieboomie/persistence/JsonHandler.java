@@ -19,10 +19,8 @@ import java.util.stream.Stream;
 
 /**
  * Schnittstelle zu persistenten Dateien. Kann sowohl gespeicherte {@link User} und {@link Room}s laden und speichern
- * als auch ueber getConfigAttribute Attribute aus der Konfigurationsdatei laden
  */
 public class JsonHandler {
-    private HashMap<String,String> configMap = new HashMap<>();
     private final String RESOURCESPATH = "src/main/resources/";
     private final String CONFIGNAME = "config.json";
 
@@ -30,11 +28,20 @@ public class JsonHandler {
      * Erstellt einen neuen JsonHandler
      */
     public JsonHandler(){
-        //configMap erstellen
+
+    }
+
+    /**
+     * Liest Configurations-Attribute aus dem Dateisystem und gibt sie mit ihrem Namen in einer HashMap zurueck
+     * @return HashMap mit Attributnamen und -wert
+     */
+    HashMap<String,String> getConfigMap() throws JsonLoadingException {
+        HashMap<String,String> configMap = new HashMap<>();
         JsonObject jsonObject = loadFromJson(RESOURCESPATH + CONFIGNAME);
         for (String s : jsonObject.keySet()){
             configMap.put(s,jsonObject.getString(s));
         }
+        return configMap;
     }
 
     /**
@@ -44,8 +51,8 @@ public class JsonHandler {
      * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
-    public Room getLevelRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException {
-        return loadRoom( getConfigAttribute("levelRoomPath") + roomName + ".json", roomPreview);
+    public Room getLevelRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
+        return loadRoom(Config.get().LEVELROOMPATH() + roomName + ".json", roomPreview);
     }
 
     /**
@@ -55,8 +62,8 @@ public class JsonHandler {
      * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
-    public Room getCreativeRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException {
-        return loadRoom( getConfigAttribute("creativeRoomPath") + roomName + ".json", roomPreview);
+    public Room getCreativeRoom(String roomName, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
+        return loadRoom(Config.get().CREATIVEROOMPATH() + roomName + ".json", roomPreview);
     }
 
     /**
@@ -66,7 +73,7 @@ public class JsonHandler {
      * @return Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      * @throws JsonValidatingException
      */
-    private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException {
+    private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
         JsonObject jsonObject = loadFromJson(fullPath);
         //layout
         JsonArray layoutsArrays = jsonObject.getJsonArray("layout");
@@ -149,9 +156,9 @@ public class JsonHandler {
 
         String filename = room.getName() + ".json";
         if(room.isLevel()){
-            saveAsJson(jsonObject,configMap.get("levelRoomPath") + filename);
+            saveAsJson(jsonObject, Config.get().LEVELROOMPATH() + filename);
         }else{
-            saveAsJson(jsonObject,configMap.get("creativeRoomPath") + filename);
+            saveAsJson(jsonObject, Config.get().CREATIVEROOMPATH() + filename);
         }
     }
 
@@ -161,8 +168,8 @@ public class JsonHandler {
      * @return RoomPreview-Objekt
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
-    public RoomPreview getLevelRoomPreview(String roomName) throws JsonValidatingException{
-        return loadRoomPreview(getConfigAttribute("levelRoomPath") + roomName + ".json");
+    public RoomPreview getLevelRoomPreview(String roomName) throws JsonValidatingException, JsonLoadingException {
+        return loadRoomPreview(Config.get().LEVELROOMPATH() + roomName + ".json");
     }
 
     /**
@@ -171,8 +178,8 @@ public class JsonHandler {
      * @return RoomPreview-Objekt
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
-    public RoomPreview getCreativeRoomPreview(String roomName) throws JsonValidatingException{
-        return loadRoomPreview(getConfigAttribute("creativeRoomPath") + roomName + ".json");
+    public RoomPreview getCreativeRoomPreview(String roomName) throws JsonValidatingException, JsonLoadingException {
+        return loadRoomPreview(Config.get().CREATIVEROOMPATH() + roomName + ".json");
     }
 
     /**
@@ -181,7 +188,7 @@ public class JsonHandler {
      * @return RoomPreview-Objekt
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
-    private RoomPreview loadRoomPreview(String fullPath) throws JsonValidatingException {
+    private RoomPreview loadRoomPreview(String fullPath) throws JsonValidatingException, JsonLoadingException {
         JsonObject jsonObject = loadFromJson(fullPath);
 
         //name
@@ -210,8 +217,7 @@ public class JsonHandler {
         if(jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)){
             throw new JsonValidatingException();
         } else {
-            RoomPreview roomPreview = new RoomPreview(jName, jThumbnail, jHighscoreList, jNeededScore, jLevel, this);
-            return roomPreview;
+            return new RoomPreview(jName, jThumbnail, jHighscoreList, jNeededScore, jLevel, this);
         }
     }
 
@@ -221,7 +227,7 @@ public class JsonHandler {
      * @throws JsonDeletingException Bei Loesch-Problemen auf Dateiebene
      */
     public void delRoom(Room room) throws JsonDeletingException {
-        String path = room.isLevel() ? getConfigAttribute("levelRoomPath") : getConfigAttribute("creativeRoomPath");
+        String path = room.isLevel() ? Config.get().LEVELROOMPATH() : Config.get().CREATIVEROOMPATH();
         try {
             Files.delete(Paths.get(path + room.getName() + ".json"));
         } catch (IOException e) {
@@ -231,57 +237,13 @@ public class JsonHandler {
     }
 
     /**
-     * Generiert ein User-Objekt aus einem JSON-File
-     * @param name Name des Users
-     * @return Generiertes User-Objekt
-     * @throws JsonValidatingException wenn der Hash-Wert des Files nicht mit den Werten uebereinstimmt.
-     * In diesem Fall wurde das File ausserhalb des Programms bearbeitet.
-     */
-    public User getUser(String name) throws JsonValidatingException{//TODO exceptions
-        JsonObject jsonObject = loadFromJson(configMap.get("userPath") + name + ".json");
-        String jName = jsonObject.getString("name");
-        int jReachedLevel = jsonObject.getInt("reachedLevel");
-
-        if(jsonObject.getInt("hash") != User.testHash(jName, jReachedLevel)){
-            throw new JsonValidatingException();
-        } else {
-            User user = new User(jName, jReachedLevel);
-            return user;
-        }
-    }
-
-    /**
-     * Erstellt aus allen User-Files im entsprechenden Ordner ein User-Objekt
-     * @return HashMap mit dem Namen des Users als Key und Objekt als Value
-     * @throws JsonLoadingException Wenn es ein Problem auf Dateiebene gibt
-     */
-    public HashMap<String, User> getUserMap() throws JsonLoadingException {
-        HashMap<String, User> userMap = new HashMap<>();
-        try (Stream<Path> paths = Files.walk(Paths.get(configMap.get("userPath")))) {
-            paths.filter(Files::isRegularFile).forEach(u -> {
-                        try {
-                            String name = String.valueOf(u.getFileName()).replace(".json", "");
-                            User user = getUser(name);
-                            userMap.put(name, user);
-                        } catch (JsonValidatingException e) {
-                            //TODO hier kann wegen Lambda nicht gethrowt werden;
-                        }
-                    }
-            );
-        } catch (IOException e) {
-            throw new JsonLoadingException();
-        }
-        return userMap;
-    }
-
-    /**
      * Liest alle Level-Rooms aus dem Dateisystem und gibt sie als HashMap zurueck.
      * Rooms sind ueber ihren Namen abrufbar.
      * @return HashMap mit Room-Namen und RoomPreview-Objekt
      * @throws JsonLoadingException Wenn Fehler auf Dateiebene auftreten
      */
     public HashMap<String, RoomPreview> getRoomMapLevel() throws JsonLoadingException {
-        return loadRoomMap(configMap.get("levelRoomPath"));
+        return loadRoomMap(Config.get().LEVELROOMPATH());
     }
 
     /**
@@ -291,7 +253,7 @@ public class JsonHandler {
      * @throws JsonLoadingException Wenn Fehler auf Dateiebene auftreten
      */
     public HashMap<String, RoomPreview> getRoomMapCreative() throws JsonLoadingException {
-        return loadRoomMap(configMap.get("creativeRoomPath"));
+        return loadRoomMap(Config.get().CREATIVEROOMPATH());
     }
 
     /**
@@ -308,12 +270,14 @@ public class JsonHandler {
                             RoomPreview roomPreview = loadRoomPreview(path + u.getFileName());
                             roomMap.put(roomPreview.getName(), roomPreview);
                         } catch (JsonValidatingException e) {
-                            //TODO hier kann wegen Lambda nicht gethrowt werden;
+                            System.err.println(e.getMessage());
+                        } catch (JsonLoadingException e) {
+                            System.err.println(e.getMessage());
                         }
                     }
             );
         } catch (IOException e) {
-            throw new JsonLoadingException();
+            throw new JsonLoadingException(("Ein Raum kann aufgrund eines Dateifehlers nicht geladen werden"));
         }
 
         return roomMap;
@@ -323,6 +287,51 @@ public class JsonHandler {
     public HighscoreList getHighscoreRanked() throws JsonLoadingException {
         HighscoreList highscoreList = new HighscoreList();
         return highscoreList;
+    }
+
+    /**
+     * Generiert ein User-Objekt aus einem JSON-File
+     * @param name Name des Users
+     * @return Generiertes User-Objekt
+     * @throws JsonValidatingException wenn der Hash-Wert des Files nicht mit den Werten uebereinstimmt.
+     * In diesem Fall wurde das File ausserhalb des Programms bearbeitet.
+     */
+    public User getUser(String name) throws JsonValidatingException, JsonLoadingException {
+        JsonObject jsonObject = loadFromJson(Config.get().USERPATH() + name + ".json");
+        String jName = jsonObject.getString("name");
+        int jReachedLevel = jsonObject.getInt("reachedLevel");
+
+        if(jsonObject.getInt("hash") != User.testHash(jName, jReachedLevel)){
+            throw new JsonValidatingException();
+        } else {
+            return new User(jName, jReachedLevel);
+        }
+    }
+
+    /**
+     * Erstellt aus allen User-Files im entsprechenden Ordner ein User-Objekt
+     * @return HashMap mit dem Namen des Users als Key und Objekt als Value
+     * @throws JsonLoadingException Wenn es ein Problem auf Dateiebene gibt
+     */
+    public HashMap<String, User> getUserMap() throws JsonLoadingException {
+        HashMap<String, User> userMap = new HashMap<>();
+        try (Stream<Path> paths = Files.walk(Paths.get(Config.get().USERPATH()))) {
+            paths.filter(Files::isRegularFile).forEach(u -> {
+                        try {
+                            String name = String.valueOf(u.getFileName()).replace(".json", "");
+                            User user = getUser(name);
+                            userMap.put(name, user);
+                        } catch (JsonValidatingException e) {
+                            System.err.println(e.getMessage());
+                        } catch (JsonLoadingException e) {
+                            System.err.println(e.getMessage());
+                        }
+                    }
+            );
+        } catch (IOException e) {
+            throw new JsonLoadingException();
+        }
+        return userMap;
     }
 
     /**
@@ -336,7 +345,7 @@ public class JsonHandler {
                 .add("reachedLevel", user.getReachedLevel())
                 .build();
 
-        saveAsJson(jsonObject, configMap.get("userPath") + user.getName() + ".json");
+        saveAsJson(jsonObject, Config.get().USERPATH() + user.getName() + ".json");
     }
 
     /**
@@ -346,7 +355,7 @@ public class JsonHandler {
      */
     public void delUser(User user) throws JsonDeletingException {
         try {
-            Files.delete(Paths.get(configMap.get("userPath") + user.getName() + ".json"));
+            Files.delete(Paths.get(Config.get().USERPATH() + user.getName() + ".json"));
         } catch (IOException e) {
             e.printStackTrace();
             throw new JsonDeletingException();
@@ -354,31 +363,16 @@ public class JsonHandler {
     }
 
     /**
-     * Gibt den Wert eines Attributs aus der Konfigurationsdatei config.json zurueck
-     * @param attributeName Name des Attributes
-     * @return Wert des Attributs als String
-     */
-    public String getConfigAttribute(String attributeName){
-        try {
-            return configMap.get(attributeName);
-        } catch (NullPointerException e){
-            e.printStackTrace();
-            System.err.println(String.format("Config-Attribut \"%a\" konnte nicht gefunden werden.", attributeName));
-        }
-        return "ATTRIBUTE_NOT_FOUND";
-    }
-
-    /**
      * Laedt ein JSON-File in ein JsonObject
      * @param source Quellpfad des Files inklusive Dateinamen
      * @return aus dem File generiertes JsonObject
      */
-    private static JsonObject loadFromJson(String source){
+    private JsonObject loadFromJson(String source) throws JsonLoadingException {
         FileInputStream in = null;
         try {
             in = new FileInputStream(source);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new JsonLoadingException(String.format("Datei \"%p\" konnte nicht geladen werden.\n" + e.getMessage(), source));
         }
 
         JsonReader jsonReader = Json.createReader(in);
@@ -394,15 +388,16 @@ public class JsonHandler {
      */
     private void saveAsJson(JsonObject jsonObj, String destination) throws JsonWritingException {
         File file = new File(destination);
-        FileOutputStream out = null;
+        FileOutputStream out;
         try {
             out = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            throw new JsonWritingException(e.getMessage());
+            throw new JsonWritingException(String.format("Datei \"%d\" konnte nicht geschrieben werden.\n" + e.getMessage(), destination));
         }
 
         JsonWriter writer = Json.createWriter(out);
         writer.write(jsonObj);
         writer.close();
     }
+
 }

@@ -43,7 +43,6 @@ public class PlacableItem extends RoomItem {
      * @return Ob die Unterstellhoehe hoch genug ist
      */
     public boolean fitsBeneath(PlacableItem compareItem){
-        //TODO im Klassendiagramm
         return this.type.getHeight().fitsBeneath(compareItem.getType().getHeight());
     }
 
