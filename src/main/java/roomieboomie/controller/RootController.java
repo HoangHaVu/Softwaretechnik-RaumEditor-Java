@@ -122,17 +122,11 @@ public class RootController {
                 layoutEditorController.refreshView();
                 break;
             case "PlaceableEditor":
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/PlaceableEditorEditorView.fxml"));
-                    Scene s = new Scene((Parent) loader.load(), 700, 500);
-                    PlaceableEditorController placeableEditorController= loader.getController();
-                    placeableEditorController.setSwitcher(this);
-                    placeableEditorController.setRoomieBoomieManager(roomieBoomieManager);
-                    primaryStage.setScene(s);
-                    primaryStage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                PlaceableEditorController placeableEditorController=new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
+                Scene scen = new Scene(placeableEditorController.getView(), 1000, 600);
+                primaryStage.setScene(scen);
+                primaryStage.show();
+                placeableEditorController.refreshView();
                 break;
             case "Play":
                 break;
