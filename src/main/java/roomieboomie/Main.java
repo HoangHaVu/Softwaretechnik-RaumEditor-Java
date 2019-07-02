@@ -42,10 +42,14 @@ public class Main extends Application {
 
         Scene scene = new Scene(editRoom.getView());
         primaryStage.setTitle("RoomieBoomie");
+        primaryStage.setScene(scene);
+        /*
         switcher.setPrimaryStage(primaryStage);
         switcher.setRoomieBoomieManager(roomieBoomieManager);
         switcher.switchView("Login");
+        */
         primaryStage.show();
+        
 
 
         
