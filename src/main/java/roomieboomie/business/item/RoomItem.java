@@ -14,7 +14,7 @@ public class RoomItem {
      * Neuer RoomItem
      * @param x x-Koordinate
      * @param y y-Koordinate
-     * @param length Laenge
+     * @param length Länge
      * @param width Breite
      * @param orientation Richtung
      */
@@ -25,6 +25,13 @@ public class RoomItem {
         this.width = width;
         this.orientation = orientation;
     }
+
+    public RoomItem(int length, int width, Orientation orientation){
+        this.length = length;
+        this.width = width;
+        this.orientation = orientation;
+    }
+
 
     /**
      *
@@ -60,18 +67,23 @@ public class RoomItem {
 
     /**
      *
-     * @return Laenge des Items
+     * @return Höhe des Items
      */
     public int getLength() {
         return length;
     }
 
+    public void setLength(int length){
+        if (length > 0)
+        this.length = length;
+    }
+
     /**
      *
-     * @param length Laenge des Items
+     * @param height Höhe des Items
      */
-    public void setLength(int length) {
-        this.length = length;
+    public void setHeight(int height) {
+        this.length = height;
     }
 
     /**
@@ -97,6 +109,15 @@ public class RoomItem {
     public Orientation getOrientation() {
         return orientation;
     }
+
+    /**
+     * Richtungswert des Items
+     * @param orientation
+     */
+    public void setOrientation(Orientation orientation){
+        this.orientation = orientation;
+    }
+
 
     /**
      * Dreht das Item um 90 Grad nach rechts
