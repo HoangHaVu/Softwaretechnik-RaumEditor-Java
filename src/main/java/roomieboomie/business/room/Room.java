@@ -25,13 +25,11 @@ public class Room {
     private ArrayList<LayoutItem> windows;
     private ArrayList<LayoutItem> doors;
     private byte[][] layout;
-    
 
     /**
      * Erstellt einen neuen Room aus einer RoomPreview heraus. Diese berechnet layout und wird fuer
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
-     * @param layout 2D-Array des Grundrisses
      */
     public Room(RoomPreview roomPreview) throws JsonException {
         try{
@@ -42,21 +40,19 @@ public class Room {
             this.windows = initRoom.getWindows();
             this.doors = initRoom.getDoors();
             this.layout = initRoom.getLayout();
-        }catch(JsonLoadingException e){
+        }catch(JsonLoadingException e){ //TODO einfach die selben Exceptions throwen?
             throw new JsonException("Raum konnte nicht geladen werden");
         } catch(JsonValidatingException e){
             throw new JsonException("Raum invalid");
         }
-        
-        
-        
     }
-    /**
-     * 
-     * Erstellt neuen Raum aus übergebenen Gesamtlänge / Breite (nicht die größe des Raumes, sondern die, des gesamten editierbaren Bereiches)
-     * 
-     */
 
+    /**
+     * Erstellt neuen Raum aus übergebenen Gesamtlänge / Breite
+     * (nicht die größe des Raumes, sondern die, des gesamten editierbaren Bereiches)
+     * @param totalHeight Hoehe des editierbaren Bereiches
+     * @param totalWidth Breite des editierbaren Bereiches
+     */
     public Room(int totalHeight, int totalWidth){
         this.roomPreview = null;
         this.layout = new byte[totalHeight][totalWidth];
@@ -71,18 +67,33 @@ public class Room {
     }
 
     /**
-     * 
+     * Brauche ich noch zum Testen lg Marvin
+     * @param roomPreview
+     * @param layout
+     * @param itemList
+     * @throws JsonLoadingException
+     * @throws JsonValidatingException
+     */
+    public Room(RoomPreview roomPreview, byte[][] layout, ArrayList<PlacableItem> itemList) throws JsonLoadingException, JsonValidatingException { //TODO kann spaeter weg
+        Room initRoom = roomPreview.getFullRoom();
+        this.roomPreview = roomPreview;
+        this.itemList = initRoom.getItemList();
+        this.walls = initRoom.getWalls();
+        this.windows = initRoom.getWindows();
+        this.doors = initRoom.getDoors();
+        this.layout = initRoom.getLayout();
+    }
+
+    /**
      * löscht Item anhand der Nummer welche im layout an gewünschter Stelle zu finden ist
      * @param layoutNumber Itemnummer
      */
-
     public void deleteItem(byte layoutNumber){
     
         if (layoutNumber == -1 || layoutNumber == 0) return;
 
         LayoutItem item = null;
         byte replaceNumber;
-        
 
         if (layoutNumber == -2){
             item = this.doors.get(0);
@@ -91,7 +102,6 @@ public class Room {
         } else if (layoutNumber > 0){
             item = this.walls.get(layoutNumber - 1);
         }
-
 
         if (item.getType() == LayoutItemType.DOOR || item.getType() == LayoutItemType.WINDOW){
 
@@ -120,8 +130,6 @@ public class Room {
                 }
             }
         }
-        
-
 
         if (item.getType() == LayoutItemType.WALL){
 
@@ -159,25 +167,18 @@ public class Room {
         }
     }
 
-
-
     /**
      * fügt dem Layout ein neues Item hinzu. Jedes Objekt hat eine eigene Nummer. Jede Wand hat eine Nummer > 0,
      * Es gibt nur eine Tür, welche die Nummer -2 bekommt.
      * Jedes Fenster hat eine Nummer < -2
      * @param item
      */
-
     public void addItem(LayoutItem item){
-
-        
-
         int y = item.getY();
         int x = item.getX();
         int endY = y + item.getWidth();
         int endX = x + item.getLength();
         byte size;
-
 
         if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
             endY = y + item.getLength();
@@ -219,12 +220,12 @@ public class Room {
     }
 
     /**
-     * Setter für die RoomPreview 
+     * Setter für die RoomPreview
+     * @param roomPreview RoomPreview
      */
     public void setRoomPreview(RoomPreview roomPreview){
         this.roomPreview = roomPreview;
     }
-
 
     /**
      * Liste mit allen PlacableItems, die im Raum platziert werden muessen
@@ -307,10 +308,7 @@ public class Room {
         for(int i = 0; i < layout.length; i++){
             this.layout[i] = Arrays.copyOf(layout[i], layout[i].length);
         }
-        
     }
-
-    
 
     /**
      * @return Name des Raums
@@ -357,9 +355,6 @@ public class Room {
         return roomPreview.getThumbnail();
     }
 
-    
-
-
     /**
      * @return Hoechster erreichter Score
      */
@@ -374,14 +369,13 @@ public class Room {
         return roomPreview.getNeededScore();
     }
 
+    /**
+     * @return RoomPreview des Rooms
+     */
     public RoomPreview getRoomPreview(){
         return this.roomPreview;
     }
 
-  
-
-    
-    
     /**
      * @return HighscoreList des Rooms
      */
