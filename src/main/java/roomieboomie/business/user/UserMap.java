@@ -1,9 +1,6 @@
 package roomieboomie.business.user;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 /**
  * Verwaltet alle User. User-Objekte sind ueber ihren Namen abrufbar

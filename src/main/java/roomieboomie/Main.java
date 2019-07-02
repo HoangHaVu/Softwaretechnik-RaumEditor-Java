@@ -12,13 +12,22 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.user.User;
 import roomieboomie.business.user.UserMap;
-import roomieboomie.gui.controller.LayoutEditorController;
+import roomieboomie.controller.LayoutEditorController;
 import roomieboomie.persistence.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.controller.RootController;
 
 public class Main extends Application {
+    private RoomieBoomieManager roomieBoomieManager;
+    private RootController switcher;
+
+    public Main(){
+        this.roomieBoomieManager = new RoomieBoomieManager();
+        this.switcher = new RootController();
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -33,7 +42,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(editRoom.getView());
         primaryStage.setTitle("RoomieBoomie");
-        primaryStage.setScene(scene);
+        switcher.setPrimaryStage(primaryStage);
+        switcher.setRoomieBoomieManager(roomieBoomieManager);
+        switcher.switchView("Login");
         primaryStage.show();
 
 

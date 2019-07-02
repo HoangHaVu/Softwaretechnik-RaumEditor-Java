@@ -46,5 +46,8 @@ public class LayoutItem extends RoomItem {
         return type;
     }
 
-
+    @Override
+    public int hashCode() {
+        return type.toString().hashCode();
+    }
 }

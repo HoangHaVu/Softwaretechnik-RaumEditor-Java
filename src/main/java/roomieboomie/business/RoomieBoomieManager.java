@@ -2,6 +2,7 @@ package roomieboomie.business;
 
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.game.Game;
+import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.room.Room;
@@ -11,28 +12,88 @@ import roomieboomie.business.user.UserMap;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.JsonLoadingException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * RoomieBoomieManager managed alle verwendeten Objekte und stellt die jeweils dem Controller zur Verfügung
+ *
+ */
 public class RoomieBoomieManager {
     private Game game; //TODO
     private RoomEditor roomEditor; //TODO
-    private JsonHandler jsonHandler = new JsonHandler();
+    private JsonHandler jsonHandler;
     private RoomMaps roomMaps; //TODO
     private UserMap userMap; //TODO
     private User currentUser; //TODO
+    private HighscoreList highscoreListRanked; // TODO
     private HashMap<String, PlacableItem> placableItemMap; //TODO
     private HashMap<String, LayoutItem> layoutItemMap; //TODO
 
+    /**
+     * Konstruktor
+     */
     public RoomieBoomieManager(){
+      init();
+    }
+    public UserMap getUserMap(){
+        return userMap;
+    }
+    public User getCurrentUser(){
+        return currentUser;
+    }
+    public RoomEditor getRoomEditor(){
+        return roomEditor;
+    }
+    public Game getGame(){
+        return game;
+    }
+
+    public void setCurrentUser(User user){
+        this.currentUser = user;
+    }
+    public RoomMaps getRoomMaps(){
+        return  roomMaps;
+    }
+    public HighscoreList getHighscoreListRanked(){
+        return  highscoreListRanked;
+    }
+
+    /**
+     * initialisiert alle benötigten Attribute
+     */
+    public void init(){
+        this.roomEditor = new RoomEditor("mein erster Raum", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
+        this.jsonHandler = new JsonHandler();
+
         try {
-            userMap = new UserMap(jsonHandler.getUserMap());
+            this.userMap = new UserMap(jsonHandler.getUserMap());
+        } catch (JsonLoadingException e) {
+            e.printStackTrace();
+        }
+        try {
+            HashMap level = jsonHandler.getRoomMapLevel();
+            HashMap creative = jsonHandler.getRoomMapCreative();
+            this.roomMaps = new RoomMaps(level,creative);
+        } catch (JsonLoadingException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.highscoreListRanked = jsonHandler.getHighscoreRanked();
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }
     }
 
-    public void init(){} //TODO
+    /**
+     * startet ein neues Game Session
+     */
     public void initGame(){} //TODO
+
+    /**
+     * kreiert einen neuen Raum
+     * @return
+     */
     public Room createRoom(){ //TODO
         return null;
     }

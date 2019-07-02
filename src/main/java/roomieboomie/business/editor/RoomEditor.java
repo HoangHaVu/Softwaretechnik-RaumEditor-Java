@@ -214,8 +214,11 @@ public class RoomEditor {
         
         room.getRoomPreview().setHighscoreList(new HighscoreList());
         room.getRoomPreview().setJsonHandler(this.jsonHandler);
-
-        jsonHandler.saveRoom(this.room);
+        try{
+            jsonHandler.saveRoom(this.room);
+        } catch(Exception e){
+            
+        }        
 
     }
 

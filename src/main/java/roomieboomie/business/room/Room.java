@@ -1,13 +1,18 @@
 package roomieboomie.business.room;
 
 import roomieboomie.business.item.Orientation;
+import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.persistence.JsonLoadingException;
+import roomieboomie.persistence.JsonValidatingException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.json.JsonException;
 
 
 /**
@@ -15,10 +20,10 @@ import java.util.List;
  */
 public class Room {
     private RoomPreview roomPreview;
-    private List<PlacableItem> itemList;
-    private List<LayoutItem> walls;
-    private List<LayoutItem> windows;
-    private List<LayoutItem> doors;
+    private ArrayList<PlacableItem> itemList;
+    private ArrayList<LayoutItem> walls;
+    private ArrayList<LayoutItem> windows;
+    private ArrayList<LayoutItem> doors;
     private byte[][] layout;
     
 
@@ -28,15 +33,22 @@ public class Room {
      * @param roomPreview roomPreview des Rooms
      * @param layout 2D-Array des Grundrisses
      */
-    public Room(RoomPreview roomPreview) {
+    public Room(RoomPreview roomPreview) throws JsonException {
+        try{
+            Room initRoom = roomPreview.getFullRoom();
+            this.roomPreview = roomPreview;
+            this.itemList = initRoom.getItemList();
+            this.walls = initRoom.getWalls();
+            this.windows = initRoom.getWindows();
+            this.doors = initRoom.getDoors();
+            this.layout = initRoom.getLayout();
+        }catch(JsonLoadingException e){
+            throw new JsonException("Raum konnte nicht geladen werden");
+        } catch(JsonValidatingException e){
+            throw new JsonException("Raum invalid");
+        }
         
-        Room initRoom = roomPreview.getFullRoom();
-        this.roomPreview = roomPreview;
-        this.itemList = initRoom.getItemList();
-        this.walls = initRoom.getWalls();
-        this.windows = initRoom.getWindows();
-        this.doors = initRoom.getDoors();
-        this.layout = initRoom.getLayout();
+        
         
     }
     /**
@@ -218,7 +230,7 @@ public class Room {
      * Liste mit allen PlacableItems, die im Raum platziert werden muessen
      * @return List mit PlacalbeItem-Objekten
      */
-    public List<PlacableItem> getItemList() {
+    public ArrayList<PlacableItem> getItemList() {
         return itemList;
     }
 
@@ -226,14 +238,14 @@ public class Room {
      * Setzt die Liste mit allen PlacableItems, die im Raum platziert werden muessen
      * @param itemList List mit PlacalbeItems
      */
-    public void setItemList(List<PlacableItem> itemList) {
+    public void setItemList(ArrayList<PlacableItem> itemList) {
         this.itemList = itemList;
     }
 
     /**
      * @return Liste mit allen LayoutItems des Typs LayoutItemType.WALL
      */
-    public List<LayoutItem> getWalls() {
+    public ArrayList<LayoutItem> getWalls() {
         return walls;
     }
 
@@ -241,14 +253,14 @@ public class Room {
      * Setzt die Liste der Wand-Objekte
      * @param walls Liste mit LayoutItems des Typs LayoutItemType.WALL
      */
-    public void setWalls(List<LayoutItem> walls) {
+    public void setWalls(ArrayList<LayoutItem> walls) {
         this.walls = walls;
     }
 
     /**
      * @return Liste mit allen LayoutItems des Typs LayoutItemType.WINDOW
      */
-    public List<LayoutItem> getWindows() {
+    public ArrayList<LayoutItem> getWindows() {
         return windows;
     }
 
@@ -256,14 +268,14 @@ public class Room {
      * Setzt die Liste der Window-Objekte
      * @param windows Liste mit LayoutItems des Typs LayoutItemType.WINDOW
      */
-    public void setWindows(List<LayoutItem> windows) {
+    public void setWindows(ArrayList<LayoutItem> windows) {
         this.windows = windows;
     }
 
     /**
      * @return Liste mit allen LayoutItems des Typs LayoutItemType.DOOR
      */
-    public List<LayoutItem> getDoors() {
+    public ArrayList<LayoutItem> getDoors() {
         return doors;
     }
 
@@ -271,7 +283,7 @@ public class Room {
      * Setzt die Liste der Door-Objekte
      * @param doors Liste mit LayoutItems des Typs LayoutItemType.DOOR
      */
-    public void setDoors(List<LayoutItem> doors) {
+    public void setDoors(ArrayList<LayoutItem> doors) {
         this.doors = doors;
     }
 
@@ -322,6 +334,22 @@ public class Room {
         this.roomPreview.setLevel(value);
     }
 
+    @Override
+    public int hashCode() {
+        return testHash(layout, itemList);
+    }
+
+    /**
+     * Kann statisch den HashCode eines Room-Objektes berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
+     * erstelltes Room-Objekt mit diesen Attributen haben wuerde
+     * @param layout Byte-Array mit dem Grundriss
+     * @param itemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
+     * @return HashCode
+     */
+    public static int testHash(byte[][] layout, List<PlacableItem> itemList){
+        return Arrays.deepHashCode(layout) * itemList.hashCode();
+    }
+
     /**
      * @return Pfad zum Thumbnail-Bild //TODO ?
      */
@@ -354,4 +382,10 @@ public class Room {
 
     
     
+    /**
+     * @return HighscoreList des Rooms
+     */
+    public HighscoreList getHighscoreList() {
+        return roomPreview.getHighscoreList();
+    }
 }

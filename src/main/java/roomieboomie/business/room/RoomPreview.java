@@ -1,7 +1,11 @@
 package roomieboomie.business.room;
 
 import roomieboomie.business.highscore.HighscoreList;
+import roomieboomie.business.highscore.HighscoreRecord;
+import roomieboomie.business.user.User;
 import roomieboomie.persistence.JsonHandler;
+import roomieboomie.persistence.JsonLoadingException;
+import roomieboomie.persistence.JsonValidatingException;
 
 /**
  * "Vorschau" eines Rooms. Beinhaltet die wichtigsten Informationen, um einen Raum im Menü darzustellen.
@@ -24,18 +28,18 @@ public class RoomPreview {
      * Erstellt einen neues RoomPreview-Objekt.
      * @param name Name des Raums
      * @param thumbnail Pfad zum Vorschaubild TODO ?
-     * @param highestScore Hoechster erreichter Score
      * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
      * @param highscoreList Highscore-Liste fuer den Room
      */
-    public RoomPreview(String name, String thumbnail, int highestScore, int neededScore, boolean level, HighscoreList highscoreList) {
+    public RoomPreview(String name, String thumbnail, HighscoreList highscoreList, int neededScore, boolean level, JsonHandler jsonHandler) {
         this.name = name;
         this.thumbnail = thumbnail;
-        this.highestScore = highestScore;
+        this.highscoreList = highscoreList;
+        this.highestScore = highscoreList.getHighestScore();
         this.neededScore = neededScore;
         this.level = level;
-        this.highscoreList = highscoreList;
+        this.jsonHandler = jsonHandler;
     }
 
     public RoomPreview(String name, boolean level){
@@ -48,10 +52,14 @@ public class RoomPreview {
      * Die Preview selbst wird mitgegeben, damit die hier gespeicherten Attribute weiter zugreifbar sind
      * @return
      */
-    public Room getFullRoom(){
-        int startX = 0; //Startpunkt des Raums von links aus TODO
-        int startY = 0; //Startpunkt des Raus von oben aus TODO
-        return new Room(this);
+    public Room getFullRoom() throws JsonValidatingException, JsonLoadingException {
+        //int startX = 0; //Startpunkt des Raums von links aus TODO
+        //int startY = 0; //Startpunkt des Raus von oben aus TODO
+        if (level){
+            return jsonHandler.getLevelRoom(this.name, this);
+        } else {
+            return jsonHandler.getCreativeRoom(this.name, this);
+        }
     }
 
     /**
@@ -76,14 +84,6 @@ public class RoomPreview {
     }
 
     /**
-     * @param highestScore Hoechster erreichter Score
-     */
-    public void setHighestScore(int highestScore) {
-        //TODO das muesste aus der HighscoreList berechnet werden, wenn neuer Eintrag
-        this.highestScore = highestScore;
-    }
-
-    /**
      * @return Score, der benoetigt wird, um den Raum zu bestehen
      */
     public int getNeededScore() {
@@ -95,6 +95,13 @@ public class RoomPreview {
      */
     public void setNeededScore(int neededScore) {
         this.neededScore = neededScore;
+    }
+
+    /**
+     * @return HighscoreList des Rooms
+     */
+    public HighscoreList getHighscoreList() {
+        return highscoreList;
     }
 
     /**
@@ -127,20 +134,29 @@ public class RoomPreview {
     }
 
     /**
-     * Liest Daten aus Persistenzschicht und erstellt Informationen fuer den Raum-Grundriss.
-     * @return 2D-Byte-Array mit Grundirssinformationen
+     * Fuegt einen neuen Highscore-Eintrag ein
      */
-    private byte[][] createLayout() {
-        //TODO ueber jsonHandler laden und umrechnen
-        return null;
+    public void addHighscoreRecord(int time, int points, String username){
+        highscoreList.addRecord(new HighscoreRecord(time, points, username));
+        highestScore = highscoreList.getHighestScore();
     }
 
     /**
-     * Fuegt einen neuen Highscore-Eintrag ein
+     * Kann statisch den HashCode eine RoomPreview berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
+     * erstelltes RoomPreview-Objekt mit diesen Attributen haben wuerde
+     * @param name Name der RoomPreview
+     * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
+     * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
+     * @param highscoreList Highscore-Liste fuer den Room
+     * @return
      */
-    public void addHighscoreRecord(){
-        //TODO highscoreList. ...()
-        setHighestScore(0); //TODO
+    public static int testHash(String name, int neededScore, boolean level, HighscoreList highscoreList) {
+        return name.hashCode() * neededScore * Boolean.hashCode(level) * highscoreList.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return testHash(name, /*thumbnail,*/ neededScore, level, highscoreList);
     }
 
     public void setJsonHandler(JsonHandler handler){

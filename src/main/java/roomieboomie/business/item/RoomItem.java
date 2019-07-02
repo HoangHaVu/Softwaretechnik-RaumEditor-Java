@@ -6,9 +6,9 @@ package roomieboomie.business.item;
 public class RoomItem {
     private int x;
     private int y;
+    private Orientation orientation;
     private int length;
     private int width;
-    private Orientation orientation;
 
     /**
      * Neuer RoomItem
@@ -21,8 +21,6 @@ public class RoomItem {
     public RoomItem(int x, int y, int length, int width, Orientation orientation) {
         this.x = x;
         this.y = y;
-        this.length = length;
-        this.width = width;
         this.orientation = orientation;
     }
 
