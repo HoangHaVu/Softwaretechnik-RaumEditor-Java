@@ -7,25 +7,25 @@ package roomieboomie.business.item.placable;
 public enum PlacableItemType {
 
     DINO(false, false, false, true, Height.SMALL, Height.FLAT,
-            10, 1, 1),
+            30, 1, 1),
     UNICORN(false, false, false, true, Height.SMALL, Height.FLAT,
-            10, 1, 1),
+            30, 1, 1),
     PLANT(false, false, false, true, Height.SMALL, Height.FLAT,
-            10, 1, 1),
+            30, 1, 1),
     TEDDY(false, false, false, true, Height.SMALL, Height.FLAT,
-            10, 1, 1),
+            30, 1, 1),
     CARPET(false, true, true, false, Height.FLAT, Height.FLAT,
-            50, 2, 3),
+            80, 2, 3),
     TABLE(false, true, true, false, Height.MEDIUM, Height.MEDIUM,
-            50, 2, 3),
+            110, 2, 3),
     TVTABLE(false, true, true, false, Height.SMALL, Height.FLAT,
-            50, 1, 3),
+            70, 1, 3),
     STOOL(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            20, 1, 1),
+            60, 1, 1),
     COUCH(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            100, 3, 2),
+            110, 3, 2),
     BED(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            100, 3, 2),
+            110, 3, 2),
     LOFTBED(false, false, true, false, Height.HIGH, Height.MEDIUM,
             150, 3, 2),
     CLOSET(false, false, true, false, Height.HIGH, Height.FLAT,
@@ -54,7 +54,7 @@ public enum PlacableItemType {
 
     /**
      * Privater Konstruktor
-     * @param wallitem Ob Item an der Wand platziert werden muss
+     * @param wallItem Ob Item an der Wand platziert werden muss
      * @param storagePlace Ob auf dem Item etwas abgestellt werden darf
      * @param floorItem Ob das Item auf Boden oder Teppich stehen muss
      * @param storable Ob man das Item auf einem anderen abstellen kann

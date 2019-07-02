@@ -4,6 +4,7 @@ import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
 import roomieboomie.business.user.User;
 import roomieboomie.persistence.JsonHandler;
+import roomieboomie.persistence.JsonLoadingException;
 import roomieboomie.persistence.JsonValidatingException;
 
 /**
@@ -44,7 +45,7 @@ public class RoomPreview {
      * Die Preview selbst wird mitgegeben, damit die hier gespeicherten Attribute weiter zugreifbar sind
      * @return
      */
-    public Room getFullRoom() throws JsonValidatingException {
+    public Room getFullRoom() throws JsonValidatingException, JsonLoadingException {
         //int startX = 0; //Startpunkt des Raums von links aus TODO
         //int startY = 0; //Startpunkt des Raus von oben aus TODO
         if (level){

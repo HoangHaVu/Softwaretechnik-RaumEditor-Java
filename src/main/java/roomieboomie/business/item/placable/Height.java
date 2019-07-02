@@ -18,7 +18,6 @@ public enum Height {
      * @return ob das Item unter das andere passt
      */
     public boolean fitsBeneath(Height compareHeight){
-        //TODO in UML aendern
         if (this.value < compareHeight.value){
             return true;
         }
