@@ -23,7 +23,7 @@ public class LayoutEditorController {
     private enum Action {
         DELETE, PLACE, EDIT
     };
-
+    RootController switcher;
     RoomEditor roomEditor;
     LayoutEditorView view;
     GridPane raster, interactionRaster, dragRaster;
@@ -251,6 +251,11 @@ public class LayoutEditorController {
         }
         
     }
+    public void setSwitcher(RootController rootController){
+        this.switcher=rootController;
+    }
+
+
 
     public void refreshPreview(){
 
