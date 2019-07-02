@@ -1,1 +1,27 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+@font-face { 
+	src: url('/fonts/Comix Loud.ttf');
+}
+
+@font-face { 
+	src: url('/fonts/KOMTXT_.ttf');
+}
+
+@font-face { 
+	src: url('/fonts/KOMTXTBI.ttf');
+}
+
+.header{
+    -fx-font-family: "Comix Loud";
+    -fx-font-size:30;
+}
+
+.text{
+    -fx-font-family: "KOMTXT_";
+    -fx-font-size:14;
+}
+
+.bold_text{
+    -fx-font-family: "KOMTXTBI";
+    -fx-font-size:14;
+}

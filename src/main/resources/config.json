@@ -1,5 +1,7 @@
 {
-  "usersPath": "src/main/resources/users/",
+  "userPath": "src/main/resources/users/",
+  "levelRoomPath": "src/main/resources/rooms/level/",
+  "creativeRoomPath": "src/main/resources/rooms/creative/",
   "secondsPerItem": "5",
   "maxWidth": "60",
   "maxHeight": "60"
