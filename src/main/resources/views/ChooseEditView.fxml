@@ -2,12 +2,22 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-
-<AnchorPane prefHeight="252.0" prefWidth="399.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.ChooseEditorController">
-   <children>
-      <Button layoutX="52.0" layoutY="180.0" mnemonicParsing="false" onAction="#createNewRoom" prefHeight="26.0" prefWidth="107.0" text="Raum erstellen" />
-      <Button layoutX="238.0" layoutY="180.0" mnemonicParsing="false" onAction="#loadRoom" text="Raum Bearbeiten" />
-      <Button layoutX="7.0" layoutY="8.0" mnemonicParsing="false" onAction="#backToMenu" text="back" />
-   </children>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.ChooseEditorController">
+   <top>
+      <AnchorPane prefHeight="108.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="34.0" layoutY="37.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="34.0" prefWidth="83.0" text="zurück" />
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="119.0" layoutY="61.0" mnemonicParsing="false" onAction="#createNewRoom" prefHeight="50.0" prefWidth="130.0" text="Raum erstellen" />
+            <Button layoutX="422.0" layoutY="61.0" mnemonicParsing="false" onAction="#loadRoom" prefHeight="50.0" prefWidth="130.0" text="Raum bearbeiten" />
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>
