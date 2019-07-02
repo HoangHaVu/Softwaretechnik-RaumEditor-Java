@@ -9,11 +9,10 @@ public enum LayoutItemType {
     private String texture;
 
     /**
-     *
      * @return Textur des LayoutItemTypes
      */
     public String getTexture() {
-        //TODO
+        //TODO gibt svg gewandelt als Pfad zurueck
         return texture;
     }
 

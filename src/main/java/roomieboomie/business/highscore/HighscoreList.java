@@ -18,27 +18,16 @@ public class HighscoreList {
     private ArrayList<HighscoreRecord> highscoreList = new ArrayList<>();
     private SortByPointsComparator comparator = new SortByPointsComparator();
 
-    /** TODO so richtig?
-     * Gibt zurueck, auf welcher Platzierung man sich mit dem angegebenen Score befindet
-     * @param score Punktzahl, die gesucht werden soll
+    /**
+     * Fuegt einen {@link HighscoreRecord} zur Liste hinzu und sortiert diese.
+     * Gibt die Platzierung des Scores zurueck.
+     * @param record HighscoreRecord, der hinzugefuegt werden soll
      * @return Platzierung mit 1 beginnend
      */
-    public int getPlacement(int score){
-        for (int i = 0; i < highscoreList.size(); i++){
-            if(highscoreList.get(i).getPoints() == score){
-                return i + 1;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Fuegt einen {@link HighscoreRecord} zur Liste hinzu und sortiert diese
-     * @param record HighscoreRecord, der hinzugefuegt werden soll
-     */
-    public void addRecord(HighscoreRecord record){
+    public int addRecord(HighscoreRecord record){
         highscoreList.add(record);
         highscoreList.sort(comparator);
+        return highscoreList.indexOf(record) + 1;
     }
 
     /**
