@@ -1,7 +1,14 @@
 package roomieboomie.business.room;
 
+import roomieboomie.business.highscore.HighscoreList;
+import roomieboomie.business.highscore.HighscoreRecord;
+import roomieboomie.business.user.User;
+import roomieboomie.persistence.JsonLoadingException;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Room Maps verwaltet alle Level-Rooms und Creative-Rooms in getrennten HashMaps.
@@ -83,5 +90,41 @@ public class RoomMaps {
      */
     public Collection<RoomPreview> getCreativeRooms(){
         return creativeRooms.values();
+    }
+
+    /**
+     * Rechnet die Highscore-Werte der Highscores aller Rooms zusammen, um einen gesamt-Hoghscore zu erstellen.
+     * Dabei wird pro Room nur der jeweils beste Score eines Users berücksichtigt.
+     * @return HighscoreList mit akkumulierten Scores
+     */
+    public HighscoreList getOverallHighscore() {
+        HighscoreList highscoreList = new HighscoreList();
+        HashMap<String, Integer> userScoreMap = new HashMap<>();
+
+        for (RoomPreview roomPreview : levelRooms.values()) { //Für jeden Raum
+            HighscoreList currHighscoreList = roomPreview.getHighscoreList();
+            ArrayList<String> registredUsernames = new ArrayList<>(); //Zum User registrieren
+
+            for (HighscoreRecord record : currHighscoreList) { //Liste rausziehen und durchiterieren
+                String username = record.getUsername();
+                if (!registredUsernames.contains(username)) { //Wenn noch nicht drin
+                    registredUsernames.add(username);// User für diesen Room registrieren
+                    if (!userScoreMap.containsKey(username)){
+                        userScoreMap.put(username, record.getPoints());
+                    } else{
+                        userScoreMap.put(username, userScoreMap.get(username) + record.getPoints());
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String,Integer> userScore : userScoreMap.entrySet()){
+            String username = userScore.getKey();
+            int score = userScore.getValue();
+            HighscoreRecord record = new HighscoreRecord(score, username);
+            highscoreList.addRecord(record);
+        }
+
+        return highscoreList;
     }
 }

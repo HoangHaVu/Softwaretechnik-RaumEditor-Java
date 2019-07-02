@@ -283,12 +283,6 @@ public class JsonHandler {
         return roomMap;
     }
 
-    //TODO
-    public HighscoreList getHighscoreRanked() throws JsonLoadingException {
-        HighscoreList highscoreList = new HighscoreList();
-        return highscoreList;
-    }
-
     /**
      * Generiert ein User-Objekt aus einem JSON-File
      * @param name Name des Users

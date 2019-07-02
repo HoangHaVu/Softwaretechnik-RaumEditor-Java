@@ -2,11 +2,17 @@ package roomieboomie.business.highscore;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * Beinhaltet und verwaltet eine Liste von {@link HighscoreRecord}s fuer einen Raum.
  */
-public class HighscoreList {
+public class HighscoreList implements Iterable<HighscoreRecord> {
+
+    @Override
+    public Iterator<HighscoreRecord> iterator() {
+        return highscoreList.listIterator();
+    }
 
     private class SortByPointsComparator implements Comparator<HighscoreRecord>{
         @Override
@@ -38,7 +44,10 @@ public class HighscoreList {
     }
 
     public int getHighestScore() {
-        return highscoreList.get(0).getPoints();
+        if(!highscoreList.isEmpty()){
+            return highscoreList.get(0).getPoints();
+        }
+        return 0;
     }
 
     //TEST

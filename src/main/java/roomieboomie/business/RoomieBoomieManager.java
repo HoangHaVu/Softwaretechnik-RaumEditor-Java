@@ -22,12 +22,12 @@ public class RoomieBoomieManager {
     private Game game; //TODO
     private RoomEditor roomEditor; //TODO
     private JsonHandler jsonHandler;
-    private RoomMaps roomMaps; //TODO
-    private UserMap userMap; //TODO
+    private RoomMaps roomMaps;
+    private UserMap userMap;
     private User currentUser; //TODO
     private HighscoreList highscoreListRanked; // TODO
-    private HashMap<String, PlacableItem> placableItemMap; //TODO
-    private HashMap<String, LayoutItem> layoutItemMap; //TODO
+    private HashMap<String, PlacableItem> placableItemMap;
+    private HashMap<String, LayoutItem> layoutItemMap;
 
     /**
      * Konstruktor
@@ -77,11 +77,11 @@ public class RoomieBoomieManager {
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }
-        try {
-            this.highscoreListRanked = jsonHandler.getHighscoreRanked();
+        /*try {
+            this.highscoreListRanked = roomMaps.getHighscoreRanked();
         } catch (JsonLoadingException e) {
             e.printStackTrace();
-        }
+        }*/ //TODO das vielleicht nur on demand, weil sich das ja mit jedem eintrag aendert?
     }
 
     /**
