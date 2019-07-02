@@ -14,6 +14,10 @@ import roomieboomie.persistence.JsonLoadingException;
 
 import java.util.HashMap;
 
+/**
+ * RoomieBoomieManager managed alle verwendeten Objekte und stellt die jeweils dem Controller zur Verfügung
+ *
+ */
 public class RoomieBoomieManager {
     private Game game; //TODO
     private RoomEditor roomEditor; //TODO
@@ -25,6 +29,9 @@ public class RoomieBoomieManager {
     private HashMap<String, PlacableItem> placableItemMap; //TODO
     private HashMap<String, LayoutItem> layoutItemMap; //TODO
 
+    /**
+     * Konstruktor
+     */
     public RoomieBoomieManager(){
       init();
     }
@@ -51,7 +58,9 @@ public class RoomieBoomieManager {
         return  highscoreListRanked;
     }
 
-
+    /**
+     * initialisiert alle benötigten Attribute
+     */
     public void init(){
         this.roomEditor = new RoomEditor();
         this.jsonHandler = new JsonHandler();
@@ -75,7 +84,15 @@ public class RoomieBoomieManager {
         }
     }
 
+    /**
+     * startet ein neues Game Session
+     */
     public void initGame(){} //TODO
+
+    /**
+     * kreiert einen neuen Raum
+     * @return
+     */
     public Room createRoom(){ //TODO
         return null;
     }
