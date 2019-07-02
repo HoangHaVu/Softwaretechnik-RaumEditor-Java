@@ -90,7 +90,7 @@ public class JsonHandler {
 
         //itemList
         JsonArray itemArray = jsonObject.getJsonArray("itemList");
-        ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
+        ArrayList<PlacableItem> placableItemsList = new ArrayList<PlacableItem>();
         for (JsonValue value : itemArray) {
             String str = String.valueOf(value).replace("\"","");
             PlacableItemType type = PlacableItemType.valueOf(str);
@@ -100,7 +100,7 @@ public class JsonHandler {
         if(jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)){
             throw new JsonValidatingException();
         } else {
-            return new Room(roomPreview, jLayout, placableItemsList);
+            return new Room(roomPreview);
         }
     }
 

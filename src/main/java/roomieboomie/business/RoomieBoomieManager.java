@@ -12,6 +12,7 @@ import roomieboomie.business.user.UserMap;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.JsonLoadingException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -62,7 +63,7 @@ public class RoomieBoomieManager {
      * initialisiert alle benötigten Attribute
      */
     public void init(){
-        this.roomEditor = new RoomEditor();
+        this.roomEditor = new RoomEditor("mein erster Raum", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
         this.jsonHandler = new JsonHandler();
 
         try {

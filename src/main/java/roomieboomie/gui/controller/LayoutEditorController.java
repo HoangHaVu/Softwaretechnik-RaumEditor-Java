@@ -1,4 +1,4 @@
-package roomieboomie.controller;
+package roomieboomie.gui.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

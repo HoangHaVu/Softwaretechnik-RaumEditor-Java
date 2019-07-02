@@ -118,8 +118,8 @@ public class RootController {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("views/LayoutEditorView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 700, 500);
                     LayoutEditorController layoutEditorController= loader.getController();
-                    layoutEditorController.setSwitcher(this);
-                    layoutEditorController.setRoomieBoomieManager(roomieBoomieManager);
+                    //layoutEditorController.setSwitcher(this);
+                    //layoutEditorController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(s);
                     primaryStage.show();
                 } catch (IOException e) {

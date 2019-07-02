@@ -19,8 +19,10 @@ public class RoomPreview {
     private boolean level;
     private HighscoreList highscoreList;
     private JsonHandler jsonHandler;
-    private int height; //Hoehe des Raums, wird bei createLayout() gesetzt
-    private int width; //Breite des Raums, wird bei createLayout() gesetzt
+    private int height;
+    private int width;
+    private int startX;
+    private int startY;
 
     /**
      * Erstellt einen neues RoomPreview-Objekt.
@@ -38,6 +40,11 @@ public class RoomPreview {
         this.neededScore = neededScore;
         this.level = level;
         this.jsonHandler = jsonHandler;
+    }
+
+    public RoomPreview(String name, boolean level){
+        this.name = name;
+        this.level = level;
     }
 
     /**
@@ -151,4 +158,38 @@ public class RoomPreview {
     public int hashCode() {
         return testHash(name, /*thumbnail,*/ neededScore, level, highscoreList);
     }
+
+    public void setJsonHandler(JsonHandler handler){
+        this.jsonHandler = handler;
+    }  
+
+    public void setHeight(int height){
+        this.height = height;
+    }
+
+    public void setWidth (int width){
+        this.width = width;
+    }
+
+    public int getStartX(){
+        return this.startX;
+    }
+
+    public void setStartX(int x){
+        this.startX = x;
+    }
+
+    public int getStartY(){
+        return this.startY;
+    }
+
+    public void setStartY(int y){
+        this.startY = y;
+    }
+
+    public void setHighscoreList(HighscoreList list){
+        this.highscoreList = list;
+    }
+
+
 }
