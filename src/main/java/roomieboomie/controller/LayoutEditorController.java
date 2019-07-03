@@ -23,13 +23,9 @@ public class LayoutEditorController {
 
     private enum Action {
         DELETE, PLACE, EDIT
-<<<<<<< HEAD
     }
 
-=======
-    };
     RootController switcher;
->>>>>>> master
     RoomEditor roomEditor;
     LayoutEditorView view;
     GridPane raster, interactionRaster, dragRaster;

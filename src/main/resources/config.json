@@ -12,5 +12,5 @@
     "bgColor": "#808080",
     "interiorColor": "#008000",
     "wallColor": "#000000",
-    "maxItemLength": 19
+    "maxItemLength": "19"
 }
