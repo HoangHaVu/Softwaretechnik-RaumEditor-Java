@@ -1,8 +1,16 @@
 {
-  "userPath": "src/main/resources/users/",
-  "levelRoomPath": "src/main/resources/rooms/level/",
-  "creativeRoomPath": "src/main/resources/rooms/creative/",
-  "secondsPerItem": "5",
-  "maxWidth": "60",
-  "maxHeight": "60"
+    "userPath": "src/main/resources/users/",
+    "levelRoomPath": "src/main/resources/rooms/level/",
+    "creativeRoomPath": "src/main/resources/rooms/creative/",
+    "levelThumbnailPath": "src/main/resources/img/thumbnails/level/",
+    "creativeThumbnailPath": "src/main/resources/img/thumbnails/creative/",
+    "secondsPerItem": "5",
+    "maxWidth": "60",
+    "maxHeight": "60",
+    "windowColor": "#ADD8E6",
+    "doorColor": "#A52A2A",
+    "bgColor": "#808080",
+    "interiorColor": "#008000",
+    "wallColor": "#000000",
+    "maxItemLength": 19
 }

@@ -17,12 +17,13 @@ import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
+import roomieboomie.persistence.Config;
 
 public class LayoutEditorController {
 
     private enum Action {
         DELETE, PLACE, EDIT
-    };
+    }
 
     RoomEditor roomEditor;
     LayoutEditorView view;
@@ -38,12 +39,13 @@ public class LayoutEditorController {
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     EventHandler refreshDrag;
+    private String windowColor;
+    private String doorColor;
+    private String bgColor;
+    private String interiorColor;
+    private String wallColor;
     
-    
-
-
     public LayoutEditorController(RoomEditor roomEditor){
-        
         view = new LayoutEditorView();
         this.roomEditor = roomEditor;
         this.raster = view.raster;
@@ -65,8 +67,12 @@ public class LayoutEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         refreshDrag = null;
+        this.windowColor = Config.get().WINDOWCOLOR();
+        this.doorColor = Config.get().DOORCOLOR();
+        this.bgColor = Config.get().BGCOLOR();
+        this.interiorColor = Config.get().INTERIORCOLOR();
+        this.wallColor = Config.get().WALLCOLOR();
         initialize();
-
     }
 
     private void initialize(){
@@ -155,18 +161,11 @@ public class LayoutEditorController {
         });
 
         initInteractionPane();
-
-
     }
 
     public void initInteractionPane(){
-
-
         Pane itemPane = new Pane();
-        itemPane.setStyle("-fx-background-color: green;");
-
-        
-        
+        itemPane.setStyle(String.format("-fx-background-color: %s;", interiorColor));
 
         for(int i = 0; i < roomEditor.getRoom().getLayout().length; i++){
             for(int j = 0; j < roomEditor.getRoom().getLayout()[0].length; j++){
@@ -181,8 +180,6 @@ public class LayoutEditorController {
                 GridPane.setConstraints(clearPane, x, y);
                 dragRaster.getChildren().add(clearPane);
 
-                
-
                 dragElement.setOnMouseMoved(e->{
                     if (this.action != Action.PLACE) return;
                     
@@ -192,18 +189,14 @@ public class LayoutEditorController {
                         GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getLength(), roomEditor.getActLayoutItem().getWidth());
                     }
 
-                    
                     try{
                         dragRaster.getChildren().remove(clearPane);
                         dragRaster.getChildren().add(itemPane);
                     } catch(IllegalArgumentException exception){
                         
                     }
-                    
-
                 });
-                
-                
+
                 dragElement.setOnMouseExited(e->{
 
                     if (this.action != Action.PLACE) return;
@@ -216,7 +209,6 @@ public class LayoutEditorController {
                     }
                 });
                 
-
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 clearPane.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 itemPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -236,20 +228,14 @@ public class LayoutEditorController {
                         refreshPreview();
                     }
 
-                    
-
                     refreshView();     
                     e.consume();
                 });
 
-                
-
                 GridPane.setConstraints(dragElement, i, j);
                 interactionRaster.getChildren().add(dragElement);
-            
             }
         }
-        
     }
 
     public void refreshPreview(){
@@ -266,18 +252,17 @@ public class LayoutEditorController {
                 element.prefWidthProperty().bind(itemPreview.widthProperty().divide(layout[0].length));
                         
                 if (layout[j][i] > 0){
-                    element.setStyle("-fx-background-color: black;");
+                    element.setStyle(String.format("-fx-background-color: %s;", wallColor));
                 } else if(layout[j][i] < -2){
-                    element.setStyle("-fx-background-color: lightblue;");
+                    element.setStyle(String.format("-fx-background-color: %s;", windowColor));
                 } else if (layout[j][i] == -2){
-                    element.setStyle("-fx-background-color: brown;");
+                    element.setStyle(String.format("-fx-background-color: %s;", doorColor));
                 } else{
-                    element.setStyle("-fx-background-color: grey;");
+                    element.setStyle(String.format("-fx-background-color: %s;", bgColor));
                 }
-                    
+
                 itemPreview.setConstraints(element, i, j);
                 itemPreview.getChildren().add(element);
-                
             }
         }
     }
@@ -296,42 +281,30 @@ public class LayoutEditorController {
                 int itemHeight = 1;
                 Pane element = new Pane();
                 
-                
                 element.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 element.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
-
-
-                
-
-
-                
-                
                 if (layout[j][i] > 0){
-                    element.setStyle("-fx-background-color: black;");
+                    element.setStyle(String.format("-fx-background-color: %s;", wallColor));
                 } else if(layout[j][i] < -2){
-                    element.setStyle("-fx-background-color: lightblue;");
+                    element.setStyle(String.format("-fx-background-color: %s;", windowColor));
                 } else if (layout[j][i] == -2){
-                    element.setStyle("-fx-background-color: brown;");
+                    element.setStyle(String.format("-fx-background-color: %s;", doorColor));
                 } else if(layout[j][i] == 0){
-                    element.setStyle("-fx-background-color: green;");
+                    element.setStyle(String.format("-fx-background-color: %s;", interiorColor));
                 } else{
-                    element.setStyle("-fx-background-color: #B2B2B2;");
+                    element.setStyle("-fx-background-color: #B2B2B2;"); //TODO bgColor?
                 }
 
                 //dragElement.setStyle("-fx-background-color: rgba(255, 255, 255, 0);");
 
-                
                 GridPane.setConstraints(element, i, j);
                 raster.getChildren().add(element);
             }
         }
     }
 
-   
-
     public Pane getView(){
         return this.view;
     }
-
 }

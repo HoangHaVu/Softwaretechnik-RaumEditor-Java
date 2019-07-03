@@ -5,9 +5,11 @@ import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.JsonLoadingException;
 import roomieboomie.persistence.JsonValidatingException;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,20 +33,10 @@ public class Room {
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
      */
-    public Room(RoomPreview roomPreview) throws JsonException {
-        try{
-            Room initRoom = roomPreview.getFullRoom();
-            this.roomPreview = roomPreview;
-            this.itemList = initRoom.getItemList();
-            this.walls = initRoom.getWalls();
-            this.windows = initRoom.getWindows();
-            this.doors = initRoom.getDoors();
-            this.layout = initRoom.getLayout();
-        }catch(JsonLoadingException e){ //TODO einfach die selben Exceptions throwen?
-            throw new JsonException("Raum konnte nicht geladen werden");
-        } catch(JsonValidatingException e){
-            throw new JsonException("Raum invalid");
-        }
+    public Room(RoomPreview roomPreview, byte[][] layout, ArrayList<PlacableItem> itemList) {
+        this.roomPreview = roomPreview;
+        this.layout = layout;
+        this.itemList = itemList;
     }
 
     /**
@@ -53,9 +45,10 @@ public class Room {
      * @param totalHeight Hoehe des editierbaren Bereiches
      * @param totalWidth Breite des editierbaren Bereiches
      */
-    public Room(int totalHeight, int totalWidth){
-        this.roomPreview = null;
+    public Room(int totalHeight, int totalWidth, RoomPreview roomPreview){
+        this.roomPreview = roomPreview;
         this.layout = new byte[totalHeight][totalWidth];
+        itemList = new ArrayList<PlacableItem>();
         walls = new ArrayList<LayoutItem>();
         doors = new ArrayList<LayoutItem>();
         windows = new ArrayList<LayoutItem>();
@@ -64,24 +57,6 @@ public class Room {
                 this.layout[i][j] = -1;
             }
         }
-    }
-
-    /**
-     * Brauche ich noch zum Testen lg Marvin
-     * @param roomPreview
-     * @param layout
-     * @param itemList
-     * @throws JsonLoadingException
-     * @throws JsonValidatingException
-     */
-    public Room(RoomPreview roomPreview, byte[][] layout, ArrayList<PlacableItem> itemList) throws JsonLoadingException, JsonValidatingException { //TODO kann spaeter weg
-        Room initRoom = roomPreview.getFullRoom();
-        this.roomPreview = roomPreview;
-        this.itemList = initRoom.getItemList();
-        this.walls = initRoom.getWalls();
-        this.windows = initRoom.getWindows();
-        this.doors = initRoom.getDoors();
-        this.layout = initRoom.getLayout();
     }
 
     /**
@@ -349,9 +324,9 @@ public class Room {
     }
 
     /**
-     * @return Pfad zum Thumbnail-Bild //TODO ?
+     * @return Thumbnail-Bild
      */
-    public String getThumbnail(){
+    public BufferedImage getThumbnail(){
         return roomPreview.getThumbnail();
     }
 
@@ -381,5 +356,9 @@ public class Room {
      */
     public HighscoreList getHighscoreList() {
         return roomPreview.getHighscoreList();
+    }
+
+    public void addPlacableItem(PlacableItem placableItem) {
+        itemList.add(placableItem);
     }
 }

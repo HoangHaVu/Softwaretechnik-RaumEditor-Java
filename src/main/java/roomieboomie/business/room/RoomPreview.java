@@ -3,9 +3,12 @@ package roomieboomie.business.room;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
 import roomieboomie.business.user.User;
+import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.JsonLoadingException;
 import roomieboomie.persistence.JsonValidatingException;
+
+import java.awt.image.BufferedImage;
 
 /**
  * "Vorschau" eines Rooms. Beinhaltet die wichtigsten Informationen, um einen Raum im Menü darzustellen.
@@ -27,14 +30,12 @@ public class RoomPreview {
     /**
      * Erstellt einen neues RoomPreview-Objekt.
      * @param name Name des Raums
-     * @param thumbnail Pfad zum Vorschaubild TODO ?
      * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
      * @param highscoreList Highscore-Liste fuer den Room
      */
-    public RoomPreview(String name, String thumbnail, HighscoreList highscoreList, int neededScore, boolean level, JsonHandler jsonHandler) {
+    public RoomPreview(String name, HighscoreList highscoreList, int neededScore, boolean level, JsonHandler jsonHandler) {
         this.name = name;
-        this.thumbnail = thumbnail;
         this.highscoreList = highscoreList;
         this.highestScore = highscoreList.getHighestScore();
         this.neededScore = neededScore;
@@ -42,9 +43,10 @@ public class RoomPreview {
         this.jsonHandler = jsonHandler;
     }
 
-    public RoomPreview(String name, boolean level){
+    public RoomPreview(String name, boolean level, JsonHandler jsonHandler){
         this.name = name;
         this.level = level;
+        this.jsonHandler = jsonHandler;
     }
 
     /**
@@ -53,8 +55,6 @@ public class RoomPreview {
      * @return
      */
     public Room getFullRoom() throws JsonValidatingException, JsonLoadingException {
-        //int startX = 0; //Startpunkt des Raums von links aus TODO
-        //int startY = 0; //Startpunkt des Raus von oben aus TODO
         if (level){
             return jsonHandler.getLevelRoom(this.name, this);
         } else {
@@ -70,10 +70,17 @@ public class RoomPreview {
     }
 
     /**
-     * @return Pfad zum Thumbnail-Bild //TODO ?
+     * @param name Name des Raums
      */
-    public String getThumbnail(){
-        return thumbnail;
+    public void setName(String name){
+        this.name = name;
+    }
+
+    /**
+     * @return Thumbnail-Bild
+     */
+    public BufferedImage getThumbnail(){
+        return ImageHandler.getThumbnail(name, isLevel());
     }
 
     /**
@@ -122,15 +129,15 @@ public class RoomPreview {
     /**
      * @return Hoehe des Raums im layout
      */
-    private int getHeight() {
-        return 0; //TODO aus createLayout berechnen
+    public int getHeight() {
+        return height;
     }
 
     /**
      * @return Breite des Raums im layout
      */
-    private int getWidth() {
-        return 0; //TODO aus createLayout berechnen
+    public int getWidth() {
+        return width;
     }
 
     /**
@@ -190,6 +197,4 @@ public class RoomPreview {
     public void setHighscoreList(HighscoreList list){
         this.highscoreList = list;
     }
-
-
 }

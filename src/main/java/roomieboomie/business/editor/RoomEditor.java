@@ -5,19 +5,21 @@ import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.validation.Validator;
+import roomieboomie.persistence.Config;
+import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
+import roomieboomie.persistence.JsonWritingException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Editor zum erstellen / bearbeiten eines Raumes.
  */
-   
 public class RoomEditor {
 
     private ArrayList<LayoutItem> layoutItemList;
@@ -27,10 +29,8 @@ public class RoomEditor {
     private JsonHandler jsonHandler;
     private LayoutItem actLayoutItem;
     private byte [][] previewLayout;
-    private final int MAXITEMLENGTH = 19;
+    private final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
     
-
-
     /**
      * Erstellt und initialisiert RoomEditor zum editieren eines bereits vorhandenen Raumes.
      * @param room
@@ -70,23 +70,19 @@ public class RoomEditor {
      */
 
     public RoomEditor(String name, boolean level, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
-
-        RoomPreview roomPreview = new RoomPreview(name, level);
-        roomPreview.setJsonHandler(jsonHandler);
-        
+        jsonHandler = new JsonHandler();
+        RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
 
         this.layoutItemList = layoutItems;
         this.placableItemList = placableItems;
-        jsonHandler = new JsonHandler();
-        //this.room = new Room(Integer.valueOf(jsonHandler.getConfigAttribute("maxHeight")), Integer.valueOf(jsonHandler.getConfigAttribute("maxWidth")));
-        this.room = new Room(60, 60);
-        this.room.setRoomPreview(roomPreview);
+
+        this.room = new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), roomPreview);
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
         this.previewLayout = new byte[MAXITEMLENGTH][MAXITEMLENGTH];
         selectnewItem(LayoutItemType.WALL);
-
     }
+
     /**
      * Ändert Breite des aktuellen Items. Wert muss zwischen 0 und 1 liegen
      * @param value
@@ -99,7 +95,6 @@ public class RoomEditor {
         updatePreviewLayout();
         return true;
     }
-
 
     /**
      * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
@@ -149,14 +144,12 @@ public class RoomEditor {
         }.start();
     }
 
-
     /**
      * Erstellt LayoutItem über mitgegebenen Typ
      *
      * @param type bestimmt ob item vom typ Wand, Fenster oder Tür ist
      * 
      */
-    
     public void selectnewItem(LayoutItemType type){
 
         if (type == LayoutItemType.WALL){
@@ -174,7 +167,6 @@ public class RoomEditor {
     /**
      * dreht aktuell ausgewähltes LayoutItem um 90 Grad
      */
-
     public void rotateItem(){
 
         actLayoutItem.turnRight();
@@ -187,7 +179,6 @@ public class RoomEditor {
      * @param x Koordinate
      * @param y Koordinate
      */
-
     public void placeActItem(int x, int y){
         actLayoutItem.setX(x);
         actLayoutItem.setY(y);
@@ -200,34 +191,36 @@ public class RoomEditor {
         actLayoutItem = actLayoutItem.clone();
     }
 
-    
-
     /**
      * speichert Raum über JSonHandler falls dieser erfolgreich validiert wurde
      */
-
     public void saveRoom(){
-
-
         if (!validator.validateRoom(this.room)) return;
-        
-        
+
         room.getRoomPreview().setHighscoreList(new HighscoreList());
         room.getRoomPreview().setJsonHandler(this.jsonHandler);
         try{
             jsonHandler.saveRoom(this.room);
         } catch(Exception e){
             
-        }        
+        }
 
+        /////////////////////////////////TODO loeschen, ist nur Test zum Speichern
+        /*ImageHandler.drawThumbnail(room);
+        room.addPlacableItem(new PlacableItem(PlacableItemType.BED));
+        try {
+            jsonHandler.saveRoom(room);
+        } catch (JsonWritingException e) {
+            e.printStackTrace();
+        }*/
+
+        /////////////////////////////////////
     }
-
 
     /**
      * ruft addItem Methode des Raumes auf
      * @param item
      */
-    
     public void addItem(LayoutItem item){
         room.addItem(item);
     }
@@ -237,7 +230,6 @@ public class RoomEditor {
      * @param layoutNumber
      * @return
      */
-    
     public void editItem(byte layoutNumber){
         List<LayoutItem> roomItemList = null;
         byte index = 0;

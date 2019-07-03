@@ -2,8 +2,6 @@ package roomieboomie.business.room;
 
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
-import roomieboomie.business.user.User;
-import roomieboomie.persistence.JsonLoadingException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,16 +62,16 @@ public class RoomMaps {
      * Gibt eine RoomPreview aus der Level-Map zurueck
      * @param roomName Name der RoomPreview
      */
-    public void getLevelRoom(String roomName){
-        levelRooms.get(roomName);
+    public RoomPreview getLevelRoom(String roomName){
+        return levelRooms.get(roomName);
     }
 
     /**
      * Gibt eine RoomPreview aus der Creative-Map zurueck
      * @param roomName Name der RoomPreview
      */
-    public void getCreativeRoom(String roomName){
-        creativeRooms.get(roomName);
+    public RoomPreview getCreativeRoom(String roomName){
+        return creativeRooms.get(roomName);
     }
 
     /**

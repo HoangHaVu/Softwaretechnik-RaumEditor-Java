@@ -13,13 +13,21 @@ import java.util.HashMap;
  * Attribute nachach ueber ihren Namen in Caps
  */
 public class Config {
+    private JsonHandler jsonHandler = new JsonHandler();
     private final String USERPATH;
     private final String LEVELROOMPATH;
     private final String CREATIVEROOMPATH;
+    private final String LEVELTHUMBNAILPATH;
+    private final String CREATIVETHUMBNAILPATH;
     private final int SECONDSPERITEM;
     private final int MAXWIDTH;
     private final int MAXHEIGHT;
-    private JsonHandler jsonHandler = new JsonHandler();
+    private final String WINDOWCOLOR;
+    private final String DOORCOLOR;
+    private final String BGCOLOR;
+    private final String INTERIORCOLOR;
+    private final String WALLCOLOR;
+    private final int MAXITEMLENGTH;
 
     /**
      * Privater Konstruktor, um Singleton zu gewaehren
@@ -34,9 +42,17 @@ public class Config {
         USERPATH = configMap.get("userPath");
         LEVELROOMPATH = configMap.get("levelRoomPath");
         CREATIVEROOMPATH = configMap.get("creativeRoomPath");
+        LEVELTHUMBNAILPATH = configMap.get("levelThumbnailPath");
+        CREATIVETHUMBNAILPATH = configMap.get("creativeThumbnailPath");
         SECONDSPERITEM = Integer.valueOf(configMap.get("secondsPerItem"));
         MAXWIDTH = Integer.valueOf(configMap.get("maxWidth"));
         MAXHEIGHT = Integer.valueOf(configMap.get("maxHeight"));
+        WINDOWCOLOR = configMap.get("windowColor");
+        DOORCOLOR = configMap.get("doorColor");
+        BGCOLOR = configMap.get("bgColor");
+        INTERIORCOLOR = configMap.get("interiorColor");
+        WALLCOLOR = configMap.get("wallColor");
+        MAXITEMLENGTH = Integer.valueOf(configMap.get("maxItemLength"));
     }
 
     private static Config instance;
@@ -63,6 +79,14 @@ public class Config {
         return CREATIVEROOMPATH;
     }
 
+    public String CREATIVETHUMBNAILPATH(){
+        return CREATIVETHUMBNAILPATH;
+    }
+
+    public String LEVELTHUMBNAILPATH(){
+        return LEVELTHUMBNAILPATH;
+    }
+
     public int SECONDSPERITEM() {
         return SECONDSPERITEM;
     }
@@ -73,5 +97,29 @@ public class Config {
 
     public int MAXHEIGHT() {
         return MAXHEIGHT;
+    }
+
+    public String WINDOWCOLOR() {
+        return WINDOWCOLOR;
+    }
+
+    public String DOORCOLOR() {
+        return DOORCOLOR;
+    }
+
+    public String BGCOLOR() {
+        return BGCOLOR;
+    }
+
+    public String INTERIORCOLOR() {
+        return INTERIORCOLOR;
+    }
+
+    public String WALLCOLOR() {
+        return WALLCOLOR;
+    }
+
+    public int MAXITEMLENGTH() {
+        return MAXITEMLENGTH;
     }
 }
