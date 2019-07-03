@@ -23,12 +23,8 @@ public class LayoutEditorController {
 
     private enum Action {
         DELETE, PLACE, EDIT
-<<<<<<< Updated upstream
     }
 
-=======
-    };
->>>>>>> Stashed changes
     RootController switcher;
     RoomEditor roomEditor;
     LayoutEditorView view;

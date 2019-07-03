@@ -17,7 +17,6 @@ import java.util.HashMap;
 
 /**
  * RoomieBoomieManager managed alle verwendeten Objekte und stellt die jeweils dem Controller zur Verfügung
- *
  */
 public class RoomieBoomieManager {
     private Game game; //TODO
@@ -33,36 +32,46 @@ public class RoomieBoomieManager {
     /**
      * Konstruktor
      */
-    public RoomieBoomieManager(){
-      init();
+    public RoomieBoomieManager() {
+        init();
     }
-    public UserMap getUserMap(){
+
+    public UserMap getUserMap() {
         return userMap;
     }
-    public User getCurrentUser(){
+
+    public User getCurrentUser() {
         return currentUser;
     }
-    public RoomEditor getRoomEditor(){
+
+    public RoomEditor getRoomEditor() {
         return roomEditor;
     }
-    public Game getGame(){
+
+    public Game getGame() {
         return game;
     }
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(User user) {
         this.currentUser = user;
     }
-    public RoomMaps getRoomMaps(){
-        return  roomMaps;
+
+    public RoomMaps getRoomMaps() {
+        return roomMaps;
     }
-    public HighscoreList getHighscoreListRanked(){
-        return  highscoreListRanked;
+
+    public HighscoreList getHighscoreListRanked() {
+        return highscoreListRanked;
+    }
+
+    public JsonHandler getJsonHandler() {
+        return jsonHandler;
     }
 
     /**
      * initialisiert alle benötigten Attribute
      */
-    public void init(){
+    public void init() {
         this.roomEditor = new RoomEditor("mein erster Raum", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
         this.jsonHandler = new JsonHandler();
 
@@ -74,7 +83,7 @@ public class RoomieBoomieManager {
         try {
             HashMap level = jsonHandler.getRoomMapLevel();
             HashMap creative = jsonHandler.getRoomMapCreative();
-            this.roomMaps = new RoomMaps(level,creative);
+            this.roomMaps = new RoomMaps(level, creative);
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }
@@ -88,13 +97,15 @@ public class RoomieBoomieManager {
     /**
      * startet ein neues Game Session
      */
-    public void initGame(){} //TODO
+    public void initGame() {
+    } //TODO
 
     /**
      * kreiert einen neuen Raum
+     *
      * @return
      */
-    public Room createRoom(){ //TODO
+    public Room createRoom() { //TODO
         return null;
     }
 }

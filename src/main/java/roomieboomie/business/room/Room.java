@@ -5,17 +5,11 @@ import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.JsonLoadingException;
-import roomieboomie.persistence.JsonValidatingException;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.json.JsonException;
-
 
 /**
  * Raum mit allen Informationen inklusive Grundriss-Array in layout
@@ -40,18 +34,18 @@ public class Room {
     }
 
     /**
-     * Erstellt neuen Raum aus übergebenen Gesamtlänge / Breite
-     * (nicht die größe des Raumes, sondern die, des gesamten editierbaren Bereiches)
+     * Erstellt neuen Raum aus übergebener Gesamtlänge / -breite
+     * (nicht die Größe des Raumes, sondern die des gesamten editierbaren Bereiches)
      * @param totalHeight Hoehe des editierbaren Bereiches
      * @param totalWidth Breite des editierbaren Bereiches
      */
     public Room(int totalHeight, int totalWidth, RoomPreview roomPreview){
         this.roomPreview = roomPreview;
         this.layout = new byte[totalHeight][totalWidth];
-        itemList = new ArrayList<PlacableItem>();
-        walls = new ArrayList<LayoutItem>();
-        doors = new ArrayList<LayoutItem>();
-        windows = new ArrayList<LayoutItem>();
+        itemList = new ArrayList<>();
+        walls = new ArrayList<>();
+        doors = new ArrayList<>();
+        windows = new ArrayList<>();
         for (int i = 0; i < totalHeight; i++){
             for (int j = 0; j < totalWidth; j++){
                 this.layout[i][j] = -1;
@@ -161,27 +155,17 @@ public class Room {
         }
 
         if (item.getType() == LayoutItemType.WALL) {
-
             size = (byte) (this.walls.size() + 1);
-          
             this.walls.add(item);
-
         } else if (item.getType() == LayoutItemType.DOOR){
-
             size = (byte) - (this.doors.size() + 2);
-
             if (this.doors.size() > 0){
                 return;
             }
-        
             this.doors.add(item);
-
         } else if (item.getType() == LayoutItemType.WINDOW){
-
             size = (byte) - (this.windows.size() + 3);
-
             this.windows.add(item);
-
         } else {
             return;
         }
