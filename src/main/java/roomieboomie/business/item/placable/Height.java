@@ -23,4 +23,8 @@ public enum Height {
         }
         return false;
     }
+
+    public int getValue(){
+        return value;
+    }
 }

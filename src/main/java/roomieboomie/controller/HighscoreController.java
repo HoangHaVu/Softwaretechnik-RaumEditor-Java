@@ -37,5 +37,4 @@ public class HighscoreController {
         this.highscoreList = highscoreList;
     }
 
-    @FXML TableView tableView;
 }

@@ -26,7 +26,7 @@ public class PlacableItem extends RoomItem {
      * @param type Typ des Items
      */
     public PlacableItem(PlacableItemType type){
-        super(-1,-1,Orientation.TOP);
+        super(type.getLength(),type.getWidth(),Orientation.TOP);
         this.type = type;
     }
 

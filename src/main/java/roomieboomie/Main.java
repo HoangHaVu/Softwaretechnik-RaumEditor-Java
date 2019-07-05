@@ -4,6 +4,9 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.business.editor.PlaceableEditor;
+import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.controller.RootController;
 
 public class Main extends Application {
@@ -30,18 +33,20 @@ public class Main extends Application {
         //primaryStage.setTitle("RoomieBoomie");
         //primaryStage.setScene(scene);
 
+        PlacableItem item = new PlacableItem(PlacableItemType.TABLE);
+        PlaceableEditor editor= new PlaceableEditor(item);
 
+        /*
         switcher.setPrimaryStage(primaryStage);
         switcher.setRoomieBoomieManager(roomieBoomieManager);
-        switcher.switchView("Login");
-
-
+        switcher.switchView("PlaceableEditor");
         primaryStage.show();
+        */
 
-        primaryStage.show();
-*/
         //PlacableItem tisch = new PlacableItem(PlacableItemType.TABLE);
         //testEditor.addPlaceableItem(tisch);
+
+
 
         //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 5, 5, 4, 1, Orientation.LEFT));
         //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 4, 5, 6, 1, Orientation.TOP));
@@ -50,6 +55,7 @@ public class Main extends Application {
 
         //testEditor.editItem((byte)-3);
         //testEditor.editItem((byte)1);
+
 
     }
 }
