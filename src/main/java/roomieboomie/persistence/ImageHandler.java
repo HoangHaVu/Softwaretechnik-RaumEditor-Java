@@ -2,7 +2,6 @@ package roomieboomie.persistence;
 
 import roomieboomie.business.room.Room;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
@@ -27,6 +26,12 @@ public class ImageHandler {
     }
 
     public static void drawThumbnail(Room room){
+        byte editorDoor = Config.get().EDITORDOORVALUE();
+        byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
+        byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
+        byte maxWindow = Config.get().EDITORMAXWINDOWVALUE();
+        byte minWall = Config.get().EDITORMINWALLVALUE();
+
         final int FACTOR = 10; //TODO MAGIC
 
         //byte[][] layout = room.getLayout();
@@ -40,9 +45,9 @@ public class ImageHandler {
 
         BufferedImage image = new BufferedImage(width * FACTOR, height * FACTOR, type);
 
-        int wallC = Color.decode(Config.get().WALLCOLOR()).getRGB(); // Waende > 0
-        int doorC = Color.decode(Config.get().DOORCOLOR()).getRGB(); // Tuer -2
-        int windowC = Color.decode(Config.get().WINDOWCOLOR()).getRGB(); // Fenster < -3
+        int wallC = Color.decode(Config.get().WALLCOLOR()).getRGB();
+        int doorC = Color.decode(Config.get().DOORCOLOR()).getRGB();
+        int windowC = Color.decode(Config.get().WINDOWCOLOR()).getRGB();
         int interiorC = Color.decode(Config.get().INTERIORCOLOR()).getRGB();
         int backgroundC = Color.decode(Config.get().BGCOLOR()).getRGB();
 
@@ -52,11 +57,11 @@ public class ImageHandler {
             for (int j = 0; j < layout[0].length; j++) {
                 if (layout[i][j] == 0){
                     currCol = interiorC;
-                }else if(layout[i][j] > 0){
+                }else if(layout[i][j] >= minWall){
                     currCol = wallC;
-                } else if (layout[i][j] < -2){
+                } else if (layout[i][j] <= maxWindow){
                     currCol = windowC;
-                } else if (layout[i][j] == -2){
+                } else if (layout[i][j] == editorDoor){
                     currCol = doorC;
                 } else{
                     currCol = backgroundC;

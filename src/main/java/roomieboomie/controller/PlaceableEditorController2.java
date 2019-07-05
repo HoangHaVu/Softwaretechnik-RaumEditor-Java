@@ -28,6 +28,7 @@ import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.views.PlaceableEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.exception.JsonWritingException;
 
 public class PlaceableEditorController2 {
 
@@ -93,7 +94,11 @@ public class PlaceableEditorController2 {
         raster.setPrefSize(1000, 1000);
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-            roomEditor.saveRoom();
+            try {
+                roomEditor.saveRoom();
+            } catch (JsonWritingException ex) {
+                ex.printStackTrace(); //TODO
+            }
             refreshView();
         });
 

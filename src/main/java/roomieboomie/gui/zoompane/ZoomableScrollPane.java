@@ -21,7 +21,7 @@ public class ZoomableScrollPane extends ScrollPane {
         this.zoomNode = new Group(target);
         
         Node outerNode = outerNode(zoomNode);
-        outerNode.setStyle("-fx-background-color: black;");
+        //outerNode.setStyle("-fx-background-color: black;");
         setContent(outerNode);
 
         setPannable(true);

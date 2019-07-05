@@ -4,6 +4,7 @@
     "creativeRoomPath": "src/main/resources/rooms/creative/",
     "levelThumbnailPath": "src/main/resources/img/thumbnails/level/",
     "creativeThumbnailPath": "src/main/resources/img/thumbnails/creative/",
+    "iconTexturePath": "img/iconsandtextures/",
     "secondsPerItem": "5",
     "maxWidth": "60",
     "maxHeight": "60",
