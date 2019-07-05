@@ -32,7 +32,7 @@ public class RoomEditor {
     private LayoutItem actLayoutItem;
     private PlacableItem actPlaceableItem;
     private byte [][] previewLayout;
-    private final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
+    public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
 
     /**
      * Erstellt und initialisiert RoomEditor zum editieren eines bereits vorhandenen Raumes.

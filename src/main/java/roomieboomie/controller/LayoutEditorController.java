@@ -20,6 +20,8 @@ import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
+import roomieboomie.business.room.Room;
+import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
@@ -46,9 +48,11 @@ public class LayoutEditorController {
     StackPane zoomAndScroll;
     String backGroundStyle=("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
+    private RoomPreview roomPreview;
     
     public LayoutEditorController(RoomEditor roomEditor){
         view = new LayoutEditorView();
+        this.roomPreview = null;
         this.roomEditor = roomEditor;
         this.raster = view.raster;
         this.completeEditor = view.completeEditor;
@@ -483,6 +487,10 @@ public class LayoutEditorController {
         updateItems(roomEditor.getRoom().getDoors(), layout);
        
     }
+    public void loadRoom(){
+
+    }
+
 
     public Pane getView(){
         return this.view;

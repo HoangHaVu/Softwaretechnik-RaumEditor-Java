@@ -16,7 +16,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="rooms" layoutX="40.0" layoutY="62.0" prefHeight="242.0" prefWidth="200.0" />
+            <ListView fx:id="roomlistView" layoutX="40.0" layoutY="62.0" prefHeight="242.0" prefWidth="200.0" />
             <Button layoutX="160.0" layoutY="341.0" mnemonicParsing="false" onAction="#loadRoom" text="Raum laden" />
          </children>
       </AnchorPane>

@@ -1,5 +1,7 @@
 package roomieboomie.controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,12 +28,12 @@ public class SelectRoomController {
     private Collection creativeRooms;
     private Collection<RoomPreview> showRooms;
     private ObservableList<RoomPreview> roomlist;
+    private RoomPreview selectedRoom;
 
     @FXML
-    private ListView rooms;
+    private ListView <RoomPreview>roomlistView;
 
     public SelectRoomController(){
-        this.roomlist = FXCollections.observableArrayList();
     }
 
     @FXML
@@ -40,6 +42,7 @@ public class SelectRoomController {
     }
     @FXML
     public void loadRoom(){
+        switcher.setSelectedRoom(selectedRoom);
         switcher.switchView("LayoutEditor");
 
         switcher.switchView("Play");
@@ -47,6 +50,7 @@ public class SelectRoomController {
     public void setSwitcher(RootController rootController){
         this.switcher = rootController;
     }
+
     public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
         this.roomieBoomieManager = roomieBoomieManager;
         init();
@@ -54,10 +58,16 @@ public class SelectRoomController {
     public void setCreative(boolean value){
         this.creative = value;
     }
+
     public void init(){
-        setRoomMaps(roomieBoomieManager.getRoomMaps());
+        this.roomlist = FXCollections.observableArrayList();
+        this.selectedRoom = null;
+        this.roomMaps=roomieBoomieManager.getRoomMaps();
         this.levelRooms = roomMaps.getLevelRooms();
         this.creativeRooms = roomMaps.getCreativeRooms();
+        roomlistView.setOnMouseClicked(event -> {
+            this.selectedRoom = roomlistView.getSelectionModel().getSelectedItem();
+        });
         if(creative){
             this.showRooms = creativeRooms;
             fillCells();
@@ -65,24 +75,23 @@ public class SelectRoomController {
             this.showRooms = levelRooms;
             fillCells();
         }
+
     }
     public void fillCells(){
         for (RoomPreview roomPreview: showRooms){
             roomlist.add(roomPreview);
         }
-        rooms.setItems(roomlist);
-        rooms.setCellFactory(new Callback<ListView<RoomPreview>, ListCell<RoomPreview>>() {
+        roomlistView.setItems(roomlist);
+        roomlistView.setCellFactory(new Callback<ListView<RoomPreview>, ListCell<RoomPreview>>() {
             @Override
             public ListCell<RoomPreview> call(ListView<RoomPreview> param) {
                 return new Itemcell();
             }
-
         });
+
     }
 
-    public void setRoomMaps(RoomMaps roomMaps){
-        this.roomMaps = roomMaps;
-    }
+
     public class Itemcell extends ListCell<RoomPreview> {
         private Label itemLabel=new Label();
         private HBox root =new HBox();
