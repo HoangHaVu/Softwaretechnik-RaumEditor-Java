@@ -30,7 +30,7 @@ import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.exception.JsonWritingException;
 
-public class PlaceableEditorController2 {
+public class PlaceableEditorController {
 
     private enum Action {
         DELETE, PLACE, EDIT
@@ -56,7 +56,7 @@ public class PlaceableEditorController2 {
     private ListView<PlacableItem> listview;
 
 
-    public PlaceableEditorController2(RoomEditor roomEditor){
+    public PlaceableEditorController(RoomEditor roomEditor){
         view = new PlaceableEditorView();
         this.roomEditor = roomEditor;
         this.raster = view.raster;

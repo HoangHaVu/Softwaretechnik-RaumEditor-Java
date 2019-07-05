@@ -2,4 +2,11 @@
 /build/
 .idea/
 !gradle-wrapper.jar
+/src/main/resources/rooms/creative
+*.class
+src/main/resources/users/
+bin/
+bin/*
 /bin/
+src/main/java/roomieboomie/TestClass\.java
+src/main/resources/img/thumbnails/creative/
