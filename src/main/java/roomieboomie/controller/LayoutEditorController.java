@@ -22,13 +22,15 @@ import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
+import roomieboomie.persistence.Config;
 
 public class LayoutEditorController {
 
     private enum Action {
         DELETE, PLACE, EDIT
-    };
+    }
 
+    RootController switcher;
     RoomEditor roomEditor;
     LayoutEditorView view;
     GridPane raster, interactionRaster, dragRaster;
@@ -45,11 +47,7 @@ public class LayoutEditorController {
     String backGroundStyle=("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
     
-    
-
-
     public LayoutEditorController(RoomEditor roomEditor){
-        
         view = new LayoutEditorView();
         this.roomEditor = roomEditor;
         this.raster = view.raster;
@@ -71,7 +69,6 @@ public class LayoutEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         initialize();
-
     }
 
     private void initialize(){
@@ -304,7 +301,6 @@ public class LayoutEditorController {
                     actualizeDragPane(x, y, itemPane, clearPane, true);
                     
                 });
-
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 clearPane.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 itemPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -328,11 +324,14 @@ public class LayoutEditorController {
 
                 GridPane.setConstraints(dragElement, i, j);
                 interactionRaster.getChildren().add(dragElement);
-            
             }
         }
-        
     }
+    public void setSwitcher(RootController rootController){
+        this.switcher=rootController;
+    }
+
+
 
     public void refreshPreview(){
 
@@ -488,5 +487,4 @@ public class LayoutEditorController {
     public Pane getView(){
         return this.view;
     }
-
 }

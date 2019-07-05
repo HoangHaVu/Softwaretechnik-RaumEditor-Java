@@ -5,15 +5,11 @@ import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.persistence.JsonLoadingException;
-import roomieboomie.persistence.JsonValidatingException;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.json.JsonException;
-
 
 /**
  * Raum mit allen Informationen inklusive Grundriss-Array in layout
@@ -25,44 +21,31 @@ public class Room {
     private ArrayList<LayoutItem> windows;
     private ArrayList<LayoutItem> doors;
     private byte[][] layout;
-    
 
     /**
      * Erstellt einen neuen Room aus einer RoomPreview heraus. Diese berechnet layout und wird fuer
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
-     * @param layout 2D-Array des Grundrisses
      */
-    public Room(RoomPreview roomPreview) throws JsonException {
-        try{
-            Room initRoom = roomPreview.getFullRoom();
-            this.roomPreview = roomPreview;
-            this.itemList = initRoom.getItemList();
-            this.walls = initRoom.getWalls();
-            this.windows = initRoom.getWindows();
-            this.doors = initRoom.getDoors();
-            this.layout = initRoom.getLayout();
-        }catch(JsonLoadingException e){
-            throw new JsonException("Raum konnte nicht geladen werden");
-        } catch(JsonValidatingException e){
-            throw new JsonException("Raum invalid");
-        }
-        
-        
-        
+    public Room(RoomPreview roomPreview, byte[][] layout, ArrayList<PlacableItem> itemList) {
+        this.roomPreview = roomPreview;
+        this.layout = layout;
+        this.itemList = itemList;
     }
-    /**
-     * 
-     * Erstellt neuen Raum aus übergebenen Gesamtlänge / Breite (nicht die größe des Raumes, sondern die, des gesamten editierbaren Bereiches)
-     * 
-     */
 
-    public Room(int totalHeight, int totalWidth){
-        this.roomPreview = null;
+    /**
+     * Erstellt neuen Raum aus übergebener Gesamtlänge / -breite
+     * (nicht die Größe des Raumes, sondern die des gesamten editierbaren Bereiches)
+     * @param totalHeight Hoehe des editierbaren Bereiches
+     * @param totalWidth Breite des editierbaren Bereiches
+     */
+    public Room(int totalHeight, int totalWidth, RoomPreview roomPreview){
+        this.roomPreview = roomPreview;
         this.layout = new byte[totalHeight][totalWidth];
-        walls = new ArrayList<LayoutItem>();
-        doors = new ArrayList<LayoutItem>();
-        windows = new ArrayList<LayoutItem>();
+        itemList = new ArrayList<>();
+        walls = new ArrayList<>();
+        doors = new ArrayList<>();
+        windows = new ArrayList<>();
         for (int i = 0; i < totalHeight; i++){
             for (int j = 0; j < totalWidth; j++){
                 this.layout[i][j] = -1;
@@ -71,18 +54,15 @@ public class Room {
     }
 
     /**
-     * 
      * löscht Item anhand der Nummer welche im layout an gewünschter Stelle zu finden ist
      * @param layoutNumber Itemnummer
      */
-
     public void deleteItem(byte layoutNumber){
     
         if (layoutNumber == -1 || layoutNumber == 0) return;
 
         LayoutItem item = null;
         byte replaceNumber;
-        
 
         if (layoutNumber == -2){
             item = this.doors.get(0);
@@ -91,7 +71,6 @@ public class Room {
         } else if (layoutNumber > 0){
             item = this.walls.get(layoutNumber - 1);
         }
-
 
         if (item.getType() == LayoutItemType.DOOR || item.getType() == LayoutItemType.WINDOW){
 
@@ -120,8 +99,6 @@ public class Room {
                 }
             }
         }
-        
-
 
         if (item.getType() == LayoutItemType.WALL){
 
@@ -159,25 +136,18 @@ public class Room {
         }
     }
 
-
-
     /**
      * fügt dem Layout ein neues Item hinzu. Jedes Objekt hat eine eigene Nummer. Jede Wand hat eine Nummer > 0,
      * Es gibt nur eine Tür, welche die Nummer -2 bekommt.
      * Jedes Fenster hat eine Nummer < -2
      * @param item
      */
-
     public void addItem(LayoutItem item){
-
-        
-
         int y = item.getY();
         int x = item.getX();
         int endY = y + item.getWidth();
         int endX = x + item.getLength();
         byte size;
-
 
         if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
             endY = y + item.getLength();
@@ -185,27 +155,17 @@ public class Room {
         }
 
         if (item.getType() == LayoutItemType.WALL) {
-
             size = (byte) (this.walls.size() + 1);
-          
             this.walls.add(item);
-
         } else if (item.getType() == LayoutItemType.DOOR){
-
             size = (byte) - (this.doors.size() + 2);
-
             if (this.doors.size() > 0){
                 return;
             }
-        
             this.doors.add(item);
-
         } else if (item.getType() == LayoutItemType.WINDOW){
-
             size = (byte) - (this.windows.size() + 3);
-
             this.windows.add(item);
-
         } else {
             return;
         }
@@ -220,12 +180,12 @@ public class Room {
     }
 
     /**
-     * Setter für die RoomPreview 
+     * Setter für die RoomPreview
+     * @param roomPreview RoomPreview
      */
     public void setRoomPreview(RoomPreview roomPreview){
         this.roomPreview = roomPreview;
     }
-
 
     /**
      * Liste mit allen PlacableItems, die im Raum platziert werden muessen
@@ -308,10 +268,7 @@ public class Room {
         for(int i = 0; i < layout.length; i++){
             this.layout[i] = Arrays.copyOf(layout[i], layout[i].length);
         }
-        
     }
-
-    
 
     /**
      * @return Name des Raums
@@ -352,14 +309,11 @@ public class Room {
     }
 
     /**
-     * @return Pfad zum Thumbnail-Bild //TODO ?
+     * @return Thumbnail-Bild
      */
-    public String getThumbnail(){
+    public BufferedImage getThumbnail(){
         return roomPreview.getThumbnail();
     }
-
-    
-
 
     /**
      * @return Hoechster erreichter Score
@@ -375,18 +329,21 @@ public class Room {
         return roomPreview.getNeededScore();
     }
 
+    /**
+     * @return RoomPreview des Rooms
+     */
     public RoomPreview getRoomPreview(){
         return this.roomPreview;
     }
 
-  
-
-    
-    
     /**
      * @return HighscoreList des Rooms
      */
     public HighscoreList getHighscoreList() {
         return roomPreview.getHighscoreList();
+    }
+
+    public void addPlacableItem(PlacableItem placableItem) {
+        itemList.add(placableItem);
     }
 }

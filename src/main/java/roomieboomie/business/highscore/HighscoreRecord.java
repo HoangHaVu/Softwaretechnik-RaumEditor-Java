@@ -9,13 +9,23 @@ public class HighscoreRecord implements Comparable{
     private String username;
 
     /**
-     * Erstellt neuen HighscoreRecord
+     * Erstellt neuen HighscoreRecord mit Time
      * @param time Zeit, die benoetigt wurde
      * @param points Erreichte Punkte
-     * @param username User, der gespielt hat
+     * @param username Name des Users, der gespielt hat
      */
     public HighscoreRecord(int time, int points, String username) {
         this.time = time;
+        this.points = points;
+        this.username = username;
+    }
+
+    /**
+     * Erstellt neuen HighscoreRecord ohne Time
+     * @param points Erreichte Punkte
+     * @param username Name des Users, der gespielt hat
+     */
+    public HighscoreRecord(int points, String username) {
         this.points = points;
         this.username = username;
     }

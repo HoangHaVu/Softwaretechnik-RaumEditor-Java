@@ -100,7 +100,7 @@ public class JsonHandler {
         if(jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)){
             throw new JsonValidatingException();
         } else {
-            return new Room(roomPreview);
+            return new Room(roomPreview, jLayout, placableItemsList);
         }
     }
 
@@ -194,9 +194,6 @@ public class JsonHandler {
         //name
         String jName = jsonObject.getString("name");
 
-        //thumbnail
-        String jThumbnail = "";//TODO
-
         //highscoreList
         JsonArray highscoreArray = jsonObject.getJsonArray("highscoreList");
         HighscoreList jHighscoreList = new HighscoreList();
@@ -217,7 +214,7 @@ public class JsonHandler {
         if(jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)){
             throw new JsonValidatingException();
         } else {
-            return new RoomPreview(jName, jThumbnail, jHighscoreList, jNeededScore, jLevel, this);
+            return new RoomPreview(jName, jHighscoreList, jNeededScore, jLevel, this);
         }
     }
 
@@ -281,12 +278,6 @@ public class JsonHandler {
         }
 
         return roomMap;
-    }
-
-    //TODO
-    public HighscoreList getHighscoreRanked() throws JsonLoadingException {
-        HighscoreList highscoreList = new HighscoreList();
-        return highscoreList;
     }
 
     /**
