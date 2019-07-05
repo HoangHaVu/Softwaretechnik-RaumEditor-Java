@@ -87,9 +87,10 @@ public class JsonHandler {
 
         byte[][] jLayout = new byte[totalHeight][totalWidth];
 
+        byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
         for (int i = 0; i < totalHeight; i++){
             for (int j = 0; j < totalWidth; j++){
-                jLayout[i][j] = -1;
+                jLayout[i][j] = layoutExterior;
             }
         }
 

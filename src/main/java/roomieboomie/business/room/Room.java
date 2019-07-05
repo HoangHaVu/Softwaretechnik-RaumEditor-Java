@@ -6,8 +6,8 @@ import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.persistence.Config;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +26,12 @@ public class Room {
     private int width;
     private int startX;
     private int startY;
+
+    byte editorDoor = Config.get().EDITORDOORVALUE();
+    byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
+    byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
+    byte maxWindow = Config.get().EDITORMAXWINDOWVALUE();
+    byte minWall = Config.get().EDITORMINWALLVALUE();
 
     /**
      * Erstellt einen neuen Room aus einer RoomPreview heraus. Diese berechnet layout und wird fuer
@@ -57,7 +63,7 @@ public class Room {
         windows = new ArrayList<>();
         for (int i = 0; i < totalHeight; i++){
             for (int j = 0; j < totalWidth; j++){
-                this.layout[i][j] = -1;
+                this.layout[i][j] = layoutExterior;
             }
         }
     }
@@ -148,17 +154,16 @@ public class Room {
      * @param layoutNumber Itemnummer
      */
     public void deleteItem(byte layoutNumber){
-
-        if (layoutNumber == -1 || layoutNumber == 0) return;
+        if (layoutNumber == layoutExterior || layoutNumber == layoutInterior) return;
 
         LayoutItem item = null;
         byte replaceNumber;
 
-        if (layoutNumber == -2){
+        if (layoutNumber == editorDoor){
             item = this.doors.get(0);
-        } else if (layoutNumber < -2){
+        } else if (layoutNumber <= maxWindow){
             item = this.windows.get( -layoutNumber - 3 );
-        } else if (layoutNumber > 0){
+        } else if (layoutNumber >= minWall){
             item = this.walls.get(layoutNumber - 1);
         }
 
@@ -170,7 +175,7 @@ public class Room {
                 replaceNumber = layout [ item.getY()] [ item.getX() -1];
             }
         } else {
-            replaceNumber = -1;
+            replaceNumber = layoutExterior;
         }
 
         int y = item.getY();
