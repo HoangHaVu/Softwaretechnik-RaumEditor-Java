@@ -73,11 +73,8 @@ out/production/resources/users/mawien.json
 out/production/resources/users/roomie.json
 build.gradle
 .gitignore
-bin/main/fonts/Comix Loud.ttf
-bin/main/fonts/KOMTXT_.ttf
 .gitignore
 build.gradle
-bin/main/fonts/KOMTXTBI.ttf
 bin/main/roomieboomie/business/highscore/HighscoreList$SortByPointsComparator.class
 bin/main/roomieboomie/controller/ChooseEditorController.class
 bin/main/roomieboomie/controller/ChoosePlayController.class
