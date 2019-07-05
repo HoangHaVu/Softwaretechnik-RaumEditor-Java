@@ -1,7 +1,10 @@
 package roomieboomie.business.item;
 
+
+
 /**
- * Oberklasse von PlacalbeItem und LayoutItem. Beinhaltet Positioniertungs-, Richtungs- und Laengenwerte
+ * Oberklasse von PlacalbeItem und LayoutItem. Beinhaltet Positioniertungs-,
+ * Richtungs- und Laengenwerte
  */
 public class RoomItem {
     private int x;
@@ -22,6 +25,8 @@ public class RoomItem {
         this.x = x;
         this.y = y;
         this.orientation = orientation;
+        this.length = length;
+        this.width = width;
     }
 
     public RoomItem(int length, int width, Orientation orientation){
@@ -136,7 +141,5 @@ public class RoomItem {
      * @param input
      * @return
      */
-    public String svgToPath(String input){
-        return null; //TODO
-    }
+    
 }

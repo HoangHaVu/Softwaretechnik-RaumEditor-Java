@@ -17,8 +17,12 @@ public class ZoomableScrollPane extends ScrollPane {
     public ZoomableScrollPane(Node target) {
         super();
         this.target = target;
+        
         this.zoomNode = new Group(target);
-        setContent(outerNode(zoomNode));
+        
+        Node outerNode = outerNode(zoomNode);
+        outerNode.setStyle("-fx-background-color: black;");
+        setContent(outerNode);
 
         setPannable(true);
         setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -32,6 +36,7 @@ public class ZoomableScrollPane extends ScrollPane {
     public ZoomableScrollPane(Node target, String style){
         super();
         this.target = target;
+        
         this.zoomNode = new Group(target);
         
         Node outerNode = outerNode(zoomNode);
@@ -52,6 +57,7 @@ public class ZoomableScrollPane extends ScrollPane {
         Node outerNode = centeredNode(node);
         outerNode.setOnZoom(e -> {
             e.consume();
+            
             onZoom(e.getZoomFactor(), new Point2D(e.getX(), e.getY()));
         });
         return outerNode;
@@ -72,7 +78,6 @@ public class ZoomableScrollPane extends ScrollPane {
 
         Bounds innerBounds = zoomNode.getLayoutBounds();
         Bounds viewportBounds = getViewportBounds();
-
         // calculate pixel offsets from [0, 1] range
         double valX = this.getHvalue() * (innerBounds.getWidth() - viewportBounds.getWidth());
         double valY = this.getVvalue() * (innerBounds.getHeight() - viewportBounds.getHeight());

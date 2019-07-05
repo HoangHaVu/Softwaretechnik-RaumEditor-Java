@@ -26,8 +26,7 @@ public class RoomEditor {
     private Room room;
     private JsonHandler jsonHandler;
     private LayoutItem actLayoutItem;
-    private byte [][] previewLayout;
-    private final int MAXITEMLENGTH = 19;
+    public final int MAXITEMLENGTH = 19;
     
 
 
@@ -83,7 +82,6 @@ public class RoomEditor {
         this.room.setRoomPreview(roomPreview);
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
-        this.previewLayout = new byte[MAXITEMLENGTH][MAXITEMLENGTH];
         selectnewItem(LayoutItemType.WALL);
 
     }
@@ -96,57 +94,7 @@ public class RoomEditor {
         if (actLayoutItem.getType() == LayoutItemType.DOOR) return false;
         if (actLayoutItem.getLength() + 1 - value < 1 && value - actLayoutItem.getLength() < 1) return false;
         actLayoutItem.setHeight((int) ((MAXITEMLENGTH - 1) * value) + 1);
-        updatePreviewLayout();
         return true;
-    }
-
-
-    /**
-     * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
-     */
-    private void updatePreviewLayout(){
-        
-        new Thread() {
-            int startX, endX, startY, endY;
-            byte itemNumber = -1;
-            public void run(){
-                for (int i = 0; i < previewLayout.length; i++){
-                    for(int j = 0; j < previewLayout[0].length; j++){
-                        previewLayout[i][j] = -1;
-                    }
-                }
-                if (actLayoutItem == null){
-                    return;
-                }
-                
-                if (actLayoutItem.getOrientation() == Orientation.BOTTOM || actLayoutItem.getOrientation() == Orientation.TOP){
-        
-        
-                    startY = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endY = startY + actLayoutItem.getWidth();
-                    startX = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endX = startX + actLayoutItem.getLength();
-                } else{
-        
-                    startY = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endY = startY + actLayoutItem.getLength();
-                    startX = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endX = startX + actLayoutItem.getWidth();
-                }
-        
-                if (actLayoutItem.getType() == LayoutItemType.WALL) itemNumber = 1;
-                else if (actLayoutItem.getType() == LayoutItemType.DOOR) itemNumber = -2;
-                else if (actLayoutItem.getType() == LayoutItemType.WINDOW) itemNumber = -3;
-        
-                for (int i = startY; i < endY; i++) {
-                    for (int j = startX; j < endX; j++) {
-                        if (i >= 0 && j >= 0 && i < previewLayout[0].length && j < previewLayout.length)
-                        previewLayout[j][i] = itemNumber;
-                    }
-                }
-            }
-        
-        }.start();
     }
 
 
@@ -167,7 +115,6 @@ public class RoomEditor {
             actLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
         }
 
-        updatePreviewLayout();
     }
 
 
@@ -178,7 +125,6 @@ public class RoomEditor {
     public void rotateItem(){
 
         actLayoutItem.turnRight();
-        updatePreviewLayout();
     }
 
 
@@ -264,7 +210,6 @@ public class RoomEditor {
         deleteItem(layoutNumber);
 
         actLayoutItem = itemToEdit;
-        updatePreviewLayout();
     }  
 
     /**
@@ -280,13 +225,6 @@ public class RoomEditor {
        
     public Room getRoom (){
         return this.room;
-    }
-
-    /**
-     * liefert Kopie des aktuellen PreviewLayouts
-     */
-    public byte[][] getPreviewLayout(){
-        return previewLayout.clone();
     }
 
     public LayoutItem getActLayoutItem(){

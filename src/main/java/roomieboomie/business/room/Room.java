@@ -212,6 +212,7 @@ public class Room {
 
         for (int i = y; i < endY; i++) {
             for (int j = x; j < endX; j++) {
+                if (i >= 0 && j >= 0 && i < layout.length && j < layout[0].length)
                 this.layout[i][j] = size;
             }
         }
