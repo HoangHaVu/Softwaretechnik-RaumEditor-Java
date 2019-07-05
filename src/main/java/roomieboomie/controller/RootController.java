@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.business.room.RoomPreview;
 
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class RootController {
     private Stage primaryStage;
     private RoomieBoomieManager roomieBoomieManager;
     private boolean creative;
+    private RoomPreview selectedRoom;
 
     /**
      * SwitchView Methode ist für den Wechsel zwischen den Views zuständig
@@ -121,12 +123,25 @@ public class RootController {
                 primaryStage.show();
                 layoutEditorController.refreshView();
                 break;
+            case "LayoutEditor_load":
+                LayoutEditorController layoutEditorController2 = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
+                Scene scen = new Scene(layoutEditorController2.getView(), 1000, 600);
+                layoutEditorController2.setSwitcher(this);
+                //roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom);
+                layoutEditorController2.loadRoom();
+                primaryStage.setScene(scen);
+                primaryStage.show();
+                layoutEditorController2.refreshView();
+                break;
+            case "PlaceableEditor_load":
+
+                break;
             case "PlaceableEditor":
-                PlaceableEditorController placeableEditorController=new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
+                PlaceableEditorController2 placeableEditorController=new PlaceableEditorController2(roomieBoomieManager.getRoomEditor());
                 Scene scen = new Scene(placeableEditorController.getView(), 1000, 600);
                 primaryStage.setScene(scen);
                 primaryStage.show();
-                placeableEditorController.refreshView();
+                placeableEditorController.refreshView();*/
                 break;
             case "Play":
                 break;
@@ -183,4 +198,6 @@ public class RootController {
     public void setCreative(boolean value){
         this.creative = value;
     }
+
+    public void setSelectedRoom(RoomPreview roomPreview){this.selectedRoom=roomPreview;}
 }

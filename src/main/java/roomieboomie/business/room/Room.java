@@ -1,5 +1,6 @@
 package roomieboomie.business.room;
 
+import javafx.scene.image.Image;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
@@ -21,15 +22,23 @@ public class Room {
     private ArrayList<LayoutItem> windows;
     private ArrayList<LayoutItem> doors;
     private byte[][] layout;
+    private int height;
+    private int width;
+    private int startX;
+    private int startY;
 
     /**
      * Erstellt einen neuen Room aus einer RoomPreview heraus. Diese berechnet layout und wird fuer
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
      */
-    public Room(RoomPreview roomPreview, byte[][] layout, ArrayList<PlacableItem> itemList) {
+    public Room(RoomPreview roomPreview, byte[][] layout, int startX, int startY, ArrayList<PlacableItem> itemList) {
         this.roomPreview = roomPreview;
         this.layout = layout;
+        this.startX = startX;
+        this.startY = startY;
+        this.width = layout[0].length;
+        this.height = layout.length;
         this.itemList = itemList;
     }
 
@@ -54,11 +63,92 @@ public class Room {
     }
 
     /**
+     * Setter für die RoomPreview
+     * @param roomPreview RoomPreview
+     */
+    public void setRoomPreview(RoomPreview roomPreview){
+        this.roomPreview = roomPreview;
+    }
+
+    /**
+     * @return RoomPreview des Rooms
+     */
+    public RoomPreview getRoomPreview(){
+        return this.roomPreview;
+    }
+
+    /**
+     * Liste mit allen PlacableItems, die im Raum platziert werden muessen
+     * @return List mit PlacalbeItem-Objekten
+     */
+    public ArrayList<PlacableItem> getItemList() {
+        return itemList;
+    }
+
+    /**
+     * Setzt die Liste mit allen PlacableItems, die im Raum platziert werden muessen
+     * @param itemList List mit PlacalbeItems
+     */
+    public void setItemList(ArrayList<PlacableItem> itemList) {
+        this.itemList = itemList;
+    }
+
+    /**
+     * Fuegt dem Layout ein neues Item hinzu. Jedes Objekt hat eine eigene Nummer. Jede Wand hat eine Nummer > 0,
+     * Es gibt nur eine Tür, welche die Nummer -2 bekommt.
+     * Jedes Fenster hat eine Nummer < -2
+     * @param item
+     */
+    public void addItem(LayoutItem item){
+        int y = item.getY();
+        int x = item.getX();
+        int endY = y + item.getWidth();
+        int endX = x + item.getLength();
+        byte size;
+
+        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+            endY = y + item.getLength();
+            endX = x + item.getWidth();
+        }
+
+        if (item.getType() == LayoutItemType.WALL) {
+            size = (byte) (this.walls.size() + 1);
+            this.walls.add(item);
+        } else if (item.getType() == LayoutItemType.DOOR){
+            size = (byte) - (this.doors.size() + 2);
+            if (this.doors.size() > 0){
+                return;
+            }
+            this.doors.add(item);
+        } else if (item.getType() == LayoutItemType.WINDOW){
+            size = (byte) - (this.windows.size() + 3);
+            this.windows.add(item);
+        } else {
+            return;
+        }
+
+        for (int i = y; i < endY; i++) {
+            for (int j = x; j < endX; j++) {
+                this.layout[i][j] = size;
+            }
+        }
+
+    }
+
+    /**
+     * Fuegt dem Room ein PlacableItem hinzu
+     * @param placableItem PlacableItem
+     */
+    public void addPlacableItem(PlacableItem placableItem) {
+        itemList.add(placableItem);
+    }
+
+    /**
      * löscht Item anhand der Nummer welche im layout an gewünschter Stelle zu finden ist
      * @param layoutNumber Itemnummer
      */
     public void deleteItem(byte layoutNumber){
-    
+
         if (layoutNumber == -1 || layoutNumber == 0) return;
 
         LayoutItem item = null;
@@ -106,7 +196,7 @@ public class Room {
                 for (int j = x; j < endX; j++) {
                     if (layout[i][j] != layoutNumber){
                         deleteItem(layout[i][j]);
-                    } 
+                    }
                     layout[i][j] = replaceNumber;
                 }
             }
@@ -137,80 +227,6 @@ public class Room {
     }
 
     /**
-     * fügt dem Layout ein neues Item hinzu. Jedes Objekt hat eine eigene Nummer. Jede Wand hat eine Nummer > 0,
-     * Es gibt nur eine Tür, welche die Nummer -2 bekommt.
-     * Jedes Fenster hat eine Nummer < -2
-     * @param item
-     */
-    public void addItem(LayoutItem item){
-        int y = item.getY();
-        int x = item.getX();
-        int endY = y + item.getWidth();
-        int endX = x + item.getLength();
-        byte size;
-
-        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
-            endY = y + item.getLength();
-            endX = x + item.getWidth();
-        }
-
-        if (item.getType() == LayoutItemType.WALL) {
-            size = (byte) (this.walls.size() + 1);
-            this.walls.add(item);
-        } else if (item.getType() == LayoutItemType.DOOR){
-            size = (byte) - (this.doors.size() + 2);
-            if (this.doors.size() > 0){
-                return;
-            }
-            this.doors.add(item);
-        } else if (item.getType() == LayoutItemType.WINDOW){
-            size = (byte) - (this.windows.size() + 3);
-            this.windows.add(item);
-        } else {
-            return;
-        }
-
-        for (int i = y; i < endY; i++) {
-            for (int j = x; j < endX; j++) {
-                if (i >= 0 && j >= 0 && i < layout.length && j < layout[0].length)
-                this.layout[i][j] = size;
-            }
-        }
-        
-    }
-
-    /**
-     * Setter für die RoomPreview
-     * @param roomPreview RoomPreview
-     */
-    public void setRoomPreview(RoomPreview roomPreview){
-        this.roomPreview = roomPreview;
-    }
-
-    /**
-     * Liste mit allen PlacableItems, die im Raum platziert werden muessen
-     * @return List mit PlacalbeItem-Objekten
-     */
-    public ArrayList<PlacableItem> getItemList() {
-        return itemList;
-    }
-
-    /**
-     * Setzt die Liste mit allen PlacableItems, die im Raum platziert werden muessen
-     * @param itemList List mit PlacalbeItems
-     */
-    public void setItemList(ArrayList<PlacableItem> itemList) {
-        this.itemList = itemList;
-    }
-
-    /**
-     * @return Liste mit allen LayoutItems des Typs LayoutItemType.WALL
-     */
-    public ArrayList<LayoutItem> getWalls() {
-        return walls;
-    }
-
-    /**
      * Setzt die Liste der Wand-Objekte
      * @param walls Liste mit LayoutItems des Typs LayoutItemType.WALL
      */
@@ -219,10 +235,10 @@ public class Room {
     }
 
     /**
-     * @return Liste mit allen LayoutItems des Typs LayoutItemType.WINDOW
+     * @return Liste mit allen LayoutItems des Typs LayoutItemType.WALL
      */
-    public ArrayList<LayoutItem> getWindows() {
-        return windows;
+    public ArrayList<LayoutItem> getWalls() {
+        return walls;
     }
 
     /**
@@ -234,10 +250,10 @@ public class Room {
     }
 
     /**
-     * @return Liste mit allen LayoutItems des Typs LayoutItemType.DOOR
+     * @return Liste mit allen LayoutItems des Typs LayoutItemType.WINDOW
      */
-    public ArrayList<LayoutItem> getDoors() {
-        return doors;
+    public ArrayList<LayoutItem> getWindows() {
+        return windows;
     }
 
     /**
@@ -246,6 +262,24 @@ public class Room {
      */
     public void setDoors(ArrayList<LayoutItem> doors) {
         this.doors = doors;
+    }
+
+    /**
+     * @return Liste mit allen LayoutItems des Typs LayoutItemType.DOOR
+     */
+    public ArrayList<LayoutItem> getDoors() {
+        return doors;
+    }
+
+    /**
+     * Setzt das Grundriss-Layout
+     * @param layout 2D-Byte-Array mit den Grundriss-Informationen
+     */
+    public void setLayout(byte[][] layout) {
+        this.layout = new byte[layout.length][];
+        for(int i = 0; i < layout.length; i++){
+            this.layout[i] = Arrays.copyOf(layout[i], layout[i].length);
+        }
     }
 
     /**
@@ -260,15 +294,102 @@ public class Room {
     }
 
     /**
-     * Setzt das Grundriss-Layout
-     * @param layout 2D-Byte-Array mit den Grundriss-Informationen
+     * Gibt den eigentlichen Grundriss ohne leere Flaeche des editierbaren Breiches zurueck
+     * @return "ausgeschnittenes" 2D-Byte-Array aus dem Layout
      */
-    public void setLayout(byte[][] layout) {
-        this.layout = new byte[layout.length][];
-        for(int i = 0; i < layout.length; i++){
-            this.layout[i] = Arrays.copyOf(layout[i], layout[i].length);
+    public byte[][] getEffectiveLayout(){
+        byte[][] effectiveLayout = new byte[height][width];
+        for(int i = 0; i < height; i++) {
+            int x = 0;
+            for (int j = 0; j < width; j++) {
+                effectiveLayout[i][j] = layout[startY + i][startX + j];
+            }
         }
+        return effectiveLayout;
     }
+
+    /**
+     * Setzt Hoehe des Raumes innerhalb des editierbaren Bereiches
+     * @param height Zu setzende Hoehe
+     */
+    public void setHeight(int height){
+        this.height = height;
+    }
+
+    /**
+     * Gibt die Hoehe des des Raumes innerhalb des editierbaren Bereiches zurueck
+     * @return Hoehe in "Indizes"
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Setzt Breite des des Raumes innerhalb des editierbaren Bereichen
+     * @param width zu setzende Breite
+     */
+    public void setWidth (int width){
+        this.width = width;
+    }
+
+    /**
+     * Gibt die Breite des des Raumes innerhalb des editierbaren Bereiches zurueck
+     * @return Breite in "Indizes"
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Setzt den Wert des Indexes, an dem das Layout innerhalb des editierbaren Bereiches von links aus beginnt
+     * @return Ganzzahliger Wert
+     */
+    public void setStartX(int x){
+        this.startX = x;
+    }
+
+    /**
+     * Gibt den Wert des Indexes zurueck, an dem das Layout innerhalb des editierbaren Bereiches von links aus beginnt
+     * @return Ganzzahliger Wert
+     */
+    public int getStartX(){
+        return this.startX;
+    }
+
+    /**
+     * Setzt den Wert des Indexes, an dem das Layout innerhalb des editierbaren Bereiches von oben aus beginnt
+     * @return Ganzzahliger Wert
+     */
+    public void setStartY(int y){
+        this.startY = y;
+    }
+
+    /**
+     * Gibt den Wert des Indexes zurueck, an dem das Layout innerhalb des editierbaren Bereiches von links aus beginnt
+     * @return Ganzzahliger Wert
+     */
+    public int getStartY(){
+        return this.startY;
+    }
+
+    /**
+     * Kann statisch den HashCode eines Room-Objektes berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
+     * erstelltes Room-Objekt mit diesen Attributen haben wuerde
+     * @param layout Byte-Array mit dem Grundriss
+     * @param itemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
+     * @return HashCode
+     */
+    public static int testHash(byte[][] layout, List<PlacableItem> itemList){
+        return Arrays.deepHashCode(layout) * itemList.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        return testHash(layout, itemList);
+    }
+
+
+    // Ab hier wird zu RoomPreview durchgereicht
 
     /**
      * @return Name des Raums
@@ -292,26 +413,10 @@ public class Room {
         this.roomPreview.setLevel(value);
     }
 
-    @Override
-    public int hashCode() {
-        return testHash(layout, itemList);
-    }
-
-    /**
-     * Kann statisch den HashCode eines Room-Objektes berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
-     * erstelltes Room-Objekt mit diesen Attributen haben wuerde
-     * @param layout Byte-Array mit dem Grundriss
-     * @param itemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
-     * @return HashCode
-     */
-    public static int testHash(byte[][] layout, List<PlacableItem> itemList){
-        return Arrays.deepHashCode(layout) * itemList.hashCode();
-    }
-
     /**
      * @return Thumbnail-Bild
      */
-    public BufferedImage getThumbnail(){
+    public Image getThumbnail(){
         return roomPreview.getThumbnail();
     }
 
@@ -330,20 +435,9 @@ public class Room {
     }
 
     /**
-     * @return RoomPreview des Rooms
-     */
-    public RoomPreview getRoomPreview(){
-        return this.roomPreview;
-    }
-
-    /**
      * @return HighscoreList des Rooms
      */
     public HighscoreList getHighscoreList() {
         return roomPreview.getHighscoreList();
-    }
-
-    public void addPlacableItem(PlacableItem placableItem) {
-        itemList.add(placableItem);
     }
 }

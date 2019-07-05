@@ -24,6 +24,10 @@ public enum LayoutItemType {
      * @return Textur des LayoutItemTypes
      */
     public String getTexture() {
+<<<<<<< HEAD
+=======
+        //TODO gibt svg gewandelt als Pfad zurueck
+>>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
         return texture;
     }
 

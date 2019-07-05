@@ -7,6 +7,10 @@ import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.user.User;
+import roomieboomie.persistence.exception.JsonDeletingException;
+import roomieboomie.persistence.exception.JsonLoadingException;
+import roomieboomie.persistence.exception.JsonValidatingException;
+import roomieboomie.persistence.exception.JsonWritingException;
 
 import javax.json.*;
 import java.io.*;
@@ -76,15 +80,27 @@ public class JsonHandler {
     private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
         JsonObject jsonObject = loadFromJson(fullPath);
         //layout
+        int totalWidth = jsonObject.getInt("totalWidth");
+        int totalHeight = jsonObject.getInt("totalHeight");
+        int startX = jsonObject.getInt("startX");
+        int startY = jsonObject.getInt("startY");
+
+        byte[][] jLayout = new byte[totalHeight][totalWidth];
+
+        for (int i = 0; i < totalHeight; i++){
+            for (int j = 0; j < totalWidth; j++){
+                jLayout[i][j] = -1;
+            }
+        }
+
         JsonArray layoutsArrays = jsonObject.getJsonArray("layout");
         int x = layoutsArrays.size();
         int y = ((JsonArray) layoutsArrays.get(0)).size();
-        byte[][] jLayout = new byte[x][y];
         for (int i = 0; i < x; i++) {
             JsonArray outerArray = (JsonArray) layoutsArrays.get(i);
             for (int j = 0; j < y; j++) {
                 byte b = Byte.valueOf(String.valueOf(outerArray.get(j)));
-                jLayout[i][j] = b;
+                jLayout[i + startY][j + startX] = b;
             }
         }
 
@@ -97,10 +113,10 @@ public class JsonHandler {
             placableItemsList.add(new PlacableItem(type));
         }
 
-        if(jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)){
+        if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)) {
             throw new JsonValidatingException();
         } else {
-            return new Room(roomPreview, jLayout, placableItemsList);
+            return new Room(roomPreview, jLayout, startX, startY, placableItemsList);
         }
     }
 
@@ -112,7 +128,7 @@ public class JsonHandler {
     public void saveRoom(Room room) throws JsonWritingException {
         //layout
         JsonArrayBuilder jLayoutArrBuilder = Json.createArrayBuilder();
-        byte[][] layout = room.getLayout();
+        byte[][] layout = room.getEffectiveLayout();
         for (int i=0; i < layout.length; i++){
             JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
             for (int j = 0; j < layout[i].length; j++) {
@@ -150,14 +166,18 @@ public class JsonHandler {
                 .add("neededScore", room.getNeededScore())
                 .add("level", room.isLevel())
                 .add("layout", jLayout)
+                .add("startX", room.getStartX())
+                .add("startY", room.getStartY())
+                .add("totalWidth", room.getLayout()[0].length)
+                .add("totalHeight", room.getLayout().length)
                 .add("itemList", jItemList)
                 .add("highscoreList", jHighscores)
                 .build();
 
         String filename = room.getName() + ".json";
-        if(room.isLevel()){
+        if (room.isLevel()) {
             saveAsJson(jsonObject, Config.get().LEVELROOMPATH() + filename);
-        }else{
+        } else {
             saveAsJson(jsonObject, Config.get().CREATIVEROOMPATH() + filename);
         }
     }

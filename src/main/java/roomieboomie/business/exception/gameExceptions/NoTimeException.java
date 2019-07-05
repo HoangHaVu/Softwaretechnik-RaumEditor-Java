@@ -1,4 +1,8 @@
 package roomieboomie.business.exception.gameExceptions;
 
-public class NoTimeException {
+import roomieboomie.business.exception.GameException;
+
+public class NoTimeException extends GameException {
+    public NoTimeException(){super("Zeit ist abgelaufen");}
+    public NoTimeException(String message){super(message);}
 }

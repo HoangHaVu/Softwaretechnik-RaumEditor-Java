@@ -2,6 +2,7 @@
 /build/
 .idea/
 !gradle-wrapper.jar
+<<<<<<< HEAD
 .DS_Store
 .project
 .classpath
@@ -112,3 +113,6 @@ bin/main/roomieboomie/business/exception/gameExceptions/TooHighForPosition.class
 bin/main/roomieboomie/business/exception/gameExceptions/TooWidthException.class
 bin/main/roomieboomie/controller/PlaceableEditorController$Action.class
 bin/main/roomieboomie/gui/views/PlaceableEditorView.class
+=======
+bin/main/views/LoginView\.fxml
+>>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f

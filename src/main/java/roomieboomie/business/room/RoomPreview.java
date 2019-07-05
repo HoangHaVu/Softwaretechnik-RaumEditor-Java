@@ -1,14 +1,12 @@
 package roomieboomie.business.room;
 
+import javafx.scene.image.Image;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
-import roomieboomie.business.user.User;
 import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.JsonLoadingException;
-import roomieboomie.persistence.JsonValidatingException;
-
-import java.awt.image.BufferedImage;
+import roomieboomie.persistence.exception.JsonLoadingException;
+import roomieboomie.persistence.exception.JsonValidatingException;
 
 /**
  * "Vorschau" eines Rooms. Beinhaltet die wichtigsten Informationen, um einen Raum im Menü darzustellen.
@@ -16,6 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class RoomPreview {
     private String name;
+    private String author;
     private String thumbnail;
     private int highestScore;
     private int neededScore;
@@ -79,7 +78,7 @@ public class RoomPreview {
     /**
      * @return Thumbnail-Bild
      */
-    public BufferedImage getThumbnail(){
+    public Image getThumbnail(){
         return ImageHandler.getThumbnail(name, isLevel());
     }
 
@@ -163,35 +162,11 @@ public class RoomPreview {
 
     @Override
     public int hashCode() {
-        return testHash(name, /*thumbnail,*/ neededScore, level, highscoreList);
+        return testHash(name, neededScore, level, highscoreList);
     }
 
     public void setJsonHandler(JsonHandler handler){
         this.jsonHandler = handler;
-    }  
-
-    public void setHeight(int height){
-        this.height = height;
-    }
-
-    public void setWidth (int width){
-        this.width = width;
-    }
-
-    public int getStartX(){
-        return this.startX;
-    }
-
-    public void setStartX(int x){
-        this.startX = x;
-    }
-
-    public int getStartY(){
-        return this.startY;
-    }
-
-    public void setStartY(int y){
-        this.startY = y;
     }
 
     public void setHighscoreList(HighscoreList list){

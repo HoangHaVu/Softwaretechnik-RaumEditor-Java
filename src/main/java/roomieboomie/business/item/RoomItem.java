@@ -1,6 +1,6 @@
 package roomieboomie.business.item;
 
-
+import javafx.scene.image.Image;
 
 /**
  * Oberklasse von PlacalbeItem und LayoutItem. Beinhaltet Positioniertungs-,
@@ -12,6 +12,8 @@ public class RoomItem {
     private Orientation orientation;
     private int length;
     private int width;
+    private Image image;
+    private String textur;
 
     /**
      * Neuer RoomItem
@@ -141,5 +143,20 @@ public class RoomItem {
      * @param input
      * @return
      */
-    
+    public String svgToPath(String input){
+        return null; //TODO
+    }
+
+    public Image getImage() {
+        return image;
+    }
+    public void setImage(Image image){this.image=image;}
+
+    public String getTextur() {
+        return textur;
+    }
+
+    public void setTextur(String textur) {
+        this.textur = textur;
+    }
 }

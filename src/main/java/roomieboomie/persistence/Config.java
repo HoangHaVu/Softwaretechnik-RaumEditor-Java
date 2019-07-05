@@ -1,5 +1,7 @@
 package roomieboomie.persistence;
 
+import roomieboomie.persistence.exception.JsonLoadingException;
+
 import java.util.HashMap;
 
 /**

@@ -1,4 +1,8 @@
 package roomieboomie.business.exception.editorExceptions;
 
-public class MissingWindowException {
+import roomieboomie.business.exception.EditorException;
+
+public class MissingWindowException extends EditorException {
+    public MissingWindowException(){super("Fenster wurde noch nicht gesetzt");}
+    public MissingWindowException(String message){super(message);}
 }

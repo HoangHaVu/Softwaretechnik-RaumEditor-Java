@@ -10,7 +10,7 @@ import roomieboomie.business.room.RoomMaps;
 import roomieboomie.business.user.User;
 import roomieboomie.business.user.UserMap;
 import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.JsonLoadingException;
+import roomieboomie.persistence.exception.JsonLoadingException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,8 +60,8 @@ public class RoomieBoomieManager {
         return roomMaps;
     }
 
-    public HighscoreList getHighscoreListRanked() {
-        return highscoreListRanked;
+    public HighscoreList getOverallHighscore() {
+        return roomMaps.getOverallHighscore();
     }
 
     public JsonHandler getJsonHandler() {
@@ -88,11 +88,7 @@ public class RoomieBoomieManager {
         } catch (JsonLoadingException e) {
             e.printStackTrace();
         }
-        /*try {
-            this.highscoreListRanked = roomMaps.getHighscoreRanked();
-        } catch (JsonLoadingException e) {
-            e.printStackTrace();
-        }*/ //TODO das vielleicht nur on demand, weil sich das ja mit jedem eintrag aendert?
+
     }
 
     /**
