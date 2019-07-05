@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-<<<<<<< HEAD
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-=======
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
 
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.editor.RoomEditor;
@@ -34,8 +31,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-<<<<<<< HEAD
-        
+
         RoomEditor testEditor = new RoomEditor();
         testEditor.loadNewRoom("test", false);
         LayoutEditorController editRoom = new LayoutEditorController(testEditor);
@@ -60,7 +56,6 @@ public class Main extends Application {
         testEditor.addItem(new LayoutItem(LayoutItemType.WINDOW, 6, 5, 2, 1, Orientation.RIGHT));
         editRoom.refreshView();
         
-=======
 
 
         //RoomEditor testEditor = new RoomEditor("test", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
@@ -79,7 +74,7 @@ public class Main extends Application {
         primaryStage.show();
 
         primaryStage.show();
-*/
+
         //PlacableItem tisch = new PlacableItem(PlacableItemType.TABLE);
         //testEditor.addPlaceableItem(tisch);
 
@@ -88,7 +83,6 @@ public class Main extends Application {
         //testEditor.addItem(new LayoutItem(LayoutItemType.WINDOW, 6, 5, 2, 1, Orientation.RIGHT));
         //editRoom.refreshView();
 
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
         //testEditor.editItem((byte)-3);
         //testEditor.editItem((byte)1);
 

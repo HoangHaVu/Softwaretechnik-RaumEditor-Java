@@ -421,9 +421,8 @@ public class LayoutEditorController {
                     /*
                     element.getChildren().add(texture);
                     */
-                } 
-                else 
-                GridPane.setConstraints(element, i, j);
+                }
+                else GridPane.setConstraints(element, i, j);
                 raster.getChildren().add(element);
 
                 if (layout[j][i] == 0){
@@ -441,7 +440,6 @@ public class LayoutEditorController {
         updateItems(roomEditor.getRoom().getDoors(), layout);
        
     }
-    public void loadRoom(){
 
     private void showAlert(String title, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

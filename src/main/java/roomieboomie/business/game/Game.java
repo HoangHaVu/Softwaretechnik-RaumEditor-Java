@@ -28,7 +28,7 @@ public class Game {
 
         for (int i = 0; i < gameLayout.length; i++){
             for (int j = 0; j < gameLayout[0].length; j++){
-                if (gameLayout[i][j] < Config.get().MAXWINDOWVALUE()){
+                if (gameLayout[i][j] < Config.get().EDITORMAXWINDOWVALUE()){
                     gameLayout[i][j] = Config.get().GAMEWINDOWVALUE();
                 }
             }
