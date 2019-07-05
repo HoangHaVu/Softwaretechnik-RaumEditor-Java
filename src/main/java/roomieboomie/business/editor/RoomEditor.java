@@ -82,7 +82,6 @@ public class RoomEditor {
         this.room = new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), roomPreview);
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
-        this.previewLayout = new byte[MAXITEMLENGTH][MAXITEMLENGTH];
         selectnewItem(LayoutItemType.WALL);
     }
 
@@ -95,11 +94,12 @@ public class RoomEditor {
         if (actLayoutItem.getType() == LayoutItemType.DOOR) return false;
         if (actLayoutItem.getLength() + 1 - value < 1 && value - actLayoutItem.getLength() < 1) return false;
         actLayoutItem.setHeight((int) ((MAXITEMLENGTH - 1) * value) + 1);
-        updatePreviewLayout();
         return true;
     }
 
     /**
+<<<<<<< HEAD
+=======
      * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
      */
     private void updatePreviewLayout(){
@@ -148,6 +148,7 @@ public class RoomEditor {
     }
 
     /**
+>>>>>>> 065a9cf6dbe355cc8f0acd0471f766f0b6a62e23
      * Erstellt LayoutItem über mitgegebenen Typ
      *
      * @param type bestimmt ob item vom typ Wand, Fenster oder Tür ist
@@ -163,7 +164,6 @@ public class RoomEditor {
             actLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
         }
 
-        updatePreviewLayout();
     }
 
 
@@ -173,7 +173,6 @@ public class RoomEditor {
     public void rotateItem(){
 
         actLayoutItem.turnRight();
-        updatePreviewLayout();
     }
 
 
@@ -264,8 +263,7 @@ public class RoomEditor {
         deleteItem(layoutNumber);
 
         actLayoutItem = itemToEdit;
-        updatePreviewLayout();
-    }
+    }  
 
     /**
      * Löscht Item über mitgegebene Nummer aus dem Layout
@@ -280,13 +278,6 @@ public class RoomEditor {
 
     public Room getRoom (){
         return this.room;
-    }
-
-    /**
-     * liefert Kopie des aktuellen PreviewLayouts
-     */
-    public byte[][] getPreviewLayout(){
-        return previewLayout.clone();
     }
 
     public LayoutItem getActLayoutItem(){
