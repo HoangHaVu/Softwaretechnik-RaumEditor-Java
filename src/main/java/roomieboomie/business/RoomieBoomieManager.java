@@ -72,7 +72,8 @@ public class RoomieBoomieManager {
      * initialisiert alle benötigten Attribute
      */
     public void init() {
-        this.roomEditor = new RoomEditor("mein erster Raum", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
+        this.roomEditor = new RoomEditor();
+        roomEditor.loadNewRoom("mein erster Raum", false);
         this.jsonHandler = new JsonHandler();
 
         try {

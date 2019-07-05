@@ -11,9 +11,6 @@ public class Validator {
     private byte[][] layout;
     private int highestX, highestY, smallestX, smallestY; 
 
-    public Validator(byte[][] layout){
-        this.layout = layout;
-    }
 
 
     /**

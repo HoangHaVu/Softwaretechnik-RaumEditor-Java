@@ -119,8 +119,9 @@ public class PlaceableEditorController {
         });
 
     }
-
+    
     public void refreshPreview() {
+        /*
         byte[][] layout = roomEditor.getPreviewLayout();
 
         view.itemPreview = new GridPane();
@@ -148,6 +149,7 @@ public class PlaceableEditorController {
                 initInteractionPane();
             }
         }
+        */
     }
 
     public void initInteractionPane() {

@@ -271,7 +271,7 @@ public class LayoutEditorController {
 
 
         Pane itemPane = new Pane();
-        itemPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.3);");
+        itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
         for(int i = 0; i < roomEditor.getRoom().getLayout().length; i++){
             for(int j = 0; j < roomEditor.getRoom().getLayout()[0].length; j++){
 
@@ -436,14 +436,11 @@ public class LayoutEditorController {
             for(int j = 0; j < layout[0].length; j++){
                 Pane element = new Pane();
                 
-                //ImageView texture = new ImageView(textureImage);
-                //texture.fitWidthProperty().bind(element.widthProperty());
-                //texture.fitHeightProperty().bind(element.heightProperty());
                 element.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 element.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 if (i % 20 == 0 && j % 20 == 0){
                     
-                    element.setStyle("-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
+                    element.setStyle("-fx-background-image: url('"+"iconsandtextures/raufaserTextur.jpg"+ "'); " +
                     "-fx-background-position: center center; " +
                     "-fx-background-repeat: stretch;" +
                     "-fx-background-size: cover");
@@ -457,10 +454,6 @@ public class LayoutEditorController {
                 else 
                 GridPane.setConstraints(element, i, j);
                 raster.getChildren().add(element);
-
-                
-
-                    
 
                 if (layout[j][i] == 0){
 

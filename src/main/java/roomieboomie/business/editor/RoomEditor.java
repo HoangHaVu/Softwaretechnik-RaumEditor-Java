@@ -12,6 +12,8 @@ import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
+import roomieboomie.persistence.JsonLoadingException;
+import roomieboomie.persistence.JsonValidatingException;
 import roomieboomie.persistence.JsonWritingException;
 
 import java.util.ArrayList;
@@ -22,18 +24,13 @@ import java.util.List;
  */
 public class RoomEditor {
 
-    private ArrayList<LayoutItem> layoutItemList;
     private ArrayList<PlacableItem> placableItemList;
     private Validator validator;
     private Room room;
+    byte[][] placableLayout;
     private JsonHandler jsonHandler;
     private LayoutItem actLayoutItem;
-<<<<<<< HEAD
     public final int MAXITEMLENGTH = 19;
-=======
-    private byte [][] previewLayout;
-    private final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
->>>>>>> 065a9cf6dbe355cc8f0acd0471f766f0b6a62e23
     
     /**
      * Erstellt und initialisiert RoomEditor zum editieren eines bereits vorhandenen Raumes.
@@ -41,27 +38,17 @@ public class RoomEditor {
      * @param layoutItems
      * @param placableItems
      */
-    public RoomEditor(Room room, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
+    public RoomEditor(){
 
-        byte[][] tempLayout = room.getLayout();
-        byte [][]unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
-
-        for (int i = 0; i < tempLayout.length; i++){
-            for(int j = 0; j < tempLayout[0].length; j++){
-                if (tempLayout[i][j] == 0) unvalidatedLayout[i][j] = -1;
-                else unvalidatedLayout[i][j] = tempLayout[i][j];
-            }
-        }
-        
-        room.setLayout(unvalidatedLayout);
-        this.room = room;
-        this.layoutItemList = layoutItems;
-        this.placableItemList = placableItems;
+        this.placableItemList = new ArrayList<PlacableItem>();
         jsonHandler = new JsonHandler();
-        room.setLayout(unvalidatedLayout);
-        this.validator = new Validator(room.getLayout());
+        this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
     }
+
+    
+
+ 
 
     /**
      * Erstellt komplett neuen Raum
@@ -72,18 +59,41 @@ public class RoomEditor {
      * @param layoutItems
      * @param placableItems
      */
-
+    /*
     public RoomEditor(String name, boolean level, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
         jsonHandler = new JsonHandler();
         RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
 
-        this.layoutItemList = layoutItems;
         this.placableItemList = placableItems;
 
         this.room = new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), roomPreview);
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
+    }
+    */
+    public void loadNewRoom(String name, boolean level){
+        RoomPreview newPreview = new RoomPreview(name, level, jsonHandler);
+        this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), newPreview);
+    }
+
+    public void loadRoom(RoomPreview roomPreview ,boolean editLayout) throws JsonValidatingException, JsonLoadingException{
+        this.room = roomPreview.getFullRoom();
+        if (editLayout){
+            byte[][] tempLayout = room.getLayout();
+            byte [][]unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
+
+        for (int i = 0; i < tempLayout.length; i++){
+            for(int j = 0; j < tempLayout[0].length; j++){
+                if (tempLayout[i][j] == 0) unvalidatedLayout[i][j] = -1;
+                else unvalidatedLayout[i][j] = tempLayout[i][j];
+            }
+        }
+        
+        room.setLayout(unvalidatedLayout);
+        room.setItemList(new ArrayList<PlacableItem>());
+        }
+        this.placableItemList = room.getItemList();
     }
 
     /**
@@ -99,57 +109,6 @@ public class RoomEditor {
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
-     */
-    private void updatePreviewLayout(){
-        
-        new Thread() {
-            int startX, endX, startY, endY;
-            byte itemNumber = -1;
-            public void run(){
-                for (int i = 0; i < previewLayout.length; i++){
-                    for(int j = 0; j < previewLayout[0].length; j++){
-                        previewLayout[i][j] = -1;
-                    }
-                }
-                if (actLayoutItem == null){
-                    return;
-                }
-                
-                if (actLayoutItem.getOrientation() == Orientation.BOTTOM || actLayoutItem.getOrientation() == Orientation.TOP){
-        
-        
-                    startY = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endY = startY + actLayoutItem.getWidth();
-                    startX = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endX = startX + actLayoutItem.getLength();
-                } else{
-        
-                    startY = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endY = startY + actLayoutItem.getLength();
-                    startX = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endX = startX + actLayoutItem.getWidth();
-                }
-        
-                if (actLayoutItem.getType() == LayoutItemType.WALL) itemNumber = 1;
-                else if (actLayoutItem.getType() == LayoutItemType.DOOR) itemNumber = -2;
-                else if (actLayoutItem.getType() == LayoutItemType.WINDOW) itemNumber = -3;
-        
-                for (int i = startY; i < endY; i++) {
-                    for (int j = startX; j < endX; j++) {
-                        if (i >= 0 && j >= 0 && i < previewLayout[0].length && j < previewLayout.length)
-                        previewLayout[j][i] = itemNumber;
-                    }
-                }
-            }
-        
-        }.start();
-    }
-
-    /**
->>>>>>> 065a9cf6dbe355cc8f0acd0471f766f0b6a62e23
      * Erstellt LayoutItem über mitgegebenen Typ
      *
      * @param type bestimmt ob item vom typ Wand, Fenster oder Tür ist
@@ -237,6 +196,7 @@ public class RoomEditor {
         List<LayoutItem> roomItemList = null;
         byte index = 0;
         LayoutItem itemToEdit = null;
+
 
         if (layoutNumber == -2){
             roomItemList = room.getDoors();
