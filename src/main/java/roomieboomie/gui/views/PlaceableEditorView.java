@@ -1,19 +1,24 @@
 package roomieboomie.gui.views;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class PlaceableEditorView extends Pane {
 
@@ -24,7 +29,7 @@ public class PlaceableEditorView extends Pane {
     public ScrollPane scrollableRaster;
     public GridPane itemPreview = new GridPane();
     public Button finish = new Button("FERTIG");
-    public HBox sliderPane = new HBox();
+    public Slider sizeSlider = new Slider(0, 1, 0.5);
     public Button rotate = new Button("rotate");
     public Button delete = new Button("delete");
     public Button edit = new Button("edit");
@@ -37,7 +42,8 @@ public class PlaceableEditorView extends Pane {
     public ZoomableScrollPane zoomPane;
     public StackPane zoomAndScroll;
     public GridPane dragRaster = new GridPane();
-  //test
+    public ListView<PlacableItem> listview=new ListView<PlacableItem>();
+
     public PlaceableEditorView() {
 
 
@@ -61,7 +67,6 @@ public class PlaceableEditorView extends Pane {
         scrollableRaster.setHbarPolicy(ScrollBarPolicy.NEVER);
 
 
-
         wall.setMinSize(60, 60);
         window.setMinSize(60, 60);
         door.setMinSize(60, 60);
@@ -78,8 +83,6 @@ public class PlaceableEditorView extends Pane {
         selectItemPane.setSpacing(30);
         buttonPane.setAlignment(Pos.CENTER);
         objectInteraction.setAlignment(Pos.CENTER);
-        sliderPane.setAlignment(Pos.CENTER);
-        sliderPane.setSpacing(10);
         layoutCol.setPercentWidth(70);
         controlCol.setPercentWidth(30);
         buttonPane.setSpacing(25);
@@ -87,17 +90,22 @@ public class PlaceableEditorView extends Pane {
         controlBox.setPadding(new Insets(40, 20, 40, 20));
         controlBox.setSpacing(20);
 
+
+
+
+
+
+
         selectItemPane.getChildren().addAll(wall, window, door);
-        buttonPane.getChildren().addAll(selectItemPane, sliderPane, objectInteraction, finish);
+        buttonPane.getChildren().addAll(selectItemPane,listview, objectInteraction, finish);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         controlBox.getChildren().addAll(itemPreview, buttonPane);
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         completeEditor.add(scrollableRaster, 0, 0);
-        completeEditor.add(controlBox,  1, 0);
+        completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
 
     }
-
 
 
 }

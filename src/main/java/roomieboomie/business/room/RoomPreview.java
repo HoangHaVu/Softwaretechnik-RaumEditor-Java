@@ -1,5 +1,6 @@
 package roomieboomie.business.room;
 
+import javafx.scene.image.Image;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
 import roomieboomie.persistence.ImageHandler;
@@ -7,14 +8,13 @@ import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.exception.JsonLoadingException;
 import roomieboomie.persistence.exception.JsonValidatingException;
 
-import java.awt.image.BufferedImage;
-
 /**
  * "Vorschau" eines Rooms. Beinhaltet die wichtigsten Informationen, um einen Raum im Menü darzustellen.
  * Kann ein Komplettes Raumobjekt erstellen.
  */
 public class RoomPreview {
     private String name;
+    private String author;
     private String thumbnail;
     private int highestScore;
     private int neededScore;
@@ -78,7 +78,7 @@ public class RoomPreview {
     /**
      * @return Thumbnail-Bild
      */
-    public BufferedImage getThumbnail(){
+    public Image getThumbnail(){
         return ImageHandler.getThumbnail(name, isLevel());
     }
 

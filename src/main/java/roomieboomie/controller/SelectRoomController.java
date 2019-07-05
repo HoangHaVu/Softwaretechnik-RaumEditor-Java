@@ -1,11 +1,20 @@
 package roomieboomie.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomMaps;
+import roomieboomie.business.room.RoomPreview;
 
-import javax.swing.text.html.ListView;
 import java.util.Collection;
 
 public class SelectRoomController {
@@ -15,9 +24,15 @@ public class SelectRoomController {
     private boolean creative;
     private Collection levelRooms;
     private Collection creativeRooms;
-    private Collection showRooms;
+    private Collection<RoomPreview> showRooms;
+    private ObservableList<RoomPreview> roomlist;
 
+    @FXML
+    private ListView rooms;
 
+    public SelectRoomController(){
+        this.roomlist = FXCollections.observableArrayList();
+    }
 
     @FXML
     public void backToMenu(){
@@ -45,12 +60,54 @@ public class SelectRoomController {
         this.creativeRooms = roomMaps.getCreativeRooms();
         if(creative){
             this.showRooms = creativeRooms;
+            fillCells();
         }else{
             this.showRooms = levelRooms;
+            fillCells();
         }
+    }
+    public void fillCells(){
+        for (RoomPreview roomPreview: showRooms){
+            roomlist.add(roomPreview);
+        }
+        rooms.setItems(roomlist);
+        rooms.setCellFactory(new Callback<ListView<RoomPreview>, ListCell<RoomPreview>>() {
+            @Override
+            public ListCell<RoomPreview> call(ListView<RoomPreview> param) {
+                return new Itemcell();
+            }
+
+        });
     }
 
     public void setRoomMaps(RoomMaps roomMaps){
         this.roomMaps = roomMaps;
+    }
+    public class Itemcell extends ListCell<RoomPreview> {
+        private Label itemLabel=new Label();
+        private HBox root =new HBox();
+        private ImageView image = new ImageView();
+
+        public Itemcell(){
+            image.setFitHeight(30);
+            image.setFitWidth(30);
+            root.getChildren().addAll(image,itemLabel);
+        }
+
+
+        protected void updateItem(RoomPreview item, boolean empty){
+            super.updateItem(item, empty);
+
+            if(!empty) {
+                itemLabel.setText(item.getName());
+                image.setImage(item.getThumbnail());
+                this.setGraphic(root);
+            } else {
+                this.setGraphic(null);
+            }
+
+        }
+
+
     }
 }
