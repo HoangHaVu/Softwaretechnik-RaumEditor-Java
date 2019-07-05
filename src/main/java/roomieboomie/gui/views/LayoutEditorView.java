@@ -49,10 +49,10 @@ public class LayoutEditorView extends Pane {
     public LayoutEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca"); /*"-fx-background-image: url('"+"iconsandtextures/raufaserTextur.jpg"+ "'); " +
         "-fx-background-position: center center; " +
         "-fx-background-repeat: stretch;" +
-        "-fx-background-size: cover");
+        "-fx-background-size: cover");*/
         scrollableRaster = new ScrollPane(zoomPane);
         
         zoomPane.setStyle("-fx-background-color: black;");

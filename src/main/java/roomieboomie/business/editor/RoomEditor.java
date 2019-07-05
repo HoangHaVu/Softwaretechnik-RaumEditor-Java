@@ -11,6 +11,7 @@ import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.exception.JsonWritingException;
+>>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +21,22 @@ import java.util.List;
  */
 public class RoomEditor {
 
+<<<<<<< HEAD
+=======
     private ArrayList<LayoutItem> layoutItemList;
+
+
 
     private ArrayList<PlacableItem> placableItemList;
     private Validator validator;
     private Room room;
+    byte[][] placableLayout;
     private JsonHandler jsonHandler;
     private LayoutItem actLayoutItem;
+<<<<<<< HEAD
+    public final int MAXITEMLENGTH = 19;
+    
+=======
     private PlacableItem actPlaceableItem;
     private byte [][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
@@ -43,8 +53,11 @@ public class RoomEditor {
      * @param layoutItems
      * @param placableItems
      */
-    public RoomEditor(Room room, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
+    public RoomEditor(){
 
+<<<<<<< HEAD
+        this.placableItemList = new ArrayList<PlacableItem>();
+=======
         byte[][] tempLayout = room.getLayout();
         byte[][] unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
 
@@ -59,11 +72,15 @@ public class RoomEditor {
         this.room = room;
         this.layoutItemList = layoutItems;
         this.placableItemList = placableItems;
+>>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
         jsonHandler = new JsonHandler();
-        room.setLayout(unvalidatedLayout);
-        this.validator = new Validator(room.getLayout());
+        this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
     }
+
+    
+
+ 
 
     /**
      * Erstellt komplett neuen Raum
@@ -73,17 +90,44 @@ public class RoomEditor {
      * @param layoutItems
      * @param placableItems
      */
+
     public RoomEditor(String name, boolean level, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
         jsonHandler = new JsonHandler();
         RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
 
-        this.layoutItemList = layoutItems;
         this.placableItemList = placableItems;
 
         this.room = new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), roomPreview);
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
+
+        actPlaceableItem= new PlacableItem(PlacableItemType.TABLE);
+        initDefaultPlaceableItem();
+    }
+    */
+    public void loadNewRoom(String name, boolean level){
+        RoomPreview newPreview = new RoomPreview(name, level, jsonHandler);
+        this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), newPreview);
+    }
+
+    public void loadRoom(RoomPreview roomPreview ,boolean editLayout) throws JsonValidatingException, JsonLoadingException{
+        this.room = roomPreview.getFullRoom();
+        if (editLayout){
+            byte[][] tempLayout = room.getLayout();
+            byte [][]unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
+
+        for (int i = 0; i < tempLayout.length; i++){
+            for(int j = 0; j < tempLayout[0].length; j++){
+                if (tempLayout[i][j] == 0) unvalidatedLayout[i][j] = -1;
+                else unvalidatedLayout[i][j] = tempLayout[i][j];
+            }
+        }
+        
+        room.setLayout(unvalidatedLayout);
+        room.setItemList(new ArrayList<PlacableItem>());
+        }
+        this.placableItemList = room.getItemList();
     }
 
     /**
@@ -99,6 +143,8 @@ public class RoomEditor {
     }
 
     /**
+<<<<<<< HEAD
+=======
      * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
      */
     private void updatePreviewLayout(){
@@ -145,6 +191,7 @@ public class RoomEditor {
     }
 
     /**
+>>>>>>> 065a9cf6dbe355cc8f0acd0471f766f0b6a62e23
      * Erstellt LayoutItem über mitgegebenen Typ
      * @param type bestimmt ob item vom typ Wand, Fenster oder Tür ist
      */
@@ -157,6 +204,12 @@ public class RoomEditor {
             actLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
         }
     }
+
+    public void selectPlaceableItem(PlacableItemType type){
+
+
+    }
+
 
     /**
      * dreht aktuell ausgewähltes LayoutItem um 90 Grad
@@ -254,12 +307,25 @@ public class RoomEditor {
         return this.room;
     }
 
+    public byte[][] getPreviewLayout() {
+        return previewLayout;
+    }
+
     public LayoutItem getActLayoutItem(){
         return actLayoutItem;
+    }
+    public PlacableItem getActPlaceableItem(){
+        return actPlaceableItem;
     }
 
     public ArrayList<PlacableItem> getPlacableItemList() {
         return placableItemList;
+    }
+
+    public void initDefaultPlaceableItem(){
+        for(PlacableItemType i:PlacableItemType.values()){
+            placableItemList.add(new PlacableItem(i));
+        }
     }
 
     public void selectnewPlaceableItem(PlacableItemType type){

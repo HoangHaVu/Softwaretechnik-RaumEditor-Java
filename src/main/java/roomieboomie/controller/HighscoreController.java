@@ -7,6 +7,8 @@ import roomieboomie.business.highscore.HighscoreRecord;
 
 import javax.swing.text.TableView;
 
+import javax.swing.text.TableView;
+
 public class HighscoreController {
     private RoomieBoomieManager roomieBoomieManager;
     private RootController switcher;
@@ -34,4 +36,6 @@ public class HighscoreController {
     public void setHighscoreList(HighscoreList highscoreList){
         this.highscoreList = highscoreList;
     }
+
+    @FXML TableView tableView;
 }
