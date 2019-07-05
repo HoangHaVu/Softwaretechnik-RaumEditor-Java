@@ -1,5 +1,6 @@
 package roomieboomie.business.room;
 
+import javafx.scene.image.Image;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
@@ -310,7 +311,7 @@ public class Room {
     /**
      * @return Thumbnail-Bild
      */
-    public BufferedImage getThumbnail(){
+    public Image getThumbnail(){
         return roomPreview.getThumbnail();
     }
 

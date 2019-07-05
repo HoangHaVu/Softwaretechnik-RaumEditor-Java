@@ -1,23 +1,24 @@
 package roomieboomie.persistence;
 
 import roomieboomie.business.room.Room;
-import roomieboomie.business.room.RoomPreview;
-
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javafx.scene.image.Image;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class ImageHandler {
     private final static String FORMAT = "png";
 
-    public static BufferedImage getThumbnail(String name, boolean level){
+    public static Image getThumbnail(String name, boolean level){
         String directory = level ? Config.get().LEVELTHUMBNAILPATH() : Config.get().CREATIVETHUMBNAILPATH();
 
-        BufferedImage image = null;
+        Image image = null;
         try {
-            image = ImageIO.read(new File(directory + name + "." + FORMAT));
+            image = new Image(new FileInputStream(directory + name + "." + FORMAT));
         } catch (IOException e) {
             e.printStackTrace();
         }
