@@ -37,29 +37,19 @@ public class Main extends Application {
 
 
         primaryStage.show();
-        /*
-        testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 5, 5, 4, 1, Orientation.LEFT));
-        testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 4, 5, 6, 1, Orientation.TOP));
-        testEditor.addItem(new LayoutItem(LayoutItemType.WINDOW, 6, 5, 2, 1, Orientation.RIGHT));
-        editRoom.refreshView();
-        
 
         primaryStage.show();
 */
         //PlacableItem tisch = new PlacableItem(PlacableItemType.TABLE);
         //testEditor.addPlaceableItem(tisch);
 
-
-
         //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 5, 5, 4, 1, Orientation.LEFT));
         //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 4, 5, 6, 1, Orientation.TOP));
         //testEditor.addItem(new LayoutItem(LayoutItemType.WINDOW, 6, 5, 2, 1, Orientation.RIGHT));
         //editRoom.refreshView();
 
-
         //testEditor.editItem((byte)-3);
         //testEditor.editItem((byte)1);
-
 
     }
 }

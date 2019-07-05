@@ -6,12 +6,15 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
+import roomieboomie.business.room.RoomMaps;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.JsonWritingException;
+import roomieboomie.persistence.exception.JsonLoadingException;
+import roomieboomie.persistence.exception.JsonValidatingException;
+import roomieboomie.persistence.exception.JsonWritingException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +86,9 @@ public class RoomEditor {
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
+
+        actPlaceableItem= new PlacableItem(PlacableItemType.TABLE);
+        initDefaultPlaceableItem();
     }
 
     /**
@@ -166,6 +172,11 @@ public class RoomEditor {
 
     }
 
+    public void selectPlaceableItem(PlacableItemType type){
+
+
+    }
+
 
     /**
      * dreht aktuell ausgewähltes LayoutItem um 90 Grad
@@ -204,19 +215,8 @@ public class RoomEditor {
         try{
             jsonHandler.saveRoom(this.room);
         } catch(Exception e){
-
+            
         }
-
-        /////////////////////////////////TODO loeschen, ist nur Test zum Speichern
-        /*ImageHandler.drawThumbnail(room);
-        room.addPlacableItem(new PlacableItem(PlacableItemType.BED));
-        try {
-            jsonHandler.saveRoom(room);
-        } catch (JsonWritingException e) {
-            e.printStackTrace();
-        }*/
-
-        /////////////////////////////////////
     }
 
     /**
@@ -280,12 +280,25 @@ public class RoomEditor {
         return this.room;
     }
 
+    public byte[][] getPreviewLayout() {
+        return previewLayout;
+    }
+
     public LayoutItem getActLayoutItem(){
         return actLayoutItem;
+    }
+    public PlacableItem getActPlaceableItem(){
+        return actPlaceableItem;
     }
 
     public ArrayList<PlacableItem> getPlacableItemList() {
         return placableItemList;
+    }
+
+    public void initDefaultPlaceableItem(){
+        for(PlacableItemType i:PlacableItemType.values()){
+            placableItemList.add(new PlacableItem(i));
+        }
     }
 
     public void selectnewPlaceableItem(PlacableItemType type){

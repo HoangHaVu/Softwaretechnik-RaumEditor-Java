@@ -17,7 +17,7 @@ public class PlacableItem extends RoomItem {
      * @param type Typ des Items
      */
     public PlacableItem(int x, int y, Orientation orientation, PlacableItemType type) {
-        super(x, y, orientation);
+        super(x, y,type.getLength(),type.getWidth(), orientation);
         this.type = type;
     }
 
@@ -50,4 +50,6 @@ public class PlacableItem extends RoomItem {
     public int hashCode() {
         return type.toString().hashCode();
     }
+
+    public PlacableItem clone(){ return new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());}
 }
