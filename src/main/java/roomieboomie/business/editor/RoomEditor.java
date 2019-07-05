@@ -83,6 +83,9 @@ public class RoomEditor {
         this.validator = new Validator(room.getLayout());
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
+
+        actPlaceableItem= new PlacableItem(PlacableItemType.TABLE);
+        initDefaultPlaceableItem();
     }
 
     /**
@@ -163,6 +166,11 @@ public class RoomEditor {
         } else if (type == LayoutItemType.DOOR){
             actLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
         }
+
+    }
+
+    public void selectPlaceableItem(PlacableItemType type){
+
 
     }
 
@@ -280,12 +288,25 @@ public class RoomEditor {
         return this.room;
     }
 
+    public byte[][] getPreviewLayout() {
+        return previewLayout;
+    }
+
     public LayoutItem getActLayoutItem(){
         return actLayoutItem;
+    }
+    public PlacableItem getActPlaceableItem(){
+        return actPlaceableItem;
     }
 
     public ArrayList<PlacableItem> getPlacableItemList() {
         return placableItemList;
+    }
+
+    public void initDefaultPlaceableItem(){
+        for(PlacableItemType i:PlacableItemType.values()){
+            placableItemList.add(new PlacableItem(i));
+        }
     }
 
     public void selectnewPlaceableItem(PlacableItemType type){

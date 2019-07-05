@@ -1,7 +1,25 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-@font-face { 
-	src: url('/fonts/Comix Loud.ttf');
+buttonStyle{
+    -fx-font-family: "Comix Loud";
+    -fx-font-size: 14;
+
 }
+
+.header{
+    -fx-font-family: "Comix Loud";
+    -fx-font-size:30;
+}
+
+.buttonStyle:hover{
+    -fx-background-color: #FFA200;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16;
+}
+@font-face {
+    font-family: "Comix Loud";
+    src: url('/fonts/Comix Loud.ttf');
+}
+
 
 @font-face { 
 	src: url('/fonts/KOMTXT_.ttf');
@@ -11,12 +29,10 @@
 	src: url('/fonts/KOMTXTBI.ttf');
 }
 
-.header{
-    -fx-font-family: "Comix Loud";
-    -fx-font-size:30;
-}
+
 
 .text{
+    -fx-color: red;
     -fx-font-family: "KOMTXT_";
     -fx-font-size:14;
 }
@@ -25,3 +41,10 @@
     -fx-font-family: "KOMTXTBI";
     -fx-font-size:14;
 }
+
+.headerFont{
+    -fx-font-family: "Comix Loud";
+    -fx-font-size:14;
+
+}
+

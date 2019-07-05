@@ -1,7 +1,10 @@
 package roomieboomie.controller;
 
+import javafx.fxml.FXML;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.highscore.HighscoreList;
+
+import javax.swing.text.TableView;
 
 public class HighscoreController {
     private RoomieBoomieManager roomieBoomieManager;
@@ -25,4 +28,6 @@ public class HighscoreController {
     public void setHighscoreList(HighscoreList highscoreList){
         this.highscoreList = highscoreList;
     }
+
+    @FXML TableView tableView;
 }

@@ -13,6 +13,7 @@ public class RoomItem {
     private int length;
     private int width;
     private Image image;
+    private String textur;
 
     /**
      * Neuer RoomItem
@@ -150,4 +151,12 @@ public class RoomItem {
         return image;
     }
     public void setImage(Image image){this.image=image;}
+
+    public String getTextur() {
+        return textur;
+    }
+
+    public void setTextur(String textur) {
+        this.textur = textur;
+    }
 }
