@@ -29,34 +29,32 @@ public class ImageHandler {
     public static void drawThumbnail(Room room){
         final int FACTOR = 10; //TODO MAGIC
 
-        byte[][] layout = room.getLayout();
-        int startX = room.getRoomPreview().getStartX();
-        int startY = room.getRoomPreview().getStartY();
-        int height = room.getRoomPreview().getHeight();
-        int width = room.getRoomPreview().getWidth();
+        //byte[][] layout = room.getLayout();
+        byte[][] layout = room.getEffectiveLayout();
+        int startX = room.getStartX();
+        int startY = room.getStartY();
+        int height = room.getHeight();
+        int width = room.getWidth();
 
         int type = BufferedImage.TYPE_INT_ARGB;
 
         BufferedImage image = new BufferedImage(width * FACTOR, height * FACTOR, type);
 
-        int wallC = Color.decode(Config.get().WALLCOLOR()).getRGB(); // Waende > 2
+        int wallC = Color.decode(Config.get().WALLCOLOR()).getRGB(); // Waende > 0
         int doorC = Color.decode(Config.get().DOORCOLOR()).getRGB(); // Tuer -2
         int windowC = Color.decode(Config.get().WINDOWCOLOR()).getRGB(); // Fenster < -3
         int interiorC = Color.decode(Config.get().INTERIORCOLOR()).getRGB();
         int backgroundC = Color.decode(Config.get().BGCOLOR()).getRGB();
 
-        int currCol = 0;
-        //int x = 0;
-        int y = 0;
-        for(int i = startY; i < startY+height; i++) {
-            int x = 0;
-            for(int j = startX; j < startX+width; j++) {
+        int currCol;
 
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[0].length; j++) {
                 if (layout[i][j] == 0){
                     currCol = interiorC;
-                }else if(layout[i][j] > 2){
+                }else if(layout[i][j] > 0){
                     currCol = wallC;
-                } else if (layout[i][j] < -3){
+                } else if (layout[i][j] < -2){
                     currCol = windowC;
                 } else if (layout[i][j] == -2){
                     currCol = doorC;
@@ -66,14 +64,12 @@ public class ImageHandler {
 
                 for (int l = 0; l < FACTOR; l++) {
                     for (int k = 0; k < FACTOR; k++) {
-                        int xCoord = (x * FACTOR) + k;
-                        int yCoord = (y * FACTOR) + l;
+                        int xCoord = (j * FACTOR) + k;
+                        int yCoord = (i * FACTOR) + l;
                         image.setRGB(xCoord, yCoord, currCol);
                     }
                 }
-                x++;
             }
-            y++;
         }
 
         String directory = room.isLevel() ? Config.get().LEVELTHUMBNAILPATH() : Config.get().CREATIVETHUMBNAILPATH();

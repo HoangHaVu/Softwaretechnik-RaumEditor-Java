@@ -117,10 +117,10 @@ public class Validator {
             
         }
         
-        room.getRoomPreview().setStartX(this.smallestX);
-        room.getRoomPreview().setStartY(this.smallestY);
-        room.getRoomPreview().setHeight(this.highestY - this.smallestY + 1);
-        room.getRoomPreview().setWidth(this.highestX - this.smallestX + 1); 
+        room.setStartX(this.smallestX);
+        room.setStartY(this.smallestY);
+        room.setHeight(this.highestY - this.smallestY + 1);
+        room.setWidth(this.highestX - this.smallestX + 1);
         return true;
     }
 

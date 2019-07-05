@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.user.User;
 import roomieboomie.business.user.UserException;
-import roomieboomie.persistence.JsonWritingException;
+import roomieboomie.persistence.exception.JsonWritingException;
 
 
 public class LoginController {
