@@ -1,4 +1,4 @@
-package roomieboomie.persistence;
+package roomieboomie.persistence.exception;
 
 /**
  * Exception, wenn JSON-Datei nicht geloescht werden kann

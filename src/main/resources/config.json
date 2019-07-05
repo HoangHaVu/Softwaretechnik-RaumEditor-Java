@@ -12,5 +12,13 @@
     "bgColor": "#808080",
     "interiorColor": "#008000",
     "wallColor": "#000000",
-    "maxItemLength": "19"
+    "maxItemLength": "19",
+    "layoutInterior": "0",
+    "layoutExterior": "-1", 
+    "editorMinWall": "1",
+    "editorDoor": "-2",
+    "editorMaxWindow": "-3",
+    "gameDoor": "-2",
+    "gameWindow": "-3",
+    "gameWall": "-4"
 }

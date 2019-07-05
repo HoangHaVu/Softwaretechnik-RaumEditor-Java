@@ -90,7 +90,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/HighscoreView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 700, 600);
-                    HighscoreController highscoreController= loader.getController();
+                    HighscoreController highscoreController = loader.getController();
                     highscoreController.setSwitcher(this);
                     highscoreController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(s);
