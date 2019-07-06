@@ -134,11 +134,11 @@ public class RootController {
                 layoutEditorController2.refreshView();
                 break;
             case "PlaceableEditor":
-                PlaceableEditorController2 placeableEditorController=new PlaceableEditorController2(roomieBoomieManager.getRoomEditor());
-                //Scene scen = new Scene(placeableEditorController.getView(), 1000, 600); TODO
-                //primaryStage.setScene(scen); TODO
+                /*PlaceableEditorController placeableEditorController=new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
+                Scene scen = new Scene(placeableEditorController.getView(), 1000, 600); TODO
+                primaryStage.setScene(scen); TODO
                 primaryStage.show();
-                placeableEditorController.refreshView();
+                placeableEditorController.refreshView();*/
                 break;
             case "Play":
                 break;

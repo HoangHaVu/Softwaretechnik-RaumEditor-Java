@@ -1,12 +1,19 @@
 package roomieboomie;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 
 import roomieboomie.business.RoomieBoomieManager;
-import roomieboomie.business.editor.PlaceableEditor;
+import roomieboomie.business.editor.RoomEditor;
+import roomieboomie.business.item.Orientation;
+import roomieboomie.business.item.layout.LayoutItem;
+import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.controller.LayoutEditorController;
 import roomieboomie.controller.RootController;
 
 public class Main extends Application {
@@ -24,38 +31,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
 
-
-        //RoomEditor testEditor = new RoomEditor("test", false, new ArrayList<LayoutItem>(), new ArrayList<PlacableItem>());
-        //LayoutEditorController editRoom = new LayoutEditorController(testEditor);
-        //PlaceableEditorController pec=new PlaceableEditorController(testEditor);
-        //Scene scene = new Scene(pec.getView());
-        //primaryStage.setTitle("RoomieBoomie");
-        //primaryStage.setScene(scene);
-
-        PlacableItem item = new PlacableItem(PlacableItemType.TABLE);
-        PlaceableEditor editor= new PlaceableEditor(item);
-
-        /*
         switcher.setPrimaryStage(primaryStage);
         switcher.setRoomieBoomieManager(roomieBoomieManager);
-        switcher.switchView("PlaceableEditor");
+        switcher.switchView("Login");
+
         primaryStage.show();
-        */
-
-        //PlacableItem tisch = new PlacableItem(PlacableItemType.TABLE);
-        //testEditor.addPlaceableItem(tisch);
-
-
-
-        //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 5, 5, 4, 1, Orientation.LEFT));
-        //testEditor.addItem(new LayoutItem(LayoutItemType.WALL, 4, 5, 6, 1, Orientation.TOP));
-        //testEditor.addItem(new LayoutItem(LayoutItemType.WINDOW, 6, 5, 2, 1, Orientation.RIGHT));
-        //editRoom.refreshView();
-
-        //testEditor.editItem((byte)-3);
-        //testEditor.editItem((byte)1);
-
-
     }
 }
