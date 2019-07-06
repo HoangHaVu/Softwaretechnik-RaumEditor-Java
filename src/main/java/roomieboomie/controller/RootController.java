@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import roomieboomie.business.RoomieBoomieManager;
+import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.exception.JsonLoadingException;
 import roomieboomie.persistence.exception.JsonValidatingException;
@@ -119,10 +120,11 @@ public class RootController {
                 }
                 break;
             case "LayoutEditor":
-                LayoutEditorController layoutEditorController = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
+
                 
-                Scene sce = new Scene(layoutEditorController.getView(), 1000, 600);
-                sce.getStylesheets().add("application.css");
+                LayoutEditorController layoutEditorController = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
+                this.scene = new Scene(layoutEditorController.getView(), 1000, 600);
+                scene.getStylesheets().add("application.css");
                 layoutEditorController.setSwitcher(this);
                 primaryStage.setScene(scene);
                 primaryStage.show();

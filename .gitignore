@@ -190,3 +190,5 @@ src/main/resources/users/D.json
 bin/main/rooms/creative/mein erster Raum.json
 src/main/resources/rooms/creative/mein erster Raum.json
 bin/main/img/thumbnails/noPicture.png
+bin/main/iconsandtextures/concreteTexture.jpg
+bin/main/iconsandtextures/delete.svg
