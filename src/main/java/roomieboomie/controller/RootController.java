@@ -27,6 +27,7 @@ public class RootController {
             case "Login":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/LoginView.fxml"));
+                    
                     Scene s = new Scene((Parent) loader.load(), 700, 500);
                     LoginController loginController = loader.getController();
                     loginController.setSwitcher(this);
@@ -54,7 +55,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/TutorialView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 700, 500);
-                    TutorialController tutorialController= loader.getController();
+                    TutorialController tutorialController = loader.getController();
                     tutorialController.setSwitcher(this);
                     primaryStage.setScene(s);
                     primaryStage.show();
@@ -66,7 +67,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/ChooseEditView.fxml"));
                     Scene s = new Scene((Parent) loader.load(), 700, 500);
-                    ChooseEditorController chooseEditorController= loader.getController();
+                    ChooseEditorController chooseEditorController = loader.getController();
                     chooseEditorController.setSwitcher(this);
                     chooseEditorController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(s);
@@ -129,20 +130,18 @@ public class RootController {
                 Scene scen = new Scene(layoutEditorController2.getView(), 1000, 600);
                 layoutEditorController2.setSwitcher(this);
                 //roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom);
-                layoutEditorController2.loadRoom();
+                //layoutEditorController2.loadRoom();
                 primaryStage.setScene(scen);
                 primaryStage.show();
                 layoutEditorController2.refreshView();
                 break;
-            case "PlaceableEditor_load":
-
-                break;
-            case "PlaceableEditor":
+            case "PlaceableEditor":/*
                 PlaceableEditorController2 placeableEditorController=new PlaceableEditorController2(roomieBoomieManager.getRoomEditor());
                 Scene scene1 = new Scene(placeableEditorController.getView(), 1000, 600);
                 primaryStage.setScene(scene1);
                 primaryStage.show();
                 placeableEditorController.refreshView();
+                */
                 break;
             case "Play":
                 break;

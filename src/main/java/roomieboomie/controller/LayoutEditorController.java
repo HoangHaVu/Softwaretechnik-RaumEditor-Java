@@ -9,6 +9,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
@@ -30,6 +31,7 @@ import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.exception.JsonWritingException;
 
 public class LayoutEditorController {
 
@@ -53,6 +55,7 @@ public class LayoutEditorController {
     StackPane zoomAndScroll;
     String backGroundStyle = ("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
+    String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
 
     public LayoutEditorController(RoomEditor roomEditor) {
@@ -87,8 +90,12 @@ public class LayoutEditorController {
         completeEditor.prefHeightProperty().bind(view.heightProperty());
         raster.setPrefSize(1000, 1000);
 
-        finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            roomEditor.saveRoom();
+        finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
+            try {
+                roomEditor.saveRoom();
+            } catch (JsonWritingException ex) {
+                showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
+            }
             refreshView();
         });
 
@@ -151,7 +158,6 @@ public class LayoutEditorController {
 
             roomEditor.changeLength(newvar.floatValue());
             refreshPreview();
-
         });
 
         view.setOnKeyPressed(e -> {
@@ -172,7 +178,6 @@ public class LayoutEditorController {
 
             actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
             refreshPreview();
-
         });
 
         
@@ -180,7 +185,6 @@ public class LayoutEditorController {
         initInteractionPane();
         refreshHighlightedButton();
         refreshPreview();
-
     }
 
     public void refreshHighlightedButton(){
@@ -279,15 +283,12 @@ public class LayoutEditorController {
                 break;
             }
         }
-        
         return result;
     }
 
     private void actualizeDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
-
         if (this.action != Action.PLACE) return;
 
-        
             try{
                 dragRaster.getChildren().remove(itemPane);
                 dragRaster.add(clearPane, x, y);
@@ -303,7 +304,6 @@ public class LayoutEditorController {
             GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getLength(), roomEditor.getActLayoutItem().getWidth());
         }
 
-        
         try{
             dragRaster.getChildren().remove(clearPane);
             dragRaster.getChildren().add(itemPane);
@@ -313,8 +313,6 @@ public class LayoutEditorController {
     }
 
     public void initInteractionPane(){
-
-
         Pane itemPane = new Pane();
         itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
         for(int i = 0; i < roomEditor.getRoom().getLayout().length; i++){
@@ -327,25 +325,19 @@ public class LayoutEditorController {
                 
                 Pane clearPane = new Pane();
                 
-
                 GridPane.setConstraints(clearPane, x, y);
                 dragRaster.getChildren().add(clearPane);
-
-                
 
                 dragElement.setOnMouseEntered(e->{
                    actualizeDragPane(x, y, itemPane, clearPane, false);
                    actMouseX = x;
                    actMouseY = y;
-
                 });
-                
 
                 dragElement.setOnMouseExited(e->{
-
                     actualizeDragPane(x, y, itemPane, clearPane, true);
-                    
                 });
+
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 clearPane.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 itemPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -373,15 +365,13 @@ public class LayoutEditorController {
             }
         }
     }
+
     public void setSwitcher(RootController rootController){
         this.switcher=rootController;
     }
 
-
-
     public void refreshPreview(){
 
-        
         LayoutItem item = roomEditor.getActLayoutItem();
         int size = 19;
         Image textureImage;
@@ -389,24 +379,21 @@ public class LayoutEditorController {
         if (item.getLength() > size){
             return;
         }
-        
-        
+
         Pane itemPane = new Pane();
         if (item.getType() == LayoutItemType.WALL){
-            textureImage = new Image("iconsandtextures/wallTextureHorizontal.jpg");
+            textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
         } else if(item.getType() == LayoutItemType.WINDOW){
-            textureImage = new Image("iconsandtextures/windowTextureHorizontal.jpg");
+            textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
         } else {
-            textureImage = new Image("iconsandtextures/doorTextureHorizontal.png");
+            textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
         }
         
         ImageView texture = new ImageView(textureImage);
         texture.fitWidthProperty().bind(itemPane.widthProperty());
         texture.fitHeightProperty().bind(itemPane.heightProperty());
-        
-        
-        view.itemPreviewGrid.getChildren().clear();
 
+        view.itemPreviewGrid.getChildren().clear();
 
         for (int x = 0; x < size; x++){
             for (int y = 0; y < size ; y++){
@@ -424,23 +411,18 @@ public class LayoutEditorController {
         GridPane.setConstraints(itemPane, size / 2 - item.getLength() / 2, size / 2 - item.getWidth() / 2, item.getLength(), item.getWidth());
         if (item.getOrientation() == Orientation.TOP|| item.getOrientation() == Orientation.BOTTOM){
             itemPane.setRotate(90);
-            
         }
         
         itemPane.getChildren().add(texture);
         view.itemPreviewGrid.getChildren().add(itemPane);
-                
     }
 
     public void updateItems(ArrayList<LayoutItem> items, byte[][]layout){
-        
-        
 
         for(LayoutItem w : items){
 
             Pane item = new Pane();
             Image textureImage;
-            
             
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -449,17 +431,17 @@ public class LayoutEditorController {
             if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
 
                 GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
-                if (w.getType() == LayoutItemType.WALL) textureImage = new Image("iconsandtextures/wallTextureVertical.jpg");
-                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image("iconsandtextures/windowTextureVertical.jpg");
-                else textureImage = new Image("iconsandtextures/doorTextureVertical.png");
+                if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");
+                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureVertical.jpg");
+                else textureImage = new Image(iconTexturePath + "doorTextureVertical.png");
 
             } else{
 
                 GridPane.setConstraints(item, w.getX(), w.getY(), w.getLength(), w.getWidth());
-                if (w.getType() == LayoutItemType.WALL) textureImage = new Image("iconsandtextures/wallTextureHorizontal.jpg");
-                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image("iconsandtextures/windowTextureHorizontal.jpg");
-                else textureImage = new Image("iconsandtextures/doorTextureHorizontal.png");
-                //textureImage = new Image("iconsandtextures/wallTextureHorizontal.jpg");
+                if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
+                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
+                else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
+                //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
 
             }
 
@@ -477,7 +459,7 @@ public class LayoutEditorController {
 
         byte[][] layout = roomEditor.getRoom().getLayout();
         view.raster.getChildren().clear();
-        Image textureImage = new Image("iconsandtextures/grassTexture.jpg");
+        Image textureImage = new Image(iconTexturePath + "grassTexture.jpg");
 
         for (int i = 0; i < layout.length; i++){
             for(int j = 0; j < layout[0].length; j++){
@@ -491,7 +473,7 @@ public class LayoutEditorController {
 
                 if (i % 20 == 0 && j % 20 == 0){
                     
-                    element.setStyle("-fx-background-image: url('"+"iconsandtextures/raufaserTextur.jpg"+ "'); " +
+                    element.setStyle("-fx-background-image: url('"+ iconTexturePath + "raufaserTextur.jpg"+ "'); " +
                     "-fx-background-position: center center; " +
                     "-fx-background-repeat: stretch;" +
                     "-fx-background-size: cover; -fx-border-color: rgba(0,0,0, .15);" + 
@@ -517,18 +499,21 @@ public class LayoutEditorController {
                 }
             }
         }
-       
-
 
         updateItems(roomEditor.getRoom().getWalls(), layout);
         updateItems(roomEditor.getRoom().getWindows(), layout);
         updateItems(roomEditor.getRoom().getDoors(), layout);
        
     }
-    public void loadRoom(){
 
+    private void showAlert(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
-
 
     public Pane getView(){
         return this.view;

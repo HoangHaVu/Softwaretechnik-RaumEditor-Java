@@ -6,11 +6,9 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
-import roomieboomie.business.room.RoomMaps;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.exception.JsonLoadingException;
 import roomieboomie.persistence.exception.JsonValidatingException;
@@ -34,34 +32,30 @@ public class RoomEditor {
     private byte [][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
 
+    byte layoutDoor = Config.get().EDITORDOORVALUE();
+    byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
+    byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
+    byte maxWindow = Config.get().EDITORMAXWINDOWVALUE();
+    byte minWall = Config.get().EDITORMINWALLVALUE();
+
     /**
-     * Erstellt und initialisiert RoomEditor zum editieren eines bereits vorhandenen Raumes.
-     * @param room
-     * @param layoutItems
-     * @param placableItems
+     * Erstellt und initialisiert RoomEditor zum Editieren eines bereits vorhandenen Raumes.
      */
     public RoomEditor(){
-
         this.placableItemList = new ArrayList<PlacableItem>();
         jsonHandler = new JsonHandler();
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
     }
 
-    
-
- 
-
     /**
      * Erstellt komplett neuen Raum
-     *
      *
      * @param name des neuen Raumes
      * @param level boolean ob der Raum im Level Modus spielbar sein soll
      * @param layoutItems
      * @param placableItems
      */
-    /*
     public RoomEditor(String name, boolean level, ArrayList <LayoutItem> layoutItems, ArrayList<PlacableItem> placableItems){
         jsonHandler = new JsonHandler();
         RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
@@ -69,20 +63,20 @@ public class RoomEditor {
         this.placableItemList = placableItems;
 
         this.room = new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), roomPreview);
-        this.validator = new Validator(room.getLayout());
+        this.validator = new Validator();
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
 
         actPlaceableItem= new PlacableItem(PlacableItemType.TABLE);
         initDefaultPlaceableItem();
     }
-    */
+
     public void loadNewRoom(String name, boolean level){
         RoomPreview newPreview = new RoomPreview(name, level, jsonHandler);
         this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), newPreview);
     }
 
-    public void loadRoom(RoomPreview roomPreview ,boolean editLayout) throws JsonValidatingException, JsonLoadingException{
+    public void loadRoom(RoomPreview roomPreview ,boolean editLayout) throws JsonValidatingException, JsonLoadingException {
         this.room = roomPreview.getFullRoom();
         if (editLayout){
             byte[][] tempLayout = room.getLayout();
@@ -114,45 +108,39 @@ public class RoomEditor {
     }
 
     /**
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
      * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
      */
     private void updatePreviewLayout(){
 
         new Thread() {
             int startX, endX, startY, endY;
-            byte itemNumber = -1;
+            byte itemNumber = layoutExterior;
             public void run(){
                 for (int i = 0; i < previewLayout.length; i++){
                     for(int j = 0; j < previewLayout[0].length; j++){
-                        previewLayout[i][j] = -1;
+                        previewLayout[i][j] = layoutExterior;
                     }
                 }
+
                 if (actLayoutItem == null){
                     return;
                 }
 
                 if (actLayoutItem.getOrientation() == Orientation.BOTTOM || actLayoutItem.getOrientation() == Orientation.TOP){
-
-
                     startY = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
                     endY = startY + actLayoutItem.getWidth();
                     startX = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
                     endX = startX + actLayoutItem.getLength();
                 } else{
-
                     startY = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
                     endY = startY + actLayoutItem.getLength();
                     startX = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
                     endX = startX + actLayoutItem.getWidth();
                 }
 
-                if (actLayoutItem.getType() == LayoutItemType.WALL) itemNumber = 1;
-                else if (actLayoutItem.getType() == LayoutItemType.DOOR) itemNumber = -2;
-                else if (actLayoutItem.getType() == LayoutItemType.WINDOW) itemNumber = -3;
+                if (actLayoutItem.getType() == LayoutItemType.WALL) itemNumber = minWall;
+                else if (actLayoutItem.getType() == LayoutItemType.DOOR) itemNumber = layoutDoor;
+                else if (actLayoutItem.getType() == LayoutItemType.WINDOW) itemNumber = maxWindow;
 
                 for (int i = startY; i < endY; i++) {
                     for (int j = startX; j < endX; j++) {
@@ -166,15 +154,10 @@ public class RoomEditor {
     }
 
     /**
->>>>>>> 065a9cf6dbe355cc8f0acd0471f766f0b6a62e23
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
      * Erstellt LayoutItem über mitgegebenen Typ
-     *
      * @param type bestimmt ob item vom typ Wand, Fenster oder Tür ist
-     *
      */
     public void selectnewItem(LayoutItemType type){
-
         if (type == LayoutItemType.WALL){
             actLayoutItem = new LayoutItem(type, 10, 1, Orientation.TOP);
         } else if (type == LayoutItemType.WINDOW){
@@ -182,7 +165,6 @@ public class RoomEditor {
         } else if (type == LayoutItemType.DOOR){
             actLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
         }
-
     }
 
     public void selectPlaceableItem(PlacableItemType type){
@@ -190,15 +172,12 @@ public class RoomEditor {
 
     }
 
-
     /**
      * dreht aktuell ausgewähltes LayoutItem um 90 Grad
      */
     public void rotateItem(){
-
         actLayoutItem.turnRight();
     }
-
 
     /**
      * platziert aktuell ausgewähltes LayoutItem an übergebenen Koordinaten
@@ -220,16 +199,12 @@ public class RoomEditor {
     /**
      * speichert Raum über JSonHandler falls dieser erfolgreich validiert wurde
      */
-    public void saveRoom(){
+    public void saveRoom() throws JsonWritingException {
         if (!validator.validateRoom(this.room)) return;
 
         room.getRoomPreview().setHighscoreList(new HighscoreList());
         room.getRoomPreview().setJsonHandler(this.jsonHandler);
-        try{
-            jsonHandler.saveRoom(this.room);
-        } catch(Exception e){
-            
-        }
+        jsonHandler.saveRoom(this.room);
     }
 
     /**
@@ -244,7 +219,6 @@ public class RoomEditor {
         room.addPlacableItem(item);
     }
 
-
     /**
      * Löscht item aus Layout und benutzt es als aktuelles Item
      * @param layoutNumber
@@ -255,18 +229,17 @@ public class RoomEditor {
         byte index = 0;
         LayoutItem itemToEdit = null;
 
-
-        if (layoutNumber == -2){
+        if (layoutNumber == layoutDoor){
             roomItemList = room.getDoors();
             index = (byte) ((-layoutNumber) - 2);
         }
 
-        else if (layoutNumber > 0){
+        else if (layoutNumber >= minWall){
             roomItemList = room.getWalls();
             index = (byte) (layoutNumber - 1);
         }
 
-        else if (layoutNumber < -2){
+        else if (layoutNumber <= maxWindow){
             roomItemList = room.getWindows();
             index = (byte) ((-layoutNumber) - 3);
         } else{
@@ -324,8 +297,8 @@ public class RoomEditor {
 
         updatePreviewPlaceableItems();
     }
-    private void updatePreviewPlaceableItems(){
 
+    private void updatePreviewPlaceableItems(){
         new Thread() {
             int startX, endX, startY, endY;
             byte itemNumber = -1;
@@ -335,19 +308,17 @@ public class RoomEditor {
                         previewLayout[i][j] = -1;
                     }
                 }
+
                 if (actPlaceableItem == null){
                     return;
                 }
 
                 if (actPlaceableItem.getOrientation() == Orientation.BOTTOM || actPlaceableItem.getOrientation() == Orientation.TOP){
-
-
                     startY = previewLayout[0].length / 2 -  actPlaceableItem.getWidth() / 2;
                     endY = startY + actPlaceableItem.getWidth();
                     startX = previewLayout.length / 2 - actPlaceableItem.getLength() / 2;
                     endX = startX + actLayoutItem.getLength();
                 } else{
-
                     startY = previewLayout.length / 2 - actPlaceableItem.getLength() / 2;
                     endY = startY + actPlaceableItem.getLength();
                     startX = previewLayout[0].length / 2 -  actPlaceableItem.getWidth() / 2;
@@ -355,7 +326,6 @@ public class RoomEditor {
                 }
 
                 if (actPlaceableItem.getType() == PlacableItemType.TABLE) itemNumber = 1;
-
 
                 for (int i = startY; i < endY; i++) {
                     for (int j = startX; j < endX; j++) {

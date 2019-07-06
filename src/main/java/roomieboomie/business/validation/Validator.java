@@ -9,30 +9,27 @@ import roomieboomie.business.room.Room;
 public class Validator {
 
     private byte[][] layout;
-    private int highestX, highestY, smallestX, smallestY; 
+    private int highestX, highestY, smallestX, smallestY;
 
-
+    public Validator() {
+    }
 
     /**
-     * 
-     * Hinweis: überschreibt Felder im aktuellen Layout, 
+     * Hinweis: überschreibt Felder im aktuellen Layout,
      * und sollte deshalb, erst nach vorherigem erfolgreichen durchlaufen, eine richtige Referenz auf das Layout bekomen.
-     * 
-     * Validiert einzelne Felder im Layout. Solange Felder Valide sind, werden diese auf 0 gesetzt. 
-     * 
+     * <p>
+     * Validiert einzelne Felder im Layout. Solange Felder Valide sind, werden diese auf 0 gesetzt.
+     *
      * @param x X-Koordinate der Tür
      * @param y Y-Koordinate der Tür
-     * 
-     * 
      */
+    private boolean validateLayoutField(byte[][] findInsideRoomLayout, int x, int y) {
 
-    private boolean validateLayoutField(byte[][] findInsideRoomLayout, int x, int y){
-
-        if ( x < 0 || y < 0 || x >= findInsideRoomLayout[0].length || y >= findInsideRoomLayout.length){
+        if (x < 0 || y < 0 || x >= findInsideRoomLayout[0].length || y >= findInsideRoomLayout.length) {
             return false;
         }
 
-        if (findInsideRoomLayout[y][x] != -1){
+        if (findInsideRoomLayout[y][x] != -1) {
             if (x > highestX) highestX = x;
             if (x < smallestX) smallestX = x;
             if (y > highestY) highestY = y;
@@ -40,19 +37,18 @@ public class Validator {
 
             return true;
         }
-        
+
         findInsideRoomLayout[y][x] = 0;
-        
 
         if (
-            validateLayoutField(findInsideRoomLayout, x - 1, y) &&
-            validateLayoutField(findInsideRoomLayout, x + 1, y) &&
-            validateLayoutField(findInsideRoomLayout, x, y - 1) &&
-            validateLayoutField(findInsideRoomLayout, x, y + 1)
-        ){  
+                validateLayoutField(findInsideRoomLayout, x - 1, y) &&
+                        validateLayoutField(findInsideRoomLayout, x + 1, y) &&
+                        validateLayoutField(findInsideRoomLayout, x, y - 1) &&
+                        validateLayoutField(findInsideRoomLayout, x, y + 1)
+        ) {
             return true;
         }
-        
+
         return false;
 
     }
@@ -60,17 +56,17 @@ public class Validator {
     /**
      * Validiert kompletten Raum. Hierbei wird überprüft ob es nur ein Raum mit Tür ist. Sowie alle Wände geschlossen sind, ansonsten return false
      * Ist Raum valide wird noch die Raumhöhe sowie Breite bestimmt, in der RoomPreview eingetragen und true returned.
+     *
      * @param room
      * @return
      */
-
-    public boolean validateRoom(Room room){
+    public boolean validateRoom(Room room) {
         int startX = room.getDoors().get(0).getX();
         int startY = room.getDoors().get(0).getY();
         boolean field1, field2;
-        
-        if(room.getDoors().get(0).getOrientation() == Orientation.TOP || room.getDoors().get(0).getOrientation() == Orientation.BOTTOM){
-            
+
+        if (room.getDoors().get(0).getOrientation() == Orientation.TOP || room.getDoors().get(0).getOrientation() == Orientation.BOTTOM) {
+
             field1 = validateLayoutField(room.getLayout(), startX - 1, startY);
             field2 = validateLayoutField(room.getLayout(), startX + 1, startY);
             byte[][] finalLayout = room.getLayout();
@@ -83,16 +79,12 @@ public class Validator {
             if (field1 && !field2) {
                 validateLayoutField(finalLayout, startX - 1, startY);
                 room.setLayout(finalLayout);
-            }
-            else if( !field1 && field2){
+            } else if (!field1 && field2) {
                 validateLayoutField(finalLayout, startX + 1, startY);
                 room.setLayout(finalLayout);
             } else return false;
-            
-            
 
-        } else{
-
+        } else {
             field1 = validateLayoutField(room.getLayout(), startX, startY - 1);
             field2 = validateLayoutField(room.getLayout(), startX, startY + 1);
             byte[][] finalLayout = room.getLayout();
@@ -102,18 +94,15 @@ public class Validator {
             highestY = 0;
             smallestY = Integer.MAX_VALUE;
 
-            if (field1 && !field2){
+            if (field1 && !field2) {
                 validateLayoutField(finalLayout, startX, startY - 1);
                 room.setLayout(finalLayout);
-            }
-            
-            else if(!field1 && field2){
+            } else if (!field1 && field2) {
                 validateLayoutField(finalLayout, startX, startY + 1);
                 room.setLayout(finalLayout);
             } else return false;
-            
         }
-        
+
         room.setStartX(this.smallestX);
         room.setStartY(this.smallestY);
         room.setHeight(this.highestY - this.smallestY + 1);
@@ -121,19 +110,19 @@ public class Validator {
         return true;
     }
 
-    public boolean validatePlacement (LayoutItem item){
+    public boolean validatePlacement(LayoutItem item) {
         return true;
     }
 
-    public boolean validatePlacement(PlacableItem item){
+    public boolean validatePlacement(PlacableItem item) {
         return true;
     }
 
-    public void setLayout (byte[][]layout){
+    public void setLayout(byte[][] layout) {
         this.layout = layout;
     }
 
-    public byte[][] getLayout(){
+    public byte[][] getLayout() {
         return this.layout;
     }
 

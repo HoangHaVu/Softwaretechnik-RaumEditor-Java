@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import roomieboomie.persistence.Config;
 
 
 /**
@@ -36,7 +37,7 @@ public enum LayoutItemType {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder builder =  factory.newDocumentBuilder();
-            Document doc = builder.parse("src/main/resources/iconsandtextures/"+ filename + ".svg");
+            Document doc = builder.parse( "src/main/resources/" + Config.get().ICONTEXTUREPATH() + filename + ".svg");
             NodeList elemente = doc.getElementsByTagName("path");
             Element element = (Element) elemente.item(0);
 

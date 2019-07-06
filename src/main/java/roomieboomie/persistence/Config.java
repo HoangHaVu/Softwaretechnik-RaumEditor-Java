@@ -21,6 +21,7 @@ public class Config {
     private final String CREATIVEROOMPATH;
     private final String LEVELTHUMBNAILPATH;
     private final String CREATIVETHUMBNAILPATH;
+    private final String ICONTEXTUREPATH;
     private final int SECONDSPERITEM;
     private final int MAXWIDTH;
     private final int MAXHEIGHT;
@@ -30,6 +31,14 @@ public class Config {
     private final String INTERIORCOLOR;
     private final String WALLCOLOR;
     private final int MAXITEMLENGTH;
+    private final byte LAYOUTINTERIOR;
+    private final byte LAYOUTEXTERIOR;
+    private final byte EDITORMINWALL;
+    private final byte EDITORDOOR;
+    private final byte EDITORMAXWINDOW;
+    private final byte GAMEDOOR;
+    private final byte GAMEWINDOW;
+    private final byte GAMEWALL;
 
     /**
      * Privater Konstruktor, um Singleton zu gewaehren
@@ -46,6 +55,7 @@ public class Config {
         CREATIVEROOMPATH = configMap.get("creativeRoomPath");
         LEVELTHUMBNAILPATH = configMap.get("levelThumbnailPath");
         CREATIVETHUMBNAILPATH = configMap.get("creativeThumbnailPath");
+        ICONTEXTUREPATH = configMap.get("iconTexturePath");
         SECONDSPERITEM = Integer.valueOf(configMap.get("secondsPerItem"));
         MAXWIDTH = Integer.valueOf(configMap.get("maxWidth"));
         MAXHEIGHT = Integer.valueOf(configMap.get("maxHeight"));
@@ -55,6 +65,14 @@ public class Config {
         INTERIORCOLOR = configMap.get("interiorColor");
         WALLCOLOR = configMap.get("wallColor");
         MAXITEMLENGTH = Integer.valueOf(configMap.get("maxItemLength"));
+        LAYOUTINTERIOR = Byte.valueOf(configMap.get("layoutInterior"));
+        LAYOUTEXTERIOR = Byte.valueOf(configMap.get("layoutExterior"));
+        EDITORMINWALL = Byte.valueOf(configMap.get("editorMinWall"));
+        EDITORDOOR = Byte.valueOf(configMap.get("editorDoor"));
+        EDITORMAXWINDOW = Byte.valueOf(configMap.get("editorMaxWindow"));
+        GAMEDOOR = Byte.valueOf(configMap.get("gameDoor"));
+        GAMEWINDOW = Byte.valueOf(configMap.get("gameWindow"));
+        GAMEWALL = Byte.valueOf(configMap.get("gameWall"));
     }
 
     private static Config instance;
@@ -87,6 +105,10 @@ public class Config {
 
     public String LEVELTHUMBNAILPATH(){
         return LEVELTHUMBNAILPATH;
+    }
+
+    public String ICONTEXTUREPATH(){
+        return ICONTEXTUREPATH;
     }
 
     public int SECONDSPERITEM() {
@@ -123,5 +145,37 @@ public class Config {
 
     public int MAXITEMLENGTH() {
         return MAXITEMLENGTH;
+    }
+
+    public byte LAYOUTINTERIORVALUE() {
+        return LAYOUTINTERIOR;
+    }
+
+    public byte LAYOUTEXTERIORVALUE() {
+        return LAYOUTEXTERIOR;
+    }
+
+    public byte EDITORMINWALLVALUE() {
+        return EDITORMINWALL;
+    }
+
+    public byte EDITORDOORVALUE() {
+        return EDITORDOOR;
+    }
+
+    public byte EDITORMAXWINDOWVALUE() {
+        return EDITORMAXWINDOW;
+    }
+
+    public byte GAMEDOORVALUE() {
+        return GAMEDOOR;
+    }
+
+    public byte GAMEWINDOWVALUE() {
+        return GAMEWINDOW;
+    }
+
+    public byte GAMEWALLVALUE() {
+        return GAMEWALL;
     }
 }
