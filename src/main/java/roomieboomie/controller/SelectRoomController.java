@@ -45,7 +45,7 @@ public class SelectRoomController {
         switcher.setSelectedRoom(selectedRoom);
         switcher.switchView("LayoutEditor");
 
-        switcher.switchView("Play");
+
     }
     public void setSwitcher(RootController rootController){
         this.switcher = rootController;

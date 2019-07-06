@@ -16,6 +16,7 @@ import java.util.HashMap;
  */
 public class Config {
     private JsonHandler jsonHandler = new JsonHandler();
+    private final String NOPICTUREPATH;
     private final String USERPATH;
     private final String LEVELROOMPATH;
     private final String CREATIVEROOMPATH;
@@ -50,6 +51,7 @@ public class Config {
         } catch (JsonLoadingException e) {
             System.err.println("Fehler beim Laden der configMap.\n" + e.getMessage());
         }
+        NOPICTUREPATH= configMap.get("noPicturePath");
         USERPATH = configMap.get("userPath");
         LEVELROOMPATH = configMap.get("levelRoomPath");
         CREATIVEROOMPATH = configMap.get("creativeRoomPath");
@@ -105,6 +107,9 @@ public class Config {
 
     public String LEVELTHUMBNAILPATH(){
         return LEVELTHUMBNAILPATH;
+    }
+    public String NOPICTUREPATH(){
+        return NOPICTUREPATH;
     }
 
     public String ICONTEXTUREPATH(){
