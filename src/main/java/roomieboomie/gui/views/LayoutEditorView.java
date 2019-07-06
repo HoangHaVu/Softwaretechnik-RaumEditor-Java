@@ -108,13 +108,14 @@ public class LayoutEditorView extends Pane {
         //window.setStyle("-fx-background-color:grey;");
         //door.setStyle("-fx-background-color:grey;");
 
-        
+       
+
         
         wall.minHeightProperty().bind(wall.widthProperty());
         wall.maxHeightProperty().bind(wall.widthProperty());
         wall.setMaxWidth(160);
         wall.prefWidthProperty().bind(selectItemPane.widthProperty().multiply(0.4));
-
+        
         window.minHeightProperty().bind(window.widthProperty());
         window.maxHeightProperty().bind(window.widthProperty());
         window.setMaxWidth(100);

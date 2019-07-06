@@ -262,14 +262,14 @@ public class LayoutEditorController {
                 window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
     
             }
-        } else {
+        } /*else {
                 window.setMaxWidth(100);
                 window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
                 wall.setMaxWidth(100);
                 wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
                 door.setMaxWidth(100);
                 door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-        }
+        }*/
 
     }
 

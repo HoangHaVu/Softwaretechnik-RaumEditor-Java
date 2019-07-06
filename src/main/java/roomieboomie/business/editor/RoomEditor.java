@@ -107,51 +107,6 @@ public class RoomEditor {
         return true;
     }
 
-    /**
-     * Aktualisiert Layout für die Itemvorschau wird vielleicht nicht mehr benötigt
-     */
-    private void updatePreviewLayout(){
-
-        new Thread() {
-            int startX, endX, startY, endY;
-            byte itemNumber = layoutExterior;
-            public void run(){
-                for (int i = 0; i < previewLayout.length; i++){
-                    for(int j = 0; j < previewLayout[0].length; j++){
-                        previewLayout[i][j] = layoutExterior;
-                    }
-                }
-
-                if (actLayoutItem == null){
-                    return;
-                }
-
-                if (actLayoutItem.getOrientation() == Orientation.BOTTOM || actLayoutItem.getOrientation() == Orientation.TOP){
-                    startY = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endY = startY + actLayoutItem.getWidth();
-                    startX = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endX = startX + actLayoutItem.getLength();
-                } else{
-                    startY = previewLayout.length / 2 - actLayoutItem.getLength() / 2;
-                    endY = startY + actLayoutItem.getLength();
-                    startX = previewLayout[0].length / 2 -  actLayoutItem.getWidth() / 2;
-                    endX = startX + actLayoutItem.getWidth();
-                }
-
-                if (actLayoutItem.getType() == LayoutItemType.WALL) itemNumber = minWall;
-                else if (actLayoutItem.getType() == LayoutItemType.DOOR) itemNumber = layoutDoor;
-                else if (actLayoutItem.getType() == LayoutItemType.WINDOW) itemNumber = maxWindow;
-
-                for (int i = startY; i < endY; i++) {
-                    for (int j = startX; j < endX; j++) {
-                        if (i >= 0 && j >= 0 && i < previewLayout[0].length && j < previewLayout.length)
-                            previewLayout[j][i] = itemNumber;
-                    }
-                }
-            }
-
-        }.start();
-    }
 
     /**
      * Erstellt LayoutItem über mitgegebenen Typ
