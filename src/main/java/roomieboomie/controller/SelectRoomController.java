@@ -43,9 +43,9 @@ public class SelectRoomController {
     @FXML
     public void loadRoom(){
         switcher.setSelectedRoom(selectedRoom);
-        switcher.switchView("LayoutEditor");
+        switcher.switchView("LayoutEditor_load");
 
-        switcher.switchView("Play");
+
     }
     public void setSwitcher(RootController rootController){
         this.switcher = rootController;

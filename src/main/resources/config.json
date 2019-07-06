@@ -1,5 +1,6 @@
 {
     "userPath": "src/main/resources/users/",
+    "noPicturePath": "src/main/resources/img/thumbnails/noPicture.png",
     "levelRoomPath": "src/main/resources/rooms/level/",
     "creativeRoomPath": "src/main/resources/rooms/creative/",
     "levelThumbnailPath": "src/main/resources/img/thumbnails/level/",
