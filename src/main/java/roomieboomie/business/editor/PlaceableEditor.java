@@ -5,6 +5,7 @@ import roomieboomie.business.item.placable.Height;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
+import roomieboomie.persistence.Config;
 
 public class PlaceableEditor {
     Room room;
@@ -15,14 +16,13 @@ public class PlaceableEditor {
     PlacableItem currentItem;
 
 
-    public PlaceableEditor(PlacableItem item){
-       currentItem= item;
-       /*
-       flat[][]=new byte[][];
-        small=new byte[][];
-        medium= new byte[][];
-        high=new byte[][];
-*/
+    public PlaceableEditor(){
+
+       flat=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
+        small=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
+        medium= new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
+        high=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
+
 
     }
 
@@ -30,15 +30,16 @@ public class PlaceableEditor {
         currentItem=new PlacableItem(type);
     }
 
-    public void placeActItem(PlacableItem item,int x,int y){
-        item.setY(y);
-        item.setX(x);
-        addItem(item);
+    public void placeActItem(int x,int y){
+
+        currentItem.setY(y);
+        currentItem.setX(x);
+        addItem(currentItem);
     }
 
     public void addItem(PlacableItem currentItem){
-        room.addPlacableItem(currentItem);
-
+        //room.addPlacableItem(currentItem);
+        /*
         for(int o =0;o<small.length;o++){
             for (int p =0;p<small[0].length;p++){
                 System.out.print(small[o][p]+" ");
@@ -46,7 +47,7 @@ public class PlaceableEditor {
             System.out.println("");
 
         }
-
+        */
         int endX, endY;
 
         endX = currentItem.getWidth();
@@ -59,6 +60,7 @@ public class PlaceableEditor {
 
         for(int i=currentItem.getX();i<=endX;i++){
             for(int j=currentItem.getY();j<=endY;j++){
+                small[i][j]=(byte)room.getItemList().size();
 
 
                // if (currentItem.getType().getShelterHeight() >Height.FLAT && currentItem.getType().getShelterHeight()==Height.FLAT)
@@ -88,7 +90,6 @@ public class PlaceableEditor {
 
         }
 
-    rotate();
 
     }
 
