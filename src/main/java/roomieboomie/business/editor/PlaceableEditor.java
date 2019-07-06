@@ -5,7 +5,9 @@ import roomieboomie.business.item.placable.Height;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
+import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.JsonHandler;
 
 public class PlaceableEditor {
     Room room;
@@ -17,6 +19,7 @@ public class PlaceableEditor {
 
 
     public PlaceableEditor(){
+       room= new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), null);
 
        flat=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
         small=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
@@ -38,7 +41,7 @@ public class PlaceableEditor {
     }
 
     public void addItem(PlacableItem currentItem){
-        //room.addPlacableItem(currentItem);
+        room.addPlacableItem(currentItem);
         /*
         for(int o =0;o<small.length;o++){
             for (int p =0;p<small[0].length;p++){
@@ -49,6 +52,8 @@ public class PlaceableEditor {
         }
         */
         int endX, endY;
+        int itemHeight =currentItem.getType().getHeight().getValue();
+        int itemShelterHeight= currentItem.getType().getShelterHeight().getValue();
 
         endX = currentItem.getWidth();
         endY = currentItem.getLength();
@@ -58,9 +63,26 @@ public class PlaceableEditor {
             endY = currentItem.getWidth();
         }
 
+
         for(int i=currentItem.getX();i<=endX;i++){
             for(int j=currentItem.getY();j<=endY;j++){
-                small[i][j]=(byte)room.getItemList().size();
+
+                if(Height.FLAT.getValue()>itemShelterHeight && Height.FLAT.getValue()<=itemHeight ||(Height.FLAT.getValue()==itemHeight && Height.FLAT.getValue()==itemShelterHeight)){
+                    flat[i][j]=(byte)room.getItemList().size();
+                }
+                if(Height.SMALL.getValue()>itemShelterHeight && Height.SMALL.getValue()<=itemHeight ||(Height.SMALL.getValue()==itemHeight && Height.SMALL.getValue()==itemShelterHeight)){
+                    small[i][j]=(byte)room.getItemList().size();
+
+                }
+                if(Height.MEDIUM.getValue()>itemShelterHeight && Height.MEDIUM.getValue()<=itemHeight ||(Height.MEDIUM.getValue()==itemHeight && Height.MEDIUM.getValue()==itemShelterHeight)) {
+                    medium[i][j]=(byte)room.getItemList().size();
+
+                }
+                if(Height.HIGH.getValue()>itemShelterHeight && Height.HIGH.getValue()<=itemHeight ||(Height.HIGH.getValue()==itemHeight && Height.HIGH.getValue()==itemShelterHeight)) {
+                high[i][j]=(byte)room.getItemList().size();
+
+            }
+                //small[i][j]=(byte)room.getItemList().size();
 
 
                // if (currentItem.getType().getShelterHeight() >Height.FLAT && currentItem.getType().getShelterHeight()==Height.FLAT)
@@ -93,8 +115,12 @@ public class PlaceableEditor {
 
     }
 
-    public void rotate(){
+    public void rotateItem(){
+    currentItem.turnRight();
+    }
 
+    public void delete(int x,int y ){
+        PlacableItem item = null;
 
     }
 }

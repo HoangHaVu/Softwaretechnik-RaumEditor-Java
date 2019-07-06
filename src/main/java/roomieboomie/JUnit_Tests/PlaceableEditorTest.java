@@ -24,14 +24,16 @@ public class PlaceableEditorTest {
 
     @Test
     public void placeableItemPlatzieren(){
-        int x=1;
-        int y=1;
+        int x=0;
+        int y=0;
         int endX=table.getLength();
         int endY=table.getWidth();
 
-        placeableEditor.selectPlaceableItem(PlacableItemType.TABLE);
+        placeableEditor.selectPlaceableItem(PlacableItemType.COUCH);
         placeableEditor.placeActItem(x,y);
 
+        placeableEditor.selectPlaceableItem(PlacableItemType.CARPET);
+        placeableEditor.placeActItem(x,y);
         assertTrue(true);
 
     }
