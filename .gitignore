@@ -2,7 +2,6 @@
 /build/
 .idea/
 !gradle-wrapper.jar
-<<<<<<< HEAD
 .DS_Store
 .project
 .classpath
@@ -113,6 +112,17 @@ bin/main/roomieboomie/business/exception/gameExceptions/TooHighForPosition.class
 bin/main/roomieboomie/business/exception/gameExceptions/TooWidthException.class
 bin/main/roomieboomie/controller/PlaceableEditorController$Action.class
 bin/main/roomieboomie/gui/views/PlaceableEditorView.class
-=======
-bin/main/views/LoginView\.fxml
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
+bin/main/roomieboomie/controller/PlaceableEditorController2$Action.class
+bin/main/roomieboomie/business/editor/RoomEditor$2.class
+bin/main/roomieboomie/controller/PlaceableEditorController2.class
+bin/main/roomieboomie/controller/PlaceableEditorController2$1.class
+bin/main/roomieboomie/controller/PlaceableEditorController2$Itemzcell.class
+bin/main/roomieboomie/controller/SelectRoomController$1.class
+bin/main/roomieboomie/controller/SelectRoomController$Itemcell.class
+bin/main/roomieboomie/persistence/ImageHandler.class
+bin/main/roomieboomie/persistence/exception/JsonDeletingException.class
+bin/main/roomieboomie/persistence/exception/JsonLoadingException.class
+bin/main/roomieboomie/persistence/exception/JsonValidatingException.class
+bin/main/roomieboomie/persistence/exception/JsonWritingException.class
+bin/main/roomieboomie/persistence/ImageHandler.class
+

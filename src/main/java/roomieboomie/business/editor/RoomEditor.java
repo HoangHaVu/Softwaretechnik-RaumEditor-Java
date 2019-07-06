@@ -12,15 +12,9 @@ import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.ImageHandler;
 import roomieboomie.persistence.JsonHandler;
-<<<<<<< HEAD
-import roomieboomie.persistence.JsonLoadingException;
-import roomieboomie.persistence.JsonValidatingException;
-import roomieboomie.persistence.JsonWritingException;
-=======
 import roomieboomie.persistence.exception.JsonLoadingException;
 import roomieboomie.persistence.exception.JsonValidatingException;
 import roomieboomie.persistence.exception.JsonWritingException;
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,28 +24,16 @@ import java.util.List;
  */
 public class RoomEditor {
 
-<<<<<<< HEAD
-=======
-    private ArrayList<LayoutItem> layoutItemList;
-
-
-
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
     private ArrayList<PlacableItem> placableItemList;
     private Validator validator;
     private Room room;
     byte[][] placableLayout;
     private JsonHandler jsonHandler;
     private LayoutItem actLayoutItem;
-<<<<<<< HEAD
-    public final int MAXITEMLENGTH = 19;
-    
-=======
     private PlacableItem actPlaceableItem;
     private byte [][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
 
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
     /**
      * Erstellt und initialisiert RoomEditor zum editieren eines bereits vorhandenen Raumes.
      * @param room
@@ -60,24 +42,7 @@ public class RoomEditor {
      */
     public RoomEditor(){
 
-<<<<<<< HEAD
         this.placableItemList = new ArrayList<PlacableItem>();
-=======
-        byte[][] tempLayout = room.getLayout();
-        byte [][]unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
-
-        for (int i = 0; i < tempLayout.length; i++){
-            for(int j = 0; j < tempLayout[0].length; j++){
-                if (tempLayout[i][j] == 0) unvalidatedLayout[i][j] = -1;
-                else unvalidatedLayout[i][j] = tempLayout[i][j];
-            }
-        }
-
-        room.setLayout(unvalidatedLayout);
-        this.room = room;
-        this.layoutItemList = layoutItems;
-        this.placableItemList = placableItems;
->>>>>>> 231090a6a066c794d6317e87ace3645dd495c78f
         jsonHandler = new JsonHandler();
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);

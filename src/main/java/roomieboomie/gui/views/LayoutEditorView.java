@@ -49,14 +49,10 @@ public class LayoutEditorView extends Pane {
     public LayoutEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca"); /*"-fx-background-image: url('"+"iconsandtextures/raufaserTextur.jpg"+ "'); " +
-        "-fx-background-position: center center; " +
-        "-fx-background-repeat: stretch;" +
-        "-fx-background-size: cover");*/
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
         
-        zoomPane.setStyle("-fx-background-color: black;");
-
+        raster.getStyleClass().add("grid");
 
 
         rotate.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("rotate") + "\";");
@@ -65,7 +61,12 @@ public class LayoutEditorView extends Pane {
         window.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("window") + "\";");
         door.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("door") + "\";");
         wall.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("wall") + "\";");
-        
+        rotate.getStyleClass().add("action-button");
+        edit.getStyleClass().add("action-button");
+        delete.getStyleClass().add("action-button");
+        window.getStyleClass().add("action-button");
+        wall.getStyleClass().add("action-button");
+        door.getStyleClass().add("action-button");
 
         /*
         SVGPath shape = new SVGPath();
@@ -143,6 +144,7 @@ public class LayoutEditorView extends Pane {
         finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
         finish.minHeightProperty().bind(finish.widthProperty().divide(5));
         finish.maxHeightProperty().bind(finish.widthProperty().divide(5));
+        finish.getStyleClass().add("submit-button");
         
         selectItemPane.setAlignment(Pos.CENTER);
         selectItemPane.setSpacing(30);
@@ -191,6 +193,7 @@ public class LayoutEditorView extends Pane {
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
+        
         
     }
 
