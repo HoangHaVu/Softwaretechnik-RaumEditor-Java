@@ -25,7 +25,7 @@ public class Game {
 
         gameLayout = room.getLayout();
         this.room = room;
-
+        /*
         for (int i = 0; i < gameLayout.length; i++){
             for (int j = 0; j < gameLayout[0].length; j++){
                 if (gameLayout[i][j] < Config.get().EDITORMAXWINDOWVALUE()){
@@ -40,7 +40,7 @@ public class Game {
                 }
             }
         }
-
+        */
     }
 
     

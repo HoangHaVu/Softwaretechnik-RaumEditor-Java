@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ImageHandler {
@@ -14,12 +15,21 @@ public class ImageHandler {
 
     public static Image getThumbnail(String name, boolean level){
         String directory = level ? Config.get().LEVELTHUMBNAILPATH() : Config.get().CREATIVETHUMBNAILPATH();
+        String noDirectory= Config.get().NOPICTUREPATH();
+
 
         Image image = null;
         try {
+            image = new Image(new FileInputStream(noDirectory));
+        } catch (FileNotFoundException e) {
+            System.out.println("kein Pseudo VorzeigeBild vorhanden - Die Datei noPicture.png wurde nicht gefunden");
+            //e.printStackTrace();
+        }
+        try {
             image = new Image(new FileInputStream(directory + name + "." + FORMAT));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("VorzeigeBild vom Raum wurde nicht gefunden");
+            //e.printStackTrace();
         }
 
         return image;

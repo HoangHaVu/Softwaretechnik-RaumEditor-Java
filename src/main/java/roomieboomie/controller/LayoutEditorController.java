@@ -1,8 +1,13 @@
 package roomieboomie.controller;
 
+import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
+import java.util.EventListener;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -21,7 +27,6 @@ import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
@@ -48,12 +53,12 @@ public class LayoutEditorController {
     Action action;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
-    String backGroundStyle=("-fx-background-color: black;");
+    String backGroundStyle = ("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
-    
-    public LayoutEditorController(RoomEditor roomEditor){
+
+    public LayoutEditorController(RoomEditor roomEditor) {
         view = new LayoutEditorView();
         this.roomPreview = null;
         this.roomEditor = roomEditor;
@@ -78,7 +83,8 @@ public class LayoutEditorController {
         initialize();
     }
 
-    private void initialize(){
+    private void initialize() {
+
         controlBox.prefHeightProperty().bind(view.heightProperty());
         completeEditor.prefWidthProperty().bind(view.widthProperty());
         completeEditor.prefHeightProperty().bind(view.heightProperty());
@@ -92,95 +98,132 @@ public class LayoutEditorController {
             }
             refreshView();
         });
-        
+
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             this.action = Action.EDIT;
-            //edit.setStyle("-fx-border-color: red;");
-            //delete.setStyle("");
+            refreshHighlightedButton();
         });
 
         delete.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            if (this.action == Action.DELETE){
+            if (this.action == Action.DELETE) {
                 this.action = Action.PLACE;
-                //delete.setStyle("");
+                refreshHighlightedButton();
                 return;
             }
-
+            delete.setFocusTraversable(true);
             this.action = Action.DELETE;
-            //delete.setStyle("-fx-border-color: red;");
-            //edit.setStyle("");
+            refreshHighlightedButton();
         });
 
         door.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+
             roomEditor.selectnewItem(LayoutItemType.DOOR);
-            //delete.setStyle("");
-            //edit.setStyle("");
             this.action = Action.PLACE;
+            refreshHighlightedButton();
             refreshPreview();
-            updateSelectedButton();
         });
 
         window.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             roomEditor.selectnewItem(LayoutItemType.WINDOW);
-            //delete.setStyle("");
-            //edit.setStyle("");
             this.action = Action.PLACE;
+            refreshHighlightedButton();
             refreshPreview();
-            updateSelectedButton();
         });
 
         wall.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             roomEditor.selectnewItem(LayoutItemType.WALL);
-            //delete.setStyle("");
-            //edit.setStyle("");
             this.action = Action.PLACE;
+            refreshHighlightedButton();
             refreshPreview();
-            updateSelectedButton();
         });
 
-        rotate.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
+        rotate.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             roomEditor.rotateItem();
             refreshPreview();
         });
 
-        zoomPane.addEventHandler(ZoomEvent.ZOOM, e ->{
+        zoomPane.addEventHandler(ZoomEvent.ZOOM, e -> {
+
             Scale newScale = new Scale();
             newScale.setPivotX(e.getX());
             newScale.setPivotY(e.getY());
-            newScale.setX( zoomPane.getScaleX() * e.getZoomFactor() );
-            newScale.setY( zoomPane.getScaleY() * e.getZoomFactor() );
-
+            newScale.setX(zoomPane.getScaleX() * e.getZoomFactor());
+            newScale.setY(zoomPane.getScaleY() * e.getZoomFactor());
             zoomPane.getTransforms().add(newScale);
 
             e.consume();
         });
 
         sizeSlider.valueProperty().addListener((observable, oldvar, newvar) -> {
-           
+
             roomEditor.changeLength(newvar.floatValue());
             refreshPreview();
         });
-        
-        view.setOnKeyPressed(e ->{
+
+        view.setOnKeyPressed(e -> {
             Pane item = (Pane) getNodeByRowColumnIndex(actMouseY, actMouseX, dragRaster);
-            
+
             Pane clearPane = new Pane();
             GridPane.setConstraints(clearPane, actMouseX, actMouseY);
 
-            if (e.getCode() == KeyCode.D){
+            if (e.getCode() == KeyCode.D) {
                 roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() + 1);
-            } else if(e.getCode() == KeyCode.A){
+            } else if (e.getCode() == KeyCode.A) {
                 roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() - 1);
-            } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S){
+            } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
                 roomEditor.rotateItem();
-            }
+            } 
+
+
+
             actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
             refreshPreview();
         });
 
+        
+
         initInteractionPane();
-        updateSelectedButton();
+        refreshHighlightedButton();
         refreshPreview();
+    }
+
+    public void refreshHighlightedButton(){
+
+        if (this.action == Action.DELETE){
+            delete.getStyleClass().add("selected-button");
+            edit.getStyleClass().remove("selected-button");
+            wall.getStyleClass().remove("selected-button");
+            window.getStyleClass().remove("selected-button");
+            door.getStyleClass().remove("selected-button");
+            updateSelectedButton();
+        } 
+
+        if (this.action == Action.EDIT){
+            edit.getStyleClass().add("selected-button");
+            delete.getStyleClass().remove("selected-button");
+            wall.getStyleClass().remove("selected-button");
+            window.getStyleClass().remove("selected-button");
+            door.getStyleClass().remove("selected-button");
+            updateSelectedButton();
+        }
+
+        if (this.action == Action.PLACE){
+
+            edit.getStyleClass().remove("selected-button");
+            delete.getStyleClass().remove("selected-button");
+            wall.getStyleClass().remove("selected-button");
+            window.getStyleClass().remove("selected-button");
+            door.getStyleClass().remove("selected-button");
+            updateSelectedButton();
+
+            if (roomEditor.getActLayoutItem().getType() == LayoutItemType.DOOR){
+                door.getStyleClass().add("selected-button");
+            } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WINDOW){
+                window.getStyleClass().add("selected-button");
+            }else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WALL){
+                wall.getStyleClass().add("selected-button");
+            }
+        }
     }
 
     public void updateSelectedButton(){
@@ -190,31 +233,44 @@ public class LayoutEditorController {
         door.prefWidthProperty().unbind();
         window.prefWidthProperty().unbind();
 
-        if (item.getType() == LayoutItemType.WALL){
-            wall.setMaxWidth(160);
-            wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-            window.setMaxWidth(100);
-            window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-            door.setMaxWidth(100);
-            door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+        if (this.action == Action.PLACE){
+            if (item.getType() == LayoutItemType.WALL){
 
-        } else if(item.getType() == LayoutItemType.WINDOW){
-            window.setMaxWidth(160);
-            window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-            wall.setMaxWidth(100);
-            wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-            door.setMaxWidth(100);
-            door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+                wall.setMaxWidth(160);
+                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
+                window.setMaxWidth(100);
+                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+                door.setMaxWidth(100);
+                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+    
+            } else if(item.getType() == LayoutItemType.WINDOW){
+    
+                window.setMaxWidth(160);
+                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
+                wall.setMaxWidth(100);
+                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+                door.setMaxWidth(100);
+                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+    
+            } else if (item.getType() == LayoutItemType.DOOR){
+    
+                door.setMaxWidth(160);
+                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
+                wall.setMaxWidth(100);
+                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+                window.setMaxWidth(100);
+                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
+    
+            }
+        } /*else {
+                window.setMaxWidth(100);
+                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
+                wall.setMaxWidth(100);
+                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
+                door.setMaxWidth(100);
+                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
+        }*/
 
-        } else if (item.getType() == LayoutItemType.DOOR){
-            door.setMaxWidth(160);
-            door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-            wall.setMaxWidth(100);
-            wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-            window.setMaxWidth(100);
-            window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-
-        }
     }
 
     public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
@@ -296,6 +352,7 @@ public class LayoutEditorController {
 
                         roomEditor.editItem(roomEditor.getRoom().getLayout()[y][x]);
                         this.action = Action.PLACE;
+                        refreshHighlightedButton();
                         //edit.setStyle("");
                         refreshPreview();
                     }
@@ -369,6 +426,7 @@ public class LayoutEditorController {
             
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
+            item.getStyleClass().add("layout-item");
             //item.setStyle(style);
             if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
 
@@ -409,20 +467,27 @@ public class LayoutEditorController {
                 
                 element.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 element.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
+
+
+                GridPane.setConstraints(element, i, j);
+
                 if (i % 20 == 0 && j % 20 == 0){
                     
-                    element.setStyle(String.format("-fx-background-image: url('%sconcreteTexture.jpg');" +
-                            " -fx-background-position: center center;" +
-                            " -fx-background-repeat: stretch;" +
-                            "-fx-background-size: cover",
-                            iconTexturePath));
-
+                    element.setStyle("-fx-background-image: url('"+ iconTexturePath + "raufaserTextur.jpg"+ "'); " +
+                    "-fx-background-position: center center; " +
+                    "-fx-background-repeat: stretch;" +
+                    "-fx-background-size: cover; -fx-border-color: rgba(0,0,0, .15);" + 
+                    "-fx-border-width: 5 5 5 5;");
+                    
                     GridPane.setConstraints(element, i, j, 20, 20);
-                    /*
-                    element.getChildren().add(texture);
-                    */
+        
+                } 
+                else if (i % 5 == 0 && j % 5 == 0){
+                    element.setStyle("-fx-border-color: rgba(0,0,0, .2);" + 
+                    "-fx-border-width: 1 1 0 1;");
+                    GridPane.setConstraints(element, i, j, 5, 5);
                 }
-                else GridPane.setConstraints(element, i, j);
+              
                 raster.getChildren().add(element);
 
                 if (layout[j][i] == 0){

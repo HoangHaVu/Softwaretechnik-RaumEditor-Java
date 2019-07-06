@@ -73,6 +73,7 @@ public class RoomieBoomieManager {
      */
     public void init() {
         this.roomEditor = new RoomEditor();
+        
         roomEditor.loadNewRoom("mein erster Raum", false);
         this.jsonHandler = new JsonHandler();
 
