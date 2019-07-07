@@ -111,8 +111,8 @@ public class RootController {
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
                     SelectRoomController selectRoomController= loader.getController();
                     selectRoomController.setSwitcher(this);
-                    selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
                     selectRoomController.setCreative(creative);
+                    selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 } catch (IOException e) {

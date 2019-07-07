@@ -58,6 +58,11 @@ public class LayoutEditorController {
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
 
+    /**
+     * Konstruktor des LayoutEditorControllers
+     * die jeweiligen Variablen werden verwiesen
+     * @param roomEditor
+     */
     public LayoutEditorController(RoomEditor roomEditor) {
         view = new LayoutEditorView();
         this.roomPreview = null;
@@ -83,6 +88,10 @@ public class LayoutEditorController {
         initialize();
     }
 
+    /**
+     * Methode initialize setzt die Funktionen für die jeweiligen
+     * Buttons, installiert die ganzen Listener und startet die jeweiligen Nutzer bezogenen Funktionen
+     */
     private void initialize() {
 
         controlBox.prefHeightProperty().bind(view.heightProperty());
@@ -92,11 +101,13 @@ public class LayoutEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
             try {
+                refreshView();
                 roomEditor.saveRoom();
+                switcher.switchView("PlaceableEditor");
             } catch (JsonWritingException ex) {
                 showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
             }
-            refreshView();
+            //refreshView();
         });
 
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -312,6 +323,12 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * diese Methode ist dafür zuständig die Interaktionen des Nutzers visuell anzuzeigen
+     * bedeutet wenn er ein Objekt auswählt und sich entscheidet wohin er es setzt (Objekt Preview)
+     * das Objekt platziert wird
+     * und die jeweiligen Veränderungen im RoomEditor
+     */
     public void initInteractionPane(){
         Pane itemPane = new Pane();
         itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
@@ -366,9 +383,14 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * RootController wird gesetzt
+     * @param rootController
+     */
     public void setSwitcher(RootController rootController){
         this.switcher=rootController;
     }
+
 
     public void refreshPreview(){
 
@@ -417,6 +439,13 @@ public class LayoutEditorController {
         view.itemPreviewGrid.getChildren().add(itemPane);
     }
 
+    /**
+     * Diese Methoden setzt die Items in ein Raster
+     * gibt die Texturen der jeweiligen Items mit deren Texturen
+     *
+     * @param items
+     * @param layout
+     */
     public void updateItems(ArrayList<LayoutItem> items, byte[][]layout){
 
         for(LayoutItem w : items){
@@ -455,6 +484,9 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * updated die View und befüllt das Raster mit der dementsprechenden Farbe des Pixels 
+     */
     public void refreshView(){
 
         byte[][] layout = roomEditor.getRoom().getLayout();
@@ -506,6 +538,11 @@ public class LayoutEditorController {
        
     }
 
+    /**
+     * wirft eine Warnung raus wenn der Raum nicht standardgemäß validiert werden kann
+     * @param title
+     * @param message
+     */
     private void showAlert(String title, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);
