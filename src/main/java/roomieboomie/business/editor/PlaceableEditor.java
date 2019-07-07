@@ -10,9 +10,13 @@ import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.JsonHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static roomieboomie.business.item.placable.PlacableItemType.UNICORN;
+
 public class PlaceableEditor {
+    private ArrayList<PlacableItem> placableItems;
     private Room room;
     private byte[][] flat;
     private byte[][] small;
@@ -22,10 +26,12 @@ public class PlaceableEditor {
 
     public PlaceableEditor(Room room) {
         this.room = room;
+        this.placableItems = room.getPlacableItemList();
         flat = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         small = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         medium = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         high = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
+        currentItem = new PlacableItem(UNICORN);
     }
 
     public void selectPlaceableItem(PlacableItemType type) {
@@ -37,6 +43,7 @@ public class PlaceableEditor {
         currentItem.setX(x);
         addItem(currentItem);
     }
+
 
     public void addItem(PlacableItem currentItem) {
         room.addPlacableItem(currentItem);
@@ -198,5 +205,9 @@ public class PlaceableEditor {
 
     public PlacableItem getCurrentItem() {
         return currentItem;
+    }
+
+    public ArrayList<PlacableItem> getPlacableItems(){
+        return placableItems;
     }
 }

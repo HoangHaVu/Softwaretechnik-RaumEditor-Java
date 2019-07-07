@@ -70,12 +70,13 @@ public class RoomEditor {
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
 
-        placeableEditor = new PlaceableEditor(this.room);
+        this.placeableEditor = new PlaceableEditor(this.room);
     }
 
     public void loadNewRoom(String name, boolean level) {
         RoomPreview newPreview = new RoomPreview(name, level, jsonHandler);
         this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), newPreview);
+        this.placeableEditor = new PlaceableEditor(room);
     }
 
     public void loadRoom(RoomPreview roomPreview, boolean editLayout) throws JsonValidatingException, JsonLoadingException {

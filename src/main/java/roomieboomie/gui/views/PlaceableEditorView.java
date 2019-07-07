@@ -28,7 +28,7 @@ public class PlaceableEditorView extends Pane {
     public ScrollPane scrollableRaster;
     public GridPane itemPreviewGrid = new GridPane();
     public Button finish = new Button("FERTIG");
-
+    public Label objectName = new Label();
     public Button rotate = new Button();
     public Button delete = new Button();
     public Button edit = new Button();
@@ -155,7 +155,7 @@ public class PlaceableEditorView extends Pane {
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
 
         itemPreviewPane.getChildren().add(itemPreviewGrid);
-        buttonPane.getChildren().addAll(regionVerticalForButtons0, listView, regionVerticalForButtons1, regionVerticalForButtons2,
+        buttonPane.getChildren().addAll(objectName,regionVerticalForButtons0, listView, regionVerticalForButtons1, regionVerticalForButtons2,
                 objectInteraction, regionVerticalForButtons3, finish, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
