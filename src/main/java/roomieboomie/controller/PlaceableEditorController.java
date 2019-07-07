@@ -1,6 +1,5 @@
 package roomieboomie.controller;
 
-import java.awt.event.MouseWheelEvent;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class PlaceableEditorController {
 
     private void initialize() {
         items = FXCollections.observableArrayList();
-        for(PlacableItem placableItem : roomEditor.getPlacableItemList()){
+        for (PlacableItem placableItem : roomEditor.getPlacableItemList()) {
             items.add(placableItem);
         }
 
@@ -133,7 +132,6 @@ public class PlaceableEditorController {
             e.consume();
         });
 
-
         view.setOnKeyPressed(e -> {
             Pane item = (Pane) getPlacedObjectPaneByRow(actMouseY, actMouseX, dragRaster);
 
@@ -141,13 +139,12 @@ public class PlaceableEditorController {
             GridPane.setConstraints(clearPane, actMouseX, actMouseY);
 
             if (e.getCode() == KeyCode.D) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() + 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() + 1);
             } else if (e.getCode() == KeyCode.A) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() - 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() - 1);
             } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
                 roomEditor.rotateItem();
             }
-
 
             movePreviewObject(actMouseX, actMouseY, item, clearPane, false);
             refreshPreviewObject();
@@ -171,13 +168,11 @@ public class PlaceableEditorController {
         if (this.action == Action.DELETE) {
             delete.getStyleClass().add("selected-button");
             edit.getStyleClass().remove("selected-button");
-
         }
 
         if (this.action == Action.EDIT) {
             edit.getStyleClass().add("selected-button");
             delete.getStyleClass().remove("selected-button");
-
         }
 
         if (this.action == Action.PLACE) {
@@ -185,22 +180,20 @@ public class PlaceableEditorController {
             edit.getStyleClass().remove("selected-button");
             delete.getStyleClass().remove("selected-button");
 
-
             /*
-            if (roomEditor.getActLayoutItem().getType() == LayoutItemType.DOOR) {
+            if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.DOOR) {
                 door.getStyleClass().add("selected-button");
-            } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WINDOW) {
+            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WINDOW) {
                 window.getStyleClass().add("selected-button");
-            } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WALL) {
+            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WALL) {
                 wall.getStyleClass().add("selected-button");
             }*/
         }
     }
 
-
-
     /**
      * - das Pane vom gesetzten Objekt aus der Vorschau in die eigentliche view
+     *
      * @param row
      * @param column
      * @param gridPane
@@ -222,6 +215,7 @@ public class PlaceableEditorController {
     /**
      * - ist dafür zuständig das jeweilige VorschauObject in der VorschauUmgebung(DragRaster) visuell
      * anhand der x und y Koordinate der Mausposition zu veränder ( koordinaten werden mitegegeben)
+     *
      * @param x
      * @param y
      * @param itemPane
@@ -240,10 +234,10 @@ public class PlaceableEditorController {
 
         if (onlyDel) return;
 
-        if (roomEditor.getActLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getActLayoutItem().getOrientation() == Orientation.BOTTOM) {
-            GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getWidth(), roomEditor.getActLayoutItem().getLength());
+        if (roomEditor.getCurrLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getCurrLayoutItem().getOrientation() == Orientation.BOTTOM) {
+            GridPane.setConstraints(itemPane, x, y, roomEditor.getCurrLayoutItem().getWidth(), roomEditor.getCurrLayoutItem().getLength());
         } else {
-            GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getLength(), roomEditor.getActLayoutItem().getWidth());
+            GridPane.setConstraints(itemPane, x, y, roomEditor.getCurrLayoutItem().getLength(), roomEditor.getCurrLayoutItem().getWidth());
         }
 
         try {
@@ -293,7 +287,7 @@ public class PlaceableEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    if (this.action == Action.PLACE) roomEditor.placeActItem(x, y);
+                    if (this.action == Action.PLACE) roomEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE)
                         roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);
                     else if (this.action == Action.EDIT) {
@@ -324,7 +318,7 @@ public class PlaceableEditorController {
      */
     public void refreshPreviewObject() {
 
-        LayoutItem item = roomEditor.getActLayoutItem();
+        LayoutItem item = roomEditor.getCurrLayoutItem();
         int size = 19;
         Image textureImage;
 
@@ -373,6 +367,7 @@ public class PlaceableEditorController {
      * - new Method selectItemTexture!!! - zum laden der Texture TODO
      * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
      * - und auf der richtigen View angezeigt
+     *
      * @param items
      * @param layout
      */
@@ -419,7 +414,7 @@ public class PlaceableEditorController {
     }
 
     /**
-     * Updated die eigentliche View
+     * Updatet die eigentliche View
      * Setzt jeweils für jedes Pixel die bestimmte Farbe je nachdem was im Byte Array steht
      * Ruft jeweils die Methode setItemsIntoView auf um die gesetzten Objekte anzuzeigen
      */
@@ -474,9 +469,6 @@ public class PlaceableEditorController {
         setItemsIntoView(roomEditor.getRoom().getWalls(), layout);
         setItemsIntoView(roomEditor.getRoom().getWindows(), layout);
         setItemsIntoView(roomEditor.getRoom().getDoors(), layout);
-
-
-
     }
 
     private void showAlert(String title, String message) {
@@ -503,23 +495,21 @@ public class PlaceableEditorController {
             root.getChildren().addAll(image, itemLabel);
         }
 
-
         protected void updateItem(PlacableItem item, boolean empty) {
             super.updateItem(item, empty);
 
             if (!empty) {
                 itemLabel.setText(item.getType().getName());
                 Image i = item.getImage();
-                if (i == null){
-                    String noDirectory= Config.get().NOPICTUREPATH();
+                if (i == null) {
+                    String noDirectory = Config.get().NOPICTUREPATH();
                     try {
                         i = new Image(new FileInputStream(noDirectory));
                         image.setImage(i);
                     } catch (FileNotFoundException e) {
                         System.out.println("Anzeigebild des Objekts wurde nicht gefunden");
                     }
-                }
-                else {
+                } else {
                     image.setImage(i);
                 }
                 this.setGraphic(root);

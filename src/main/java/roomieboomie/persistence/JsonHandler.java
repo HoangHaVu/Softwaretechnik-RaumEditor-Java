@@ -35,7 +35,7 @@ public class JsonHandler {
     /**
      * Erstellt einen neuen JsonHandler
      */
-    public JsonHandler(){
+    public JsonHandler() {
 
     }
 
@@ -43,18 +43,18 @@ public class JsonHandler {
      * Liest Configurations-Attribute aus dem Dateisystem und gibt sie mit ihrem Namen in einer HashMap zurueck
      * @return HashMap mit Attributnamen und -wert
      */
-    HashMap<String,String> getConfigMap() throws JsonLoadingException {
-        HashMap<String,String> configMap = new HashMap<>();
+    HashMap<String, String> getConfigMap() throws JsonLoadingException {
+        HashMap<String, String> configMap = new HashMap<>();
         JsonObject jsonObject = loadFromJson(RESOURCESPATH + CONFIGNAME);
-        for (String s : jsonObject.keySet()){
-            configMap.put(s,jsonObject.getString(s));
+        for (String s : jsonObject.keySet()) {
+            configMap.put(s, jsonObject.getString(s));
         }
         return configMap;
     }
 
     /**
      * Laedt den angegebenen Level-Room aus dem Dateisystem und gibt ihn als Objekt zurueck
-     * @param roomName Name des Raums
+     * @param roomName    Name des Raums
      * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
      * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
@@ -65,7 +65,7 @@ public class JsonHandler {
 
     /**
      * Laedt den angegebenen Creative-Room aus dem Dateisystem und gibt ihn als Objekt zurueck
-     * @param roomName Name des Raums
+     * @param roomName    Name des Raums
      * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
      * @return Room-Objekt inklusive Referenz zur angegebenen RoomPreview
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
@@ -76,7 +76,7 @@ public class JsonHandler {
 
     /**
      * Gibt ein Room-Objekt nach Angabe des Pfades inklusive Dateinamen zurueck
-     * @param fullPath Pfad mit Datenamen und -endung
+     * @param fullPath    Pfad mit Datenamen und -endung
      * @param roomPreview RoomPreview, von der aus der Raum erzeugt wird
      * @return Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      * @throws JsonValidatingException
@@ -92,8 +92,8 @@ public class JsonHandler {
         byte[][] jLayout = new byte[totalHeight][totalWidth];
 
         byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
-        for (int i = 0; i < totalHeight; i++){
-            for (int j = 0; j < totalWidth; j++){
+        for (int i = 0; i < totalHeight; i++) {
+            for (int j = 0; j < totalWidth; j++) {
                 jLayout[i][j] = layoutExterior;
             }
         }
@@ -113,7 +113,7 @@ public class JsonHandler {
         JsonArray itemArray = jsonObject.getJsonArray("placableItemList");
         ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
         for (JsonValue value : itemArray) {
-            String str = String.valueOf(value).replace("\"","");
+            String str = String.valueOf(value).replace("\"", "");
             PlacableItemType type = PlacableItemType.valueOf(str);
             placableItemsList.add(new PlacableItem(type));
         }
@@ -137,10 +137,10 @@ public class JsonHandler {
      * @param jArray JsonArray, das Informationen ueber LayoutItems enthaelt
      * @return ArrayList mit erstellten LayoutItems
      */
-    private ArrayList<LayoutItem> getLayoutItemArray(JsonArray jArray){
+    private ArrayList<LayoutItem> getLayoutItemArray(JsonArray jArray) {
         ArrayList<LayoutItem> arrayList = new ArrayList<>();
 
-        for (JsonValue value : jArray){
+        for (JsonValue value : jArray) {
             JsonObject object = (JsonObject) value;
             LayoutItemType type = LayoutItemType.valueOf(object.getString("type"));
             int x = object.getInt("x");
@@ -163,7 +163,7 @@ public class JsonHandler {
         //layout
         JsonArrayBuilder jLayoutArrBuilder = Json.createArrayBuilder();
         byte[][] layout = room.getEffectiveLayout();
-        for (int i=0; i < layout.length; i++){
+        for (int i = 0; i < layout.length; i++) {
             JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
             for (int j = 0; j < layout[i].length; j++) {
                 arrBuilder.add(layout[i][j]);
@@ -183,7 +183,7 @@ public class JsonHandler {
         //HighscoreList
         JsonArrayBuilder jHighscoreArrBuilder = Json.createArrayBuilder();
         HighscoreList highscoreList = room.getHighscoreList();
-        for (HighscoreRecord record : highscoreList.getList()){
+        for (HighscoreRecord record : highscoreList.getList()) {
             JsonObject recordObject = Json.createObjectBuilder()
                     .add("time", record.getTime())
                     .add("points", record.getPoints())
@@ -206,7 +206,7 @@ public class JsonHandler {
                 .add("totalWidth", room.getLayout()[0].length)
                 .add("totalHeight", room.getLayout().length)
                 .add("placableItemList", jPlacableItemArray)
-                .add("walls",jWallArray)
+                .add("walls", jWallArray)
                 .add("windows", jWindowArray)
                 .add("doors", jDoorArray)
                 .add("highscoreList", jHighscores)
@@ -227,9 +227,9 @@ public class JsonHandler {
      * @param arrayList ArrayList mit PlacableItems
      * @return JsonArray, das den type des Items als String enthaelt
      */
-    private JsonArray getJsonArrayPlacable(ArrayList<PlacableItem> arrayList){
+    private JsonArray getJsonArrayPlacable(ArrayList<PlacableItem> arrayList) {
         JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
-        for (PlacableItem item : arrayList){
+        for (PlacableItem item : arrayList) {
             jPlacableItemArrBuilder.add(item.getType().toString());
         }
         return jPlacableItemArrBuilder.build();
@@ -237,12 +237,13 @@ public class JsonHandler {
 
     /**
      * Erstellt ein JsonArray aus einer LayoutItem-ArrayList
+     *
      * @param arrayList ArrayList mit LayoutItems
      * @return JsonArray, mit den Werten type (String), x, y, orientation (String), length und width
      */
-    private JsonArray getJsonArrayLayout(ArrayList<LayoutItem> arrayList){
+    private JsonArray getJsonArrayLayout(ArrayList<LayoutItem> arrayList) {
         JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
-        for (LayoutItem item : arrayList){
+        for (LayoutItem item : arrayList) {
             JsonObject itemObject = Json.createObjectBuilder()
                     .add("type", item.getType().toString())
                     .add("x", item.getX())
@@ -291,7 +292,7 @@ public class JsonHandler {
         //highscoreList
         JsonArray highscoreArray = jsonObject.getJsonArray("highscoreList");
         HighscoreList jHighscoreList = new HighscoreList();
-        for (JsonValue value : highscoreArray){
+        for (JsonValue value : highscoreArray) {
             JsonObject object = (JsonObject) value;
             int time = object.getInt("time");
             int points = object.getInt("points");
@@ -305,7 +306,7 @@ public class JsonHandler {
         //level
         boolean jLevel = jsonObject.getBoolean("level");
 
-        if(jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)){
+        if (jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)) {
             throw new JsonValidatingException();
         } else {
             return new RoomPreview(jName, jHighscoreList, jNeededScore, jLevel, this);
@@ -379,14 +380,14 @@ public class JsonHandler {
      * @param name Name des Users
      * @return Generiertes User-Objekt
      * @throws JsonValidatingException wenn der Hash-Wert des Files nicht mit den Werten uebereinstimmt.
-     * In diesem Fall wurde das File ausserhalb des Programms bearbeitet.
+     *                                 In diesem Fall wurde das File ausserhalb des Programms bearbeitet.
      */
     public User getUser(String name) throws JsonValidatingException, JsonLoadingException {
         JsonObject jsonObject = loadFromJson(Config.get().USERPATH() + name + ".json");
         String jName = jsonObject.getString("name");
         int jReachedLevel = jsonObject.getInt("reachedLevel");
 
-        if(jsonObject.getInt("hash") != User.testHash(jName, jReachedLevel)){
+        if (jsonObject.getInt("hash") != User.testHash(jName, jReachedLevel)) {
             throw new JsonValidatingException();
         } else {
             return new User(jName, jReachedLevel);
@@ -468,7 +469,7 @@ public class JsonHandler {
 
     /**
      * Speichert ein JsonObjekt im Dateisystem
-     * @param jsonObj JsonObjekt, das gespeichert werden soll
+     * @param jsonObj     JsonObjekt, das gespeichert werden soll
      * @param destination Speicherort des Objekts inklusive Dateinamen
      */
     private void saveAsJson(JsonObject jsonObj, String destination) throws JsonWritingException {

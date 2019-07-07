@@ -1,13 +1,8 @@
 package roomieboomie.controller;
 
-import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -54,7 +48,7 @@ public class LayoutEditorController {
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     String backGroundStyle = ("-fx-background-color: black;");
-    int actMouseX = 0, actMouseY = 0;
+    int currMouseX = 0, currMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
 
@@ -172,20 +166,20 @@ public class LayoutEditorController {
         });
 
         view.setOnKeyPressed(e -> {
-            Pane item = (Pane) getNodeByRowColumnIndex(actMouseY, actMouseX, dragRaster);
+            Pane item = (Pane) getNodeByRowColumnIndex(currMouseY, currMouseX, dragRaster);
 
             Pane clearPane = new Pane();
-            GridPane.setConstraints(clearPane, actMouseX, actMouseY);
+            GridPane.setConstraints(clearPane, currMouseX, currMouseY);
 
             if (e.getCode() == KeyCode.D) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() + 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() + 1);
             } else if (e.getCode() == KeyCode.A) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() - 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() - 1);
             } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
                 roomEditor.rotateItem();
             } 
 
-            actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
+            refreshDragPane(currMouseX, currMouseY, item, clearPane, false);
             refreshPreview();
         });
 
@@ -223,18 +217,18 @@ public class LayoutEditorController {
             door.getStyleClass().remove("selected-button");
             updateSelectedButton();
 
-            if (roomEditor.getActLayoutItem().getType() == LayoutItemType.DOOR){
+            if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.DOOR){
                 door.getStyleClass().add("selected-button");
-            } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WINDOW){
+            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WINDOW){
                 window.getStyleClass().add("selected-button");
-            }else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WALL){
+            }else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WALL){
                 wall.getStyleClass().add("selected-button");
             }
         }
     }
 
     public void updateSelectedButton(){
-        LayoutItem item = roomEditor.getActLayoutItem();
+        LayoutItem item = roomEditor.getCurrLayoutItem();
         
         wall.prefWidthProperty().unbind();
         door.prefWidthProperty().unbind();
@@ -294,14 +288,14 @@ public class LayoutEditorController {
     }
 
     /**
-     *
+     * TODO
      * @param x
      * @param y
      * @param itemPane
      * @param clearPane
      * @param onlyDel
      */
-    private void actualizeDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
+    private void refreshDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
         if (this.action != Action.PLACE) return;
 
             try{
@@ -313,10 +307,10 @@ public class LayoutEditorController {
         
         if (onlyDel) return;
                     
-        if (roomEditor.getActLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getActLayoutItem().getOrientation() == Orientation.BOTTOM ){
-            GridPane.setConstraints(itemPane, x, y,roomEditor.getActLayoutItem().getWidth(),roomEditor.getActLayoutItem().getLength());
+        if (roomEditor.getCurrLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getCurrLayoutItem().getOrientation() == Orientation.BOTTOM ){
+            GridPane.setConstraints(itemPane, x, y,roomEditor.getCurrLayoutItem().getWidth(),roomEditor.getCurrLayoutItem().getLength());
         } else{
-            GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getLength(), roomEditor.getActLayoutItem().getWidth());
+            GridPane.setConstraints(itemPane, x, y, roomEditor.getCurrLayoutItem().getLength(), roomEditor.getCurrLayoutItem().getWidth());
         }
 
         try{
@@ -350,13 +344,13 @@ public class LayoutEditorController {
                 dragRaster.getChildren().add(clearPane);
 
                 dragElement.setOnMouseEntered(e->{
-                   actualizeDragPane(x, y, itemPane, clearPane, false);
-                   actMouseX = x;
-                   actMouseY = y;
+                   refreshDragPane(x, y, itemPane, clearPane, false);
+                   currMouseX = x;
+                   currMouseY = y;
                 });
 
                 dragElement.setOnMouseExited(e->{
-                    actualizeDragPane(x, y, itemPane, clearPane, true);
+                    refreshDragPane(x, y, itemPane, clearPane, true);
                 });
 
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -367,7 +361,7 @@ public class LayoutEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-                    if (this.action == Action.PLACE) roomEditor.placeActItem(x, y);
+                    if (this.action == Action.PLACE) roomEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);
                     else if (this.action == Action.EDIT) {
 
@@ -398,7 +392,7 @@ public class LayoutEditorController {
 
     public void refreshPreview(){
 
-        LayoutItem item = roomEditor.getActLayoutItem();
+        LayoutItem item = roomEditor.getCurrLayoutItem();
         int size = 19;
         Image textureImage;
 

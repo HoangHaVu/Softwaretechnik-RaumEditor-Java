@@ -37,10 +37,10 @@ public class PlaceableEditorTest {
         int endY=table.getWidth();
 
         placeableEditor.selectPlaceableItem(PlacableItemType.COUCH);
-        placeableEditor.placeActItem(x,y);
+        placeableEditor.placeCurrItem(x,y);
 
         placeableEditor.selectPlaceableItem(PlacableItemType.CARPET);
-        placeableEditor.placeActItem(x,y);
+        placeableEditor.placeCurrItem(x,y);
 
         //placeableEditor.delete(x,y);
         //placeableEditor.delete(x,y);

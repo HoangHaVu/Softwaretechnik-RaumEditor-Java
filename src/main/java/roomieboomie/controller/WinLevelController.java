@@ -6,19 +6,23 @@ public class WinLevelController {
     private RoomieBoomieManager roomieBoomieManager;
     private RootController switcher;
 
-    public void playNextLevel(){
+    public void playNextLevel() {
         switcher.switchView("Play");
     }
-    public void backToMenu(){
+
+    public void backToMenu() {
         switcher.switchView("MainMenu");
     }
-    public void rageQuit(){
+
+    public void rageQuit() {
 
     }
-    public void setSwitcher(RootController rootController){
+
+    public void setSwitcher(RootController rootController) {
         this.switcher = rootController;
     }
-    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+
+    public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
         this.roomieBoomieManager = roomieBoomieManager;
     }
 }

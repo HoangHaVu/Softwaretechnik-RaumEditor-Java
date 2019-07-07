@@ -1,10 +1,13 @@
 package roomieboomie.persistence;
 
 import roomieboomie.business.room.Room;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
 import javafx.scene.image.Image;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,29 +16,37 @@ import java.io.IOException;
 public class ImageHandler {
     private final static String FORMAT = "png";
 
-    public static Image getThumbnail(String name, boolean level){
+    /**
+     * Laedt ein Thumbnail zu einem Raum
+     * @param name Name des Raums
+     * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn Kreativ-Modus-Raum
+     * @return Image, das Vorschaubild des Raums beinhaltet
+     */
+    public static Image getThumbnail(String name, boolean level) {
         String directory = level ? Config.get().LEVELTHUMBNAILPATH() : Config.get().CREATIVETHUMBNAILPATH();
-        String noDirectory= Config.get().NOPICTUREPATH();
-
+        String noDirectory = Config.get().NOPICTUREPATH();
 
         Image image = null;
         try {
             image = new Image(new FileInputStream(noDirectory));
         } catch (FileNotFoundException e) {
             System.out.println("kein Pseudo VorzeigeBild vorhanden - Die Datei noPicture.png wurde nicht gefunden");
-            //e.printStackTrace();
         }
+
         try {
             image = new Image(new FileInputStream(directory + name + "." + FORMAT));
         } catch (IOException e) {
-            System.out.println("VorzeigeBild vom Raum wurde nicht gefunden");
-            //e.printStackTrace();
+            System.out.println("Anzeigebild des Raums wurde nicht gefunden");
         }
 
         return image;
     }
 
-    public static void drawThumbnail(Room room){
+    /**
+     * Erstellt ein Thumbnail des Raums
+     * @param room Raum, von dem das Thumbnail erstellt werden soll
+     */
+    public static void drawThumbnail(Room room) {
         byte editorDoor = Config.get().EDITORDOORVALUE();
         byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
         byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
@@ -64,15 +75,15 @@ public class ImageHandler {
 
         for (int i = 0; i < layout.length; i++) {
             for (int j = 0; j < layout[0].length; j++) {
-                if (layout[i][j] == 0){
+                if (layout[i][j] == 0) {
                     currCol = interiorC;
-                }else if(layout[i][j] >= minWall){
+                } else if (layout[i][j] >= minWall) {
                     currCol = wallC;
-                } else if (layout[i][j] <= maxWindow){
+                } else if (layout[i][j] <= maxWindow) {
                     currCol = windowC;
-                } else if (layout[i][j] == editorDoor){
+                } else if (layout[i][j] == editorDoor) {
                     currCol = doorC;
-                } else{
+                } else {
                     currCol = backgroundC;
                 }
 
