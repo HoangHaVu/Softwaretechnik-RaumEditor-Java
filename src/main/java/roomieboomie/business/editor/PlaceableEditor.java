@@ -1,6 +1,7 @@
 package roomieboomie.business.editor;
 
 import roomieboomie.business.item.Orientation;
+import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.placable.Height;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
@@ -9,22 +10,23 @@ import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.Config;
 import roomieboomie.persistence.JsonHandler;
 
+import java.util.List;
+
 public class PlaceableEditor {
-    Room room;
-    byte[][] flat;
-    byte[][] small;
-    byte[][] medium;
-    byte[][] high;
-    PlacableItem currentItem;
+    private Room room;
+    private byte[][] flat;
+    private byte[][] small;
+    private byte[][] medium;
+    private byte[][] high;
+    private PlacableItem currentItem;
 
 
-    public PlaceableEditor(){
-       room= new Room(Config.get().MAXHEIGHT(),Config.get().MAXWIDTH(), null);
-
-       flat=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
-        small=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
-        medium= new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
-        high=new byte[Config.get().MAXHEIGHT()][Config.get().MAXITEMLENGTH()];
+    public PlaceableEditor(Room room){
+       this.room= room;
+       flat=new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
+        small=new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
+        medium= new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
+        high=new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
 
 
     }
@@ -42,15 +44,6 @@ public class PlaceableEditor {
 
     public void addItem(PlacableItem currentItem){
         room.addPlacableItem(currentItem);
-        /*
-        for(int o =0;o<small.length;o++){
-            for (int p =0;p<small[0].length;p++){
-                System.out.print(small[o][p]+" ");
-            }
-            System.out.println("");
-
-        }
-        */
         int endX, endY;
         int itemHeight =currentItem.getType().getHeight().getValue();
         int itemShelterHeight= currentItem.getType().getShelterHeight().getValue();
@@ -103,14 +96,6 @@ public class PlaceableEditor {
             }
 
         }
-        System.out.println("");
-        for(int q =0;q<small.length;q++){
-            for (int w =0;w<small[0].length;w++){
-                System.out.print(small[q][w]+" ");
-            }
-            System.out.println("");
-
-        }
 
 
     }
@@ -119,8 +104,111 @@ public class PlaceableEditor {
     currentItem.turnRight();
     }
 
-    public void delete(int x,int y ){
-        PlacableItem item = null;
+    public void delete() {
+        int x=currentItem.getX();
+        int y=currentItem.getY();
+        boolean del=false;
+        byte itemNumber=0;
+        if(flat[x][y]==0&&small[x][y]==0&&medium[x][y]==0&&high[x][y]==0){
+            return;
+        }
+            if(high[x][y]!=0){
+                itemNumber=high[x][y];
+            }else if(medium[x][y]!=0){
+                itemNumber=medium[x][y];
+            }else if(small[x][y]!=0){
+                itemNumber=small[x][y];
+            }else if(flat[x][y]!=0){
+                itemNumber=flat[x][y];
 
+            }
+
+            currentItem=room.getItemList().get(itemNumber-1);
+
+        int itemHeight =currentItem.getType().getHeight().getValue();
+        int itemShelterHeight= currentItem.getType().getShelterHeight().getValue();
+
+        int endX = currentItem.getWidth();
+        int endY = currentItem.getLength();
+
+        if (currentItem.getOrientation() == Orientation.TOP ||currentItem.getOrientation() == Orientation.BOTTOM ){
+            endX = currentItem.getLength();
+            endY = currentItem.getWidth();
+        }
+
+
+        for(int i=currentItem.getX();i<=endX;i++) {
+            for (int j = currentItem.getY(); j <= endY; j++) {
+
+                if (Height.FLAT.getValue() > itemShelterHeight && Height.FLAT.getValue() <= itemHeight || (Height.FLAT.getValue() == itemHeight && Height.FLAT.getValue() == itemShelterHeight)) {
+                    flat[i][j] = 0;
+                }
+                if (Height.SMALL.getValue() > itemShelterHeight && Height.SMALL.getValue() <= itemHeight || (Height.SMALL.getValue() == itemHeight && Height.SMALL.getValue() == itemShelterHeight)) {
+                    small[i][j] = 0;
+
+                }
+                if (Height.MEDIUM.getValue() > itemShelterHeight && Height.MEDIUM.getValue() <= itemHeight || (Height.MEDIUM.getValue() == itemHeight && Height.MEDIUM.getValue() == itemShelterHeight)) {
+                    medium[i][j] = 0;
+
+                }
+                if (Height.HIGH.getValue() > itemShelterHeight && Height.HIGH.getValue() <= itemHeight || (Height.HIGH.getValue() == itemHeight && Height.HIGH.getValue() == itemShelterHeight)) {
+                    high[i][j] = 0;
+
+
+                }
+
+
+
+            }
+        }
+        for (int o = 0; o < room.getLayout().length; o++){
+            for (int p = 0; p < room.getLayout()[0].length; p++){
+                if (flat[o][p] > itemNumber){
+                    flat[o][p] -= 1;
+                }
+                if (small[o][p] > itemNumber){
+                    small[o][p] -= 1;
+                }
+                if (medium[o][p] > itemNumber){
+                    medium[o][p] -= 1;
+                }
+                if (high[o][p] > itemNumber){
+                    high[o][p] -= 1;
+                }
+            }
+        }
+
+        room.getItemList().remove(currentItem);
+
+    }
+    public void editItem(byte layoutNumber){
+        List<PlacableItem> roomItemList = room.getItemList();
+        byte itemNumber = 0;
+        PlacableItem itemToEdit = null;
+        int x=currentItem.getX();
+        int y= currentItem.getY();
+        if(flat[x][y]==0&&small[x][y]==0&&medium[x][y]==0&&high[x][y]==0){
+            return;
+        }
+        if(high[x][y]!=0){
+            itemNumber=high[x][y];
+        }else if(medium[x][y]!=0){
+            itemNumber=medium[x][y];
+        }else if(small[x][y]!=0){
+            itemNumber=small[x][y];
+        }else if(flat[x][y]!=0){
+            itemNumber=flat[x][y];
+        }
+
+        currentItem=room.getItemList().get(itemNumber-1);
+
+        //itemToEdit = roomItemList.get(index);
+        delete();
+
+        currentItem = itemToEdit;
+    }
+
+    public Room getRoom() {
+        return room;
     }
 }

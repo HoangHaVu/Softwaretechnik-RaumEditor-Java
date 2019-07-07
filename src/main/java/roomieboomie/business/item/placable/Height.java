@@ -3,7 +3,7 @@ package roomieboomie.business.item.placable;
 /**
  * Hoehe eines PlacalbeItems
  */
-public enum Height {
+public enum  Height {
     FLAT(0), SMALL(1), MEDIUM(2), HIGH(3);
 
     private int value;
