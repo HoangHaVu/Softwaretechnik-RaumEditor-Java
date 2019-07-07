@@ -248,7 +248,7 @@ public class JsonHandler {
                     .add("length", item.getLength())
                     .add("width", item.getWidth())
                     .build();
-            jPlacableItemArrBuilder.add(item.getType().toString());
+            jPlacableItemArrBuilder.add(itemObject);
         }
         return jPlacableItemArrBuilder.build();
     }

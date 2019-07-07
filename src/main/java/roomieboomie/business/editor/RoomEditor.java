@@ -158,7 +158,7 @@ public class RoomEditor {
         if (!validator.validateRoom(this.room)) return;
 
         room.getRoomPreview().setHighscoreList(new HighscoreList());
-        room.getRoomPreview().setJsonHandler(this.jsonHandler);
+        //room.getRoomPreview().setJsonHandler(this.jsonHandler);
         jsonHandler.saveRoom(this.room);
     }
 

@@ -165,9 +165,9 @@ public class RoomPreview {
         return testHash(name, neededScore, level, highscoreList);
     }
 
-    public void setJsonHandler(JsonHandler handler){
+    /*public void setJsonHandler(JsonHandler handler){
         this.jsonHandler = handler;
-    }
+    }*/
 
     public void setHighscoreList(HighscoreList list){
         this.highscoreList = list;

@@ -1,6 +1,3 @@
-
-package roomieboomie.JUnit_Tests;
-
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.PlaceableEditor;
@@ -55,7 +52,7 @@ public class PlaceableEditorTest {
 
    @Test
    /**
-    * getestete Funktionen:aufeinanderliegende GegenATAENDE loeschen
+    * getestete Funktionen:aufeinanderliegende Gegenstaende loeschen
     * Beweis:
     */
     public void deleteItems(){
