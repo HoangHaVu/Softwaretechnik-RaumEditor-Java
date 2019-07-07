@@ -1,6 +1,8 @@
 package roomieboomie.controller;
 
 import java.awt.event.MouseWheelEvent;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.EventListener;
 
@@ -48,10 +50,8 @@ public class PlaceableEditorController {
     GridPane completeEditor;
     GridPane controlBox;
     GridPane itemPreview;
-    Pane wall, window, door;
     Button rotate, delete, edit, finish;
     ScrollPane scrollableRaster;
-    Slider sizeSlider;
     Action action;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
@@ -70,11 +70,8 @@ public class PlaceableEditorController {
         this.completeEditor = view.completeEditor;
         this.controlBox = view.controlBox;
         this.itemPreview = view.itemPreviewGrid;
-        this.wall = view.wall;
         this.rotate = view.rotate;
         this.scrollableRaster = view.scrollableRaster;
-        this.window = view.window;
-        this.door = view.door;
         this.action = Action.PLACE;
         this.delete = view.delete;
         this.edit = view.edit;
@@ -125,31 +122,9 @@ public class PlaceableEditorController {
             refreshHighlightedButton();
         });
 
-        door.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-
-            roomEditor.selectnewItem(LayoutItemType.DOOR);
-            this.action = Action.PLACE;
-            refreshHighlightedButton();
-            refreshPreview();
-        });
-
-        window.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            roomEditor.selectnewItem(LayoutItemType.WINDOW);
-            this.action = Action.PLACE;
-            refreshHighlightedButton();
-            refreshPreview();
-        });
-
-        wall.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            roomEditor.selectnewItem(LayoutItemType.WALL);
-            this.action = Action.PLACE;
-            refreshHighlightedButton();
-            refreshPreview();
-        });
-
         rotate.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             roomEditor.rotateItem();
-            refreshPreview();
+            refreshPreviewObject();
         });
 
         zoomPane.addEventHandler(ZoomEvent.ZOOM, e -> {
@@ -166,7 +141,7 @@ public class PlaceableEditorController {
 
 
         view.setOnKeyPressed(e -> {
-            Pane item = (Pane) getNodeByRowColumnIndex(actMouseY, actMouseX, dragRaster);
+            Pane item = (Pane) getPlacedObjectPaneByRow(actMouseY, actMouseX, dragRaster);
 
             Pane clearPane = new Pane();
             GridPane.setConstraints(clearPane, actMouseX, actMouseY);
@@ -180,8 +155,8 @@ public class PlaceableEditorController {
             }
 
 
-            actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
-            refreshPreview();
+            movePreviewObject(actMouseX, actMouseY, item, clearPane, false);
+            refreshPreviewObject();
         });
 
         listView.setCellFactory(new Callback<ListView<PlacableItem>, ListCell<PlacableItem>>() {
@@ -192,9 +167,9 @@ public class PlaceableEditorController {
         });
 
 
-        initInteractionPane();
+        initInteraction();
         refreshHighlightedButton();
-        refreshPreview();
+        refreshPreviewObject();
     }
 
     public void refreshHighlightedButton() {
@@ -202,88 +177,42 @@ public class PlaceableEditorController {
         if (this.action == Action.DELETE) {
             delete.getStyleClass().add("selected-button");
             edit.getStyleClass().remove("selected-button");
-            wall.getStyleClass().remove("selected-button");
-            window.getStyleClass().remove("selected-button");
-            door.getStyleClass().remove("selected-button");
-            updateSelectedButton();
+
         }
 
         if (this.action == Action.EDIT) {
             edit.getStyleClass().add("selected-button");
             delete.getStyleClass().remove("selected-button");
-            wall.getStyleClass().remove("selected-button");
-            window.getStyleClass().remove("selected-button");
-            door.getStyleClass().remove("selected-button");
-            updateSelectedButton();
+
         }
 
         if (this.action == Action.PLACE) {
 
             edit.getStyleClass().remove("selected-button");
             delete.getStyleClass().remove("selected-button");
-            wall.getStyleClass().remove("selected-button");
-            window.getStyleClass().remove("selected-button");
-            door.getStyleClass().remove("selected-button");
-            updateSelectedButton();
 
+
+            /*
             if (roomEditor.getActLayoutItem().getType() == LayoutItemType.DOOR) {
                 door.getStyleClass().add("selected-button");
             } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WINDOW) {
                 window.getStyleClass().add("selected-button");
             } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WALL) {
                 wall.getStyleClass().add("selected-button");
-            }
+            }*/
         }
     }
 
-    public void updateSelectedButton() {
-        LayoutItem item = roomEditor.getActLayoutItem();
 
-        wall.prefWidthProperty().unbind();
-        door.prefWidthProperty().unbind();
-        window.prefWidthProperty().unbind();
 
-        if (this.action == Action.PLACE) {
-            if (item.getType() == LayoutItemType.WALL) {
-
-                wall.setMaxWidth(160);
-                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-                window.setMaxWidth(100);
-                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-                door.setMaxWidth(100);
-                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-
-            } else if (item.getType() == LayoutItemType.WINDOW) {
-
-                window.setMaxWidth(160);
-                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-                wall.setMaxWidth(100);
-                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-                door.setMaxWidth(100);
-                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-
-            } else if (item.getType() == LayoutItemType.DOOR) {
-
-                door.setMaxWidth(160);
-                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
-                wall.setMaxWidth(100);
-                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-                window.setMaxWidth(100);
-                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
-
-            }
-        } /*else {
-                window.setMaxWidth(100);
-                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-                wall.setMaxWidth(100);
-                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-                door.setMaxWidth(100);
-                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-        }*/
-
-    }
-
-    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+    /**
+     * - das Pane vom gesetzten Objekt aus der Vorschau in die eigentliche view
+     * @param row
+     * @param column
+     * @param gridPane
+     * @return
+     */
+    public Node getPlacedObjectPaneByRow(final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
 
@@ -296,7 +225,16 @@ public class PlaceableEditorController {
         return result;
     }
 
-    private void actualizeDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel) {
+    /**
+     * - ist dafür zuständig das jeweilige VorschauObject in der VorschauUmgebung(DragRaster) visuell
+     * anhand der x und y Koordinate der Mausposition zu veränder ( koordinaten werden mitegegeben)
+     * @param x
+     * @param y
+     * @param itemPane
+     * @param clearPane
+     * @param onlyDel
+     */
+    private void movePreviewObject(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel) {
         if (this.action != Action.PLACE) return;
 
         try {
@@ -322,7 +260,12 @@ public class PlaceableEditorController {
         }
     }
 
-    public void initInteractionPane() {
+    /**
+     * - dafür zuständig wie die die view mit den Interaktionen des Nutzers sich verändert
+     * - z.b. was mit dem ausgewählten vorschauObjekt passiert wenn man mit der Maus aus dem Raster rausgeht
+     * - welche Methoden aufgerufen werden wenn das vorschauObjekt(dragElement) gesetzt wird / bewegt wird
+     */
+    public void initInteraction() {
         Pane itemPane = new Pane();
         itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
         for (int i = 0; i < roomEditor.getRoom().getLayout().length; i++) {
@@ -339,13 +282,13 @@ public class PlaceableEditorController {
                 dragRaster.getChildren().add(clearPane);
 
                 dragElement.setOnMouseEntered(e -> {
-                    actualizeDragPane(x, y, itemPane, clearPane, false);
+                    movePreviewObject(x, y, itemPane, clearPane, false);
                     actMouseX = x;
                     actMouseY = y;
                 });
 
                 dragElement.setOnMouseExited(e -> {
-                    actualizeDragPane(x, y, itemPane, clearPane, true);
+                    movePreviewObject(x, y, itemPane, clearPane, true);
                 });
 
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -365,7 +308,7 @@ public class PlaceableEditorController {
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
                         //edit.setStyle("");
-                        refreshPreview();
+                        refreshPreviewObject();
                     }
                     refreshView();
                     e.consume();
@@ -381,7 +324,11 @@ public class PlaceableEditorController {
         this.switcher = rootController;
     }
 
-    public void refreshPreview() {
+    /**
+     * - Texture des Bildes wird nochmal geladen? TODO
+     * - für die Vorschau des Objektes zuständig
+     */
+    public void refreshPreviewObject() {
 
         LayoutItem item = roomEditor.getActLayoutItem();
         int size = 19;
@@ -428,7 +375,14 @@ public class PlaceableEditorController {
         view.itemPreviewGrid.getChildren().add(itemPane);
     }
 
-    public void updateItems(ArrayList<LayoutItem> items, byte[][] layout) {
+    /**
+     * - new Method selectItemTexture!!! - zum laden der Texture TODO
+     * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
+     * - und auf der richtigen View angezeigt
+     * @param items
+     * @param layout
+     */
+    public void setItemsIntoView(ArrayList<LayoutItem> items, byte[][] layout) {
 
         for (LayoutItem w : items) {
 
@@ -470,6 +424,11 @@ public class PlaceableEditorController {
         }
     }
 
+    /**
+     * Updated die eigentliche View
+     * Setzt jeweils für jedes Pixel die bestimmte Farbe je nachdem was im Byte Array steht
+     * Ruft jeweils die Methode setItemsIntoView auf um die gesetzten Objekte anzuzeigen
+     */
     public void refreshView() {
 
         byte[][] layout = roomEditor.getRoom().getLayout();
@@ -514,9 +473,15 @@ public class PlaceableEditorController {
             }
         }
 
-        updateItems(roomEditor.getRoom().getWalls(), layout);
-        updateItems(roomEditor.getRoom().getWindows(), layout);
-        updateItems(roomEditor.getRoom().getDoors(), layout);
+        //updateItems(roomEditor.getRoom().getWalls(), layout);
+        //updateItems(roomEditor.getRoom().getWindows(), layout);
+        //updateItems(roomEditor.getRoom().getDoors(), layout);
+
+        setItemsIntoView(roomEditor.getRoom().getWalls(), layout);
+        setItemsIntoView(roomEditor.getRoom().getWindows(), layout);
+        setItemsIntoView(roomEditor.getRoom().getDoors(), layout);
+
+
 
     }
 
@@ -550,7 +515,19 @@ public class PlaceableEditorController {
 
             if (!empty) {
                 itemLabel.setText(item.getType().toString());
-                image.setImage(item.getImage());
+                Image i = item.getImage();
+                if (i == null){
+                    String noDirectory= Config.get().NOPICTUREPATH();
+                    try {
+                        i = new Image(new FileInputStream(noDirectory));
+                        image.setImage(i);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("VorzeigeBild vom Objekt wurde nicht gefunden");
+                    }
+                }
+                else {
+                    image.setImage(i);
+                }
                 this.setGraphic(root);
             } else {
                 this.setGraphic(null);

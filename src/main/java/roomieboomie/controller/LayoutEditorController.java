@@ -297,6 +297,14 @@ public class LayoutEditorController {
         return result;
     }
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param itemPane
+     * @param clearPane
+     * @param onlyDel
+     */
     private void actualizeDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
         if (this.action != Action.PLACE) return;
 
