@@ -211,4 +211,8 @@ public class PlaceableEditor {
     public Room getRoom() {
         return room;
     }
+
+    public PlacableItem getCurrentItem() {
+        return currentItem;
+    }
 }

@@ -31,6 +31,7 @@ public class RoomEditor {
     private PlacableItem actPlaceableItem;
     private byte [][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
+    private PlaceableEditor placeableEditor;
 
     byte layoutDoor = Config.get().EDITORDOORVALUE();
     byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
@@ -46,6 +47,8 @@ public class RoomEditor {
         jsonHandler = new JsonHandler();
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
+       selectnewPlaceableItem(PlacableItemType.TABLE);
+        initDefaultPlaceableItem();
     }
 
     /**
@@ -67,8 +70,8 @@ public class RoomEditor {
         this.room.setLevel(level);
         selectnewItem(LayoutItemType.WALL);
 
-        actPlaceableItem= new PlacableItem(PlacableItemType.TABLE);
-        initDefaultPlaceableItem();
+
+        placeableEditor=new PlaceableEditor(this.room);
     }
 
     public void loadNewRoom(String name, boolean level){
@@ -122,10 +125,7 @@ public class RoomEditor {
         }
     }
 
-    public void selectPlaceableItem(PlacableItemType type){
 
-
-    }
 
     /**
      * dreht aktuell ausgewähltes LayoutItem um 90 Grad
@@ -291,6 +291,22 @@ public class RoomEditor {
             }
 
         }.start();
+    }
+
+    public PlaceableEditor getPlaceableEditor() {
+        return placeableEditor;
+    }
+
+    public void rotatePlaceableItem(){
+        placeableEditor.rotateItem();
+    }
+    public void selectPlaceableItem(PlacableItemType type){
+        placeableEditor.selectPlaceableItem(type);
+        actPlaceableItem=placeableEditor.getCurrentItem();
+    }
+    public void placePlaceableItem(int x,int y){
+        placeableEditor.placeActItem(x,y);
+
     }
 
 }
