@@ -120,8 +120,6 @@ public class RootController {
                 }
                 break;
             case "LayoutEditor":
-
-                
                 LayoutEditorController layoutEditorController = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController.getView(), 1000, 600);
                 scene.getStylesheets().add("application.css");

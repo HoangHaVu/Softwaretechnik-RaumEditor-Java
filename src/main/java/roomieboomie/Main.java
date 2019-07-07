@@ -36,7 +36,7 @@ public class Main extends Application {
 
         switcher.setPrimaryStage(primaryStage);
         switcher.setRoomieBoomieManager(roomieBoomieManager);
-        switcher.switchView("PlaceableEditor");
+        switcher.switchView("Login");
 
         primaryStage.show();
     }

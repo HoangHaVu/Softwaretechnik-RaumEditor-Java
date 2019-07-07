@@ -516,7 +516,7 @@ public class PlaceableEditorController {
                         i = new Image(new FileInputStream(noDirectory));
                         image.setImage(i);
                     } catch (FileNotFoundException e) {
-                        System.out.println("VorzeigeBild vom Objekt wurde nicht gefunden");
+                        System.out.println("Anzeigebild des Objekts wurde nicht gefunden");
                     }
                 }
                 else {

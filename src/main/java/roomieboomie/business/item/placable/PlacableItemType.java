@@ -78,6 +78,7 @@ public enum PlacableItemType {
         this.scorePoints = scorePoints;
         this.length = length;
         this.width = width;
+        this.name = name;
     }
 
     /**
@@ -155,6 +156,6 @@ public enum PlacableItemType {
      * @return
      */
     public String getName(){
-        return this.name;
+        return name;
     }
 }

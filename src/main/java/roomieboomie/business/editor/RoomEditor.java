@@ -83,7 +83,7 @@ public class RoomEditor {
         this.room = roomPreview.getFullRoom();
         if (editLayout){
             byte[][] tempLayout = room.getLayout();
-            byte[][]unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
+            byte[][] unvalidatedLayout = new byte[tempLayout.length][tempLayout[0].length];
 
         for (int i = 0; i < tempLayout.length; i++){
             for(int j = 0; j < tempLayout[0].length; j++){
