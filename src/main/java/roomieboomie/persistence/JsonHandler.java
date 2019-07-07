@@ -2,6 +2,9 @@ package roomieboomie.persistence;
 
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
+import roomieboomie.business.item.Orientation;
+import roomieboomie.business.item.layout.LayoutItem;
+import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
@@ -106,19 +109,48 @@ public class JsonHandler {
         }
 
         //itemList
-        JsonArray itemArray = jsonObject.getJsonArray("itemList");
-        ArrayList<PlacableItem> placableItemsList = new ArrayList<PlacableItem>();
+        JsonArray itemArray = jsonObject.getJsonArray("placableItemList");
+        ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
         for (JsonValue value : itemArray) {
             String str = String.valueOf(value).replace("\"","");
             PlacableItemType type = PlacableItemType.valueOf(str);
             placableItemsList.add(new PlacableItem(type));
         }
 
-        if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList)) {
+        ArrayList<LayoutItem> walls = getLayoutItemArray(jsonObject.getJsonArray("walls")); //Walls
+
+        ArrayList<LayoutItem> windows = getLayoutItemArray(jsonObject.getJsonArray("windows")); //Windows
+
+        ArrayList<LayoutItem> doors = getLayoutItemArray(jsonObject.getJsonArray("doors")); //Doors
+
+        if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList, walls, windows, doors)) {
             throw new JsonValidatingException();
         } else {
-            return new Room(roomPreview, jLayout, startX, startY, placableItemsList);
+            return new Room(roomPreview, jLayout, startX, startY, placableItemsList, walls, windows, doors);
         }
+    }
+
+    /**
+     * Erstellt eine LayoutItem-ArrayList aus einem gegebenen JsonArray mit den Informationen ueber
+     * type, x, y, orientation, length und width
+     * @param jArray JsonArray, das Informationen ueber LayoutItems enthaelt
+     * @return ArrayList mit erstellten LayoutItems
+     */
+    private ArrayList<LayoutItem> getLayoutItemArray(JsonArray jArray){
+        ArrayList<LayoutItem> arrayList = new ArrayList<>();
+
+        for (JsonValue value : jArray){
+            JsonObject object = (JsonObject) value;
+            LayoutItemType type = LayoutItemType.valueOf(object.getString("type"));
+            int x = object.getInt("x");
+            int y = object.getInt("y");
+            Orientation orientation = Orientation.valueOf(object.getString("orientation"));
+            int length = object.getInt("length");
+            int width = object.getInt("width");
+
+            arrayList.add(new LayoutItem(type, x, y, length, width, orientation));
+        }
+        return arrayList;
     }
 
     /**
@@ -139,12 +171,13 @@ public class JsonHandler {
         }
         JsonArray jLayout = jLayoutArrBuilder.build();
 
-        //PlacableItems
-        JsonArrayBuilder jItemArrBuilder = Json.createArrayBuilder();
-        for (PlacableItem item : room.getItemList()){
-            jItemArrBuilder.add(item.getType().toString());
-        }
-        JsonArray jItemList = jItemArrBuilder.build();
+        JsonArray jPlacableItemArray = getJsonArrayPlacable(room.getPlacableItemList()); //PlacableItems
+
+        JsonArray jWallArray = getJsonArrayLayout(room.getWalls()); //Walls
+
+        JsonArray jWindowArray = getJsonArrayLayout(room.getWindows()); //Windows
+
+        JsonArray jDoorArray = getJsonArrayLayout(room.getDoors()); //Doors
 
         //HighscoreList
         JsonArrayBuilder jHighscoreArrBuilder = Json.createArrayBuilder();
@@ -171,7 +204,10 @@ public class JsonHandler {
                 .add("startY", room.getStartY())
                 .add("totalWidth", room.getLayout()[0].length)
                 .add("totalHeight", room.getLayout().length)
-                .add("itemList", jItemList)
+                .add("placableItemList", jPlacableItemArray)
+                .add("walls",jWallArray)
+                .add("windows", jWindowArray)
+                .add("doors", jDoorArray)
                 .add("highscoreList", jHighscores)
                 .build();
 
@@ -181,6 +217,40 @@ public class JsonHandler {
         } else {
             saveAsJson(jsonObject, Config.get().CREATIVEROOMPATH() + filename);
         }
+    }
+
+    /**
+     * Erstellt ein JsonArray aus einer PlacableItem-ArrayList
+     * @param arrayList ArrayList mit PlacableItems
+     * @return JsonArray, das den type des Items als String enthaelt
+     */
+    private JsonArray getJsonArrayPlacable(ArrayList<PlacableItem> arrayList){
+        JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
+        for (PlacableItem item : arrayList){
+            jPlacableItemArrBuilder.add(item.getType().toString());
+        }
+        return jPlacableItemArrBuilder.build();
+    }
+
+    /**
+     * Erstellt ein JsonArray aus einer LayoutItem-ArrayList
+     * @param arrayList ArrayList mit LayoutItems
+     * @return JsonArray, mit den Werten type (String), x, y, orientation (String), length und width
+     */
+    private JsonArray getJsonArrayLayout(ArrayList<LayoutItem> arrayList){
+        JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
+        for (LayoutItem item : arrayList){
+            JsonObject itemObject = Json.createObjectBuilder()
+                    .add("type", item.getType().toString())
+                    .add("x", item.getX())
+                    .add("y", item.getY())
+                    .add("orientation", item.getOrientation().toString())
+                    .add("length", item.getLength())
+                    .add("width", item.getWidth())
+                    .build();
+            jPlacableItemArrBuilder.add(item.getType().toString());
+        }
+        return jPlacableItemArrBuilder.build();
     }
 
     /**

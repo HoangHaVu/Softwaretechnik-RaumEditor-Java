@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Room {
     private RoomPreview roomPreview;
-    private ArrayList<PlacableItem> itemList;
+    private ArrayList<PlacableItem> placableItemList;
     private ArrayList<LayoutItem> walls;
     private ArrayList<LayoutItem> windows;
     private ArrayList<LayoutItem> doors;
@@ -38,14 +38,18 @@ public class Room {
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
      */
-    public Room(RoomPreview roomPreview, byte[][] layout, int startX, int startY, ArrayList<PlacableItem> itemList) {
+    public Room(RoomPreview roomPreview, byte[][] layout, int startX, int startY, ArrayList<PlacableItem> placableItemList,
+                ArrayList<LayoutItem> walls, ArrayList<LayoutItem> windows, ArrayList<LayoutItem> doors) {
         this.roomPreview = roomPreview;
         this.layout = layout;
         this.startX = startX;
         this.startY = startY;
         this.width = layout[0].length;
         this.height = layout.length;
-        this.itemList = itemList;
+        this.placableItemList = placableItemList;
+        this.walls = walls;
+        this.windows = windows;
+        this.doors = doors;
     }
 
     /**
@@ -57,7 +61,7 @@ public class Room {
     public Room(int totalHeight, int totalWidth, RoomPreview roomPreview){
         this.roomPreview = roomPreview;
         this.layout = new byte[totalHeight][totalWidth];
-        itemList = new ArrayList<>();
+        placableItemList = new ArrayList<>();
         walls = new ArrayList<>();
         doors = new ArrayList<>();
         windows = new ArrayList<>();
@@ -87,16 +91,16 @@ public class Room {
      * Liste mit allen PlacableItems, die im Raum platziert werden muessen
      * @return List mit PlacalbeItem-Objekten
      */
-    public ArrayList<PlacableItem> getItemList() {
-        return itemList;
+    public ArrayList<PlacableItem> getPlacableItemList() {
+        return placableItemList;
     }
 
     /**
      * Setzt die Liste mit allen PlacableItems, die im Raum platziert werden muessen
-     * @param itemList List mit PlacalbeItems
+     * @param placableItemList List mit PlacalbeItems
      */
-    public void setItemList(ArrayList<PlacableItem> itemList) {
-        this.itemList = itemList;
+    public void setPlacableItemList(ArrayList<PlacableItem> placableItemList) {
+        this.placableItemList = placableItemList;
     }
 
     /**
@@ -146,7 +150,7 @@ public class Room {
      * @param placableItem PlacableItem
      */
     public void addPlacableItem(PlacableItem placableItem) {
-        itemList.add(placableItem);
+        placableItemList.add(placableItem);
     }
 
     /**
@@ -381,16 +385,17 @@ public class Room {
      * Kann statisch den HashCode eines Room-Objektes berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
      * erstelltes Room-Objekt mit diesen Attributen haben wuerde
      * @param layout Byte-Array mit dem Grundriss
-     * @param itemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
+     * @param placableItemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
      * @return HashCode
      */
-    public static int testHash(byte[][] layout, List<PlacableItem> itemList){
-        return Arrays.deepHashCode(layout) * itemList.hashCode();
+    public static int testHash(byte[][] layout, ArrayList<PlacableItem> placableItemList, ArrayList<LayoutItem> walls,
+                               ArrayList<LayoutItem> windows, ArrayList<LayoutItem> doors){
+        return Arrays.deepHashCode(layout) * placableItemList.hashCode() * walls.hashCode() * windows.hashCode() * doors.hashCode();
     }
 
     @Override
     public int hashCode() {
-        return testHash(layout, itemList);
+        return testHash(layout, placableItemList, walls, windows, doors);
     }
 
 

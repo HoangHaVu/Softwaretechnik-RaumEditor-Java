@@ -13,7 +13,7 @@ public class RoomItem {
     private int length;
     private int width;
     private Image image;
-    private String textur;
+    private String texture;
 
     /**
      * Neuer RoomItem
@@ -37,9 +37,7 @@ public class RoomItem {
         this.orientation = orientation;
     }
 
-
     /**
-     *
      * @return x-Koordinate
      */
     public int getX() {
@@ -47,7 +45,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @param x x-Koordinate
      */
     public void setX(int x) {
@@ -55,7 +52,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @return y-Koordinate
      */
     public int getY() {
@@ -63,7 +59,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @param y y-Koordinate
      */
     public void setY(int y) {
@@ -71,7 +66,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @return Höhe des Items
      */
     public int getLength() {
@@ -84,7 +78,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @param height Höhe des Items
      */
     public void setHeight(int height) {
@@ -92,7 +85,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @return Breite des Items
      */
     public int getWidth() {
@@ -100,7 +92,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @param width Breite des Items
      */
     public void setWidth(int width) {
@@ -108,7 +99,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @return Richtungswert des Items
      */
     public Orientation getOrientation() {
@@ -139,7 +129,6 @@ public class RoomItem {
     }
 
     /**
-     *
      * @param input
      * @return
      */
@@ -150,13 +139,16 @@ public class RoomItem {
     public Image getImage() {
         return image;
     }
-    public void setImage(Image image){this.image=image;}
 
-    public String getTextur() {
-        return textur;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public void setTextur(String textur) {
-        this.textur = textur;
+    public String getTexture() {
+        return texture;
+    }
+
+    public void setTexture(String texture) {
+        this.texture = texture;
     }
 }

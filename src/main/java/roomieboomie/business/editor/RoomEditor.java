@@ -90,9 +90,9 @@ public class RoomEditor {
         }
         
         room.setLayout(unvalidatedLayout);
-        room.setItemList(new ArrayList<PlacableItem>());
+        room.setPlacableItemList(new ArrayList<PlacableItem>());
         }
-        this.placableItemList = room.getItemList();
+        this.placableItemList = room.getPlacableItemList();
     }
 
     /**

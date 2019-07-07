@@ -24,10 +24,8 @@ import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
-import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.views.PlaceableEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
-import roomieboomie.persistence.Config;
 import roomieboomie.persistence.exception.JsonWritingException;
 
 public class PlaceableEditorController {
@@ -169,7 +167,6 @@ public class PlaceableEditorController {
             roomEditor.selectPlaceableItem(listview.getSelectionModel().getSelectedItem().getType());
             this.action = Action.PLACE;
             refreshPreview();
-
         });
 
         listview.setCellFactory(new Callback<ListView<PlacableItem>, ListCell<PlacableItem>>() {
@@ -198,10 +195,7 @@ public class PlaceableEditorController {
             }
             actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
             refreshPreview();
-
-
         });
-
         initInteractionPane();
         updateSelectedButton();
         refreshPreview();
@@ -215,9 +209,7 @@ public class PlaceableEditorController {
         door.prefWidthProperty().unbind();
         window.prefWidthProperty().unbind();
 
-
         if (item.getType() == LayoutItemType.WALL){
-
             wall.setMaxWidth(160);
             wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
             window.setMaxWidth(100);
@@ -225,10 +217,7 @@ public class PlaceableEditorController {
             door.setMaxWidth(100);
             door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
 
-
-
         } else if(item.getType() == LayoutItemType.WINDOW){
-
             window.setMaxWidth(160);
             window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
             wall.setMaxWidth(100);
@@ -237,7 +226,6 @@ public class PlaceableEditorController {
             door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
 
         } else if (item.getType() == LayoutItemType.DOOR){
-
             door.setMaxWidth(160);
             door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.4));
             wall.setMaxWidth(100);
@@ -246,11 +234,6 @@ public class PlaceableEditorController {
             window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
 
         }
-
-
-
-
-
 
     }
 
@@ -385,13 +368,10 @@ public class PlaceableEditorController {
         //////////////////////////////////   //////////////////////////////////   //////////////////////////////////
 
 
-        String textureName = placeableItem.getTextur();
+        String textureName = placeableItem.getTexture();
 
        // textureImage = new Image("iconsandtextures/" + textureName + "TextureHorizontal.png");
         textureImage = new Image("iconsandtextures/wallTextureHorizontal.jpg");
-
-
-
 
         ////////////////////////////////////////////////////////////////////   //////////////////////////////////
 
@@ -499,10 +479,6 @@ public class PlaceableEditorController {
                     GridPane.setConstraints(element, i, j);
                 raster.getChildren().add(element);
 
-
-
-
-
                 if (layout[j][i] == 0){
 
                     Pane floor = new Pane();
@@ -511,13 +487,8 @@ public class PlaceableEditorController {
                     raster.getChildren().add(floor);
                 }
 
-
-
-
             }
         }
-
-
 
         updateItems(roomEditor.getRoom().getWalls(), layout);
         updateItems(roomEditor.getRoom().getWindows(), layout);
@@ -540,7 +511,6 @@ public class PlaceableEditorController {
             root.getChildren().addAll(image,itemLabel);
         }
 
-
         protected void updateItem(PlacableItem item, boolean empty){
             super.updateItem(item, empty);
 
@@ -553,6 +523,7 @@ public class PlaceableEditorController {
             }
 
         }
+
         public PlacableItem getActPlaceableItem(){
             return getActPlaceableItem();
         }
