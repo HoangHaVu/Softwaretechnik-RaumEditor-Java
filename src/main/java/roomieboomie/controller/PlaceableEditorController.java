@@ -48,7 +48,7 @@ public class PlaceableEditorController {
     Action action;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
-    String backGroundStyle = ("-fx-background-color: black;");
+    String backgroundStyle = ("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
@@ -82,8 +82,8 @@ public class PlaceableEditorController {
 
     private void initialize() {
         items = FXCollections.observableArrayList();
-        for (int i = 0; i < roomEditor.getPlacableItemList().size(); i++) {
-            items.add(roomEditor.getPlacableItemList().get(i));
+        for(PlacableItem placableItem : roomEditor.getPlacableItemList()){
+            items.add(placableItem);
         }
 
         listView.setItems(items);
@@ -542,7 +542,7 @@ public class PlaceableEditorController {
             super.updateItem(item, empty);
 
             if (!empty) {
-                itemLabel.setText(item.getType().toString());
+                itemLabel.setText(item.getType().getName());
                 image.setImage(item.getImage());
                 this.setGraphic(root);
             } else {

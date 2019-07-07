@@ -28,6 +28,7 @@ import java.util.stream.Stream;
  * Schnittstelle zu persistenten Dateien. Kann sowohl gespeicherte {@link User} und {@link Room}s laden und speichern
  */
 public class JsonHandler {
+    private ImageHandler imageHandler = new ImageHandler();
     private final String RESOURCESPATH = "src/main/resources/";
     private final String CONFIGNAME = "config.json";
 
@@ -217,6 +218,8 @@ public class JsonHandler {
         } else {
             saveAsJson(jsonObject, Config.get().CREATIVEROOMPATH() + filename);
         }
+        //Thumbnail speichern
+        imageHandler.drawThumbnail(room);
     }
 
     /**

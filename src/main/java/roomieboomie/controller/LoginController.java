@@ -3,6 +3,8 @@ package roomieboomie.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.user.User;
 import roomieboomie.business.user.UserException;
@@ -17,7 +19,7 @@ public class LoginController {
     @FXML
     private TextField usernameField;
 
-    public void chooseWhichUser(String username){
+    public void chooseWhichUser(String username){ //TODO brauchen wir das?
 
     }
 
@@ -49,6 +51,13 @@ public class LoginController {
             }
             roomieBoomieManager.setCurrentUser(user);
             switcher.switchView("MainMenu");
+        }
+    }
+
+    @FXML
+    private void onKeyPressed(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            toMenu();
         }
     }
 

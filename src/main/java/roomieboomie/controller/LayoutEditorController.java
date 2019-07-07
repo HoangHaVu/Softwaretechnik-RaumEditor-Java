@@ -174,13 +174,9 @@ public class LayoutEditorController {
                 roomEditor.rotateItem();
             } 
 
-
-
             actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
             refreshPreview();
         });
-
-        
 
         initInteractionPane();
         refreshHighlightedButton();

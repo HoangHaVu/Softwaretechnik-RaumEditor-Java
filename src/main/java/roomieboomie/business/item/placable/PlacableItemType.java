@@ -7,39 +7,39 @@ package roomieboomie.business.item.placable;
 public enum PlacableItemType {
 
     DINO(false, false, false, true, Height.SMALL, Height.FLAT,
-            30, 1, 1),
+            30, 1, 1, "Dino"),
     UNICORN(false, false, false, true, Height.SMALL, Height.FLAT,
-            30, 1, 1),
+            30, 1, 1, "Einhorn"),
     PLANT(false, false, false, true, Height.SMALL, Height.FLAT,
-            30, 1, 1),
+            30, 1, 1, "Pflanze"),
     TEDDY(false, false, false, true, Height.SMALL, Height.FLAT,
-            30, 1, 1),
+            30, 1, 1, "Teddy"),
     CARPET(false, true, true, false, Height.FLAT, Height.FLAT,
-            80, 2, 3),
+            80, 2, 3, "Teppich"),
     TABLE(false, true, true, false, Height.MEDIUM, Height.MEDIUM,
-            110, 2, 3),
+            110, 2, 3, "Tisch"),
     TVTABLE(false, true, true, false, Height.SMALL, Height.FLAT,
-            70, 1, 3),
+            70, 1, 3, "Fernsehtisch"),
     STOOL(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            60, 1, 1),
+            60, 1, 1, "Hocker"),
     COUCH(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            110, 3, 2),
+            110, 3, 2, "Sofa"),
     BED(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            110, 3, 2),
+            110, 3, 2, "Bett"),
     LOFTBED(false, false, true, false, Height.HIGH, Height.MEDIUM,
-            150, 3, 2),
+            150, 3, 2, "Hochbett"),
     CLOSET(false, false, true, false, Height.HIGH, Height.FLAT,
-            80, 1, 2),
+            80, 1, 2, "Closet"),
     CORNERSOFA(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            200, 2, 4),
+            200, 2, 4, "Ecksofa"),
     WALLCLOSET(true, true, false, false, Height.HIGH, Height.SMALL,
-            100, 1, 1),
+            100, 1, 1, "Wandschrank"),
     SHELF(true, true, false, false, Height.HIGH, Height.MEDIUM,
-            80, 1, 2),
+            80, 1, 2,"Wandregal"),
     WALLCLOCK(true, false, false, false, Height.HIGH, Height.MEDIUM,
-            30, 1, 1),
+            30, 1, 1, "Wanduhr"),
     WALLPICTURE(true, false, false, false, Height.HIGH, Height.MEDIUM,
-            50, 1, 2);
+            50, 1, 2, "Bild");
 
     private String texture;
     private boolean wallItem;
@@ -51,6 +51,7 @@ public enum PlacableItemType {
     private int scorePoints;
     private int length;
     private int width;
+    private String name;
 
     /**
      * Privater Konstruktor
@@ -63,9 +64,10 @@ public enum PlacableItemType {
      * @param scorePoints Punkte, die das Item im Spiel bringt
      * @param length Laenge
      * @param width Breite
+     * @param name Name fuer GUI-Darstellung
      */
     private PlacableItemType(boolean wallItem, boolean storagePlace, boolean floorItem, boolean storable,
-                             Height height, Height shelterHeight, int scorePoints, int length, int width) {
+                             Height height, Height shelterHeight, int scorePoints, int length, int width, String name) {
         //this.texture = texture; TODO
         this.wallItem = wallItem;
         this.storagePlace = storagePlace;
@@ -146,5 +148,13 @@ public enum PlacableItemType {
      */
     public int getScorePoints() {
         return scorePoints;
+    }
+
+    /**
+     * Gibt den Namen des Types so zurueck, wie er in die GUI dargestellt werden soll, zB "Einhorn" statt "UNICORON"
+     * @return
+     */
+    public String getName(){
+        return this.name;
     }
 }

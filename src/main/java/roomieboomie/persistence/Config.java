@@ -51,7 +51,7 @@ public class Config {
         } catch (JsonLoadingException e) {
             System.err.println("Fehler beim Laden der configMap.\n" + e.getMessage());
         }
-        NOPICTUREPATH= configMap.get("noPicturePath");
+        NOPICTUREPATH = configMap.get("noPicturePath");
         USERPATH = configMap.get("userPath");
         LEVELROOMPATH = configMap.get("levelRoomPath");
         CREATIVEROOMPATH = configMap.get("creativeRoomPath");
@@ -108,6 +108,7 @@ public class Config {
     public String LEVELTHUMBNAILPATH(){
         return LEVELTHUMBNAILPATH;
     }
+
     public String NOPICTUREPATH(){
         return NOPICTUREPATH;
     }
@@ -183,4 +184,5 @@ public class Config {
     public byte GAMEWALLVALUE() {
         return GAMEWALL;
     }
+
 }

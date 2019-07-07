@@ -44,7 +44,6 @@ public class ImageHandler {
 
         final int FACTOR = 10; //TODO MAGIC
 
-        //byte[][] layout = room.getLayout();
         byte[][] layout = room.getEffectiveLayout();
         int startX = room.getStartX();
         int startY = room.getStartY();
