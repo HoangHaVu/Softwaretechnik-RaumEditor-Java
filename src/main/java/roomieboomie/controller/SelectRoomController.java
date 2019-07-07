@@ -43,7 +43,7 @@ public class SelectRoomController {
     @FXML
     public void loadRoom(){
         switcher.setSelectedRoom(selectedRoom);
-        switcher.switchView("LayoutEditor");
+        switcher.switchView("LayoutEditor_load");
 
 
     }
