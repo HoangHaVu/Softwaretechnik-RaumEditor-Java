@@ -93,9 +93,9 @@ public class RoomEditor {
         }
         
         room.setLayout(unvalidatedLayout);
-        room.setItemList(new ArrayList<PlacableItem>());
+        room.setPlacableItemList(new ArrayList<PlacableItem>());
         }
-        this.placableItemList = room.getItemList();
+        this.placableItemList = room.getPlacableItemList();
     }
 
     /**
@@ -158,7 +158,7 @@ public class RoomEditor {
         if (!validator.validateRoom(this.room)) return;
 
         room.getRoomPreview().setHighscoreList(new HighscoreList());
-        room.getRoomPreview().setJsonHandler(this.jsonHandler);
+        //room.getRoomPreview().setJsonHandler(this.jsonHandler);
         jsonHandler.saveRoom(this.room);
     }
 

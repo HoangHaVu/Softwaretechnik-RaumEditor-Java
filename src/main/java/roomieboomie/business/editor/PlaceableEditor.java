@@ -61,18 +61,18 @@ public class PlaceableEditor {
             for(int j=currentItem.getY();j<=endY;j++){
 
                 if(Height.FLAT.getValue()>itemShelterHeight && Height.FLAT.getValue()<=itemHeight ||(Height.FLAT.getValue()==itemHeight && Height.FLAT.getValue()==itemShelterHeight)){
-                    flat[i][j]=(byte)room.getItemList().size();
+                    flat[i][j]=(byte)room.getPlacableItemList().size();
                 }
                 if(Height.SMALL.getValue()>itemShelterHeight && Height.SMALL.getValue()<=itemHeight ||(Height.SMALL.getValue()==itemHeight && Height.SMALL.getValue()==itemShelterHeight)){
-                    small[i][j]=(byte)room.getItemList().size();
+                    small[i][j]=(byte)room.getPlacableItemList().size();
 
                 }
                 if(Height.MEDIUM.getValue()>itemShelterHeight && Height.MEDIUM.getValue()<=itemHeight ||(Height.MEDIUM.getValue()==itemHeight && Height.MEDIUM.getValue()==itemShelterHeight)) {
-                    medium[i][j]=(byte)room.getItemList().size();
+                    medium[i][j]=(byte)room.getPlacableItemList().size();
 
                 }
                 if(Height.HIGH.getValue()>itemShelterHeight && Height.HIGH.getValue()<=itemHeight ||(Height.HIGH.getValue()==itemHeight && Height.HIGH.getValue()==itemShelterHeight)) {
-                high[i][j]=(byte)room.getItemList().size();
+                high[i][j]=(byte)room.getPlacableItemList().size();
 
             }
                 //small[i][j]=(byte)room.getItemList().size();
@@ -123,7 +123,7 @@ public class PlaceableEditor {
 
             }
 
-            currentItem=room.getItemList().get(itemNumber-1);
+            currentItem=room.getPlacableItemList().get(itemNumber-1);
 
         int itemHeight =currentItem.getType().getHeight().getValue();
         int itemShelterHeight= currentItem.getType().getShelterHeight().getValue();
@@ -178,11 +178,11 @@ public class PlaceableEditor {
             }
         }
 
-        room.getItemList().remove(currentItem);
+        room.getPlacableItemList().remove(currentItem);
 
     }
     public void editItem(byte layoutNumber){
-        List<PlacableItem> roomItemList = room.getItemList();
+        List<PlacableItem> roomItemList = room.getPlacableItemList();
         byte itemNumber = 0;
         PlacableItem itemToEdit = null;
         int x=currentItem.getX();
@@ -200,7 +200,7 @@ public class PlaceableEditor {
             itemNumber=flat[x][y];
         }
 
-        currentItem=room.getItemList().get(itemNumber-1);
+        currentItem=room.getPlacableItemList().get(itemNumber-1);
 
         //itemToEdit = roomItemList.get(index);
         delete();

@@ -1,5 +1,3 @@
-package roomieboomie.JUnit_Tests;
-
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.RoomEditor;

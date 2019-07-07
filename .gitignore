@@ -11,3 +11,6 @@ build.gradle
 .settings/org.eclipse.buildship.core.prefs
 .settings/org.eclipse.jdt.core.prefs
 .vscode/launch.json
+/src/main/resources/users/*
+/src/main/resources/rooms/creative/*
+/src/main/resources/img/thumbnails/creative/*
