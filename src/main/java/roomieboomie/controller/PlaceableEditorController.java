@@ -464,10 +464,6 @@ public class PlaceableEditorController {
                 element.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 if (i % 20 == 0 && j % 20 == 0){
 
-                    element.setStyle("-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
-                            "-fx-background-position: center center; " +
-                            "-fx-background-repeat: stretch;" +
-                            "-fx-background-size: cover");
 
 
                     GridPane.setConstraints(element, i, j, 20, 20);
