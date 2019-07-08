@@ -92,6 +92,7 @@ public class PlaceableEditorController {
         listView.setItems(items);
         listView.setOnMouseClicked(event -> {
             selectedItem = listView.getSelectionModel().getSelectedItem();
+            placeableEditor.selectPlaceableItem(selectedItem.getType());
             refreshPreviewObject();
         });
 
@@ -378,6 +379,7 @@ public class PlaceableEditorController {
     /**
      * - new Method selectItemTexture!!! - zum laden der Texture TODO
      * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
+     * - bestimmt auch diese Fläche des Objektes also die Breite und die Länge des Objektes und wie das angezeigt wird
      * - und auf der richtigen View angezeigt
      *
      * @param items
