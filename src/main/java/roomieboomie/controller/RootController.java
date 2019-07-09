@@ -111,8 +111,8 @@ public class RootController {
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
                     SelectRoomController selectRoomController= loader.getController();
                     selectRoomController.setSwitcher(this);
-                    selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
                     selectRoomController.setCreative(creative);
+                    selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 } catch (IOException e) {
@@ -120,8 +120,6 @@ public class RootController {
                 }
                 break;
             case "LayoutEditor":
-
-                
                 LayoutEditorController layoutEditorController = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController.getView(), 1000, 600);
                 scene.getStylesheets().add("application.css");
@@ -133,6 +131,7 @@ public class RootController {
             case "LayoutEditor_load":
                 LayoutEditorController layoutEditorController_load = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController_load.getView(), 1000, 600);
+                scene.getStylesheets().add("application.css");
                 layoutEditorController_load.setSwitcher(this);
                 try {
                     roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom,true);
@@ -145,13 +144,13 @@ public class RootController {
                 primaryStage.show();
                 layoutEditorController_load.refreshView();
                 break;
-            case "PlaceableEditor":/*
-                PlaceableEditorController2 placeableEditorController=new PlaceableEditorController2(roomieBoomieManager.getRoomEditor());
+            case "PlaceableEditor":
+                PlaceableEditorController placeableEditorController=new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
                 Scene scene1 = new Scene(placeableEditorController.getView(), 1000, 600);
                 primaryStage.setScene(scene1);
                 primaryStage.show();
                 placeableEditorController.refreshView();
-                */
+
                 break;
             case "Play":
                 break;

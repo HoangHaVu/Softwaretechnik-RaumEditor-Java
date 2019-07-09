@@ -42,6 +42,12 @@ public class RoomPreview {
         this.jsonHandler = jsonHandler;
     }
 
+    /**
+     * Erstellt einen neues RoomPreview-Objekt.
+     * @param name Name des Raums
+     * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
+     * @param highscoreList Highscore-Liste fuer den Room
+     */
     public RoomPreview(String name, boolean level, JsonHandler jsonHandler){
         this.name = name;
         this.level = level;
@@ -165,9 +171,9 @@ public class RoomPreview {
         return testHash(name, neededScore, level, highscoreList);
     }
 
-    public void setJsonHandler(JsonHandler handler){
+    /*public void setJsonHandler(JsonHandler handler){
         this.jsonHandler = handler;
-    }
+    }*/
 
     public void setHighscoreList(HighscoreList list){
         this.highscoreList = list;

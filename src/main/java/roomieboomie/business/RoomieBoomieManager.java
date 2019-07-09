@@ -12,7 +12,6 @@ import roomieboomie.business.user.UserMap;
 import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.exception.JsonLoadingException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -69,12 +68,12 @@ public class RoomieBoomieManager {
     }
 
     /**
-     * initialisiert alle benötigten Attribute
+     * initialisiert alle benötigten Attribute //TODO warum nicht einfach in den Konstruktor?
      */
     public void init() {
         this.roomEditor = new RoomEditor();
         
-        roomEditor.loadNewRoom("mein erster Raum", false);
+        roomEditor.loadNewRoom("meinRaum", false);
         this.jsonHandler = new JsonHandler();
 
         try {
@@ -93,7 +92,7 @@ public class RoomieBoomieManager {
     }
 
     /**
-     * startet ein neues Game Session
+     * startet eine neue Game-Session
      */
     public void initGame() {
     } //TODO

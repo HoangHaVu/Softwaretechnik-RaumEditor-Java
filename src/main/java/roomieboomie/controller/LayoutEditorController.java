@@ -48,11 +48,16 @@ public class LayoutEditorController {
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     String backGroundStyle = ("-fx-background-color: black;");
-    int actMouseX = 0, actMouseY = 0;
+    int currMouseX = 0, currMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     HashSet<String> currentlyActiveKeys;
 
 
+    /**
+     * Konstruktor des LayoutEditorControllers
+     * die jeweiligen Variablen werden verwiesen
+     * @param roomEditor
+     */
     public LayoutEditorController(RoomEditor roomEditor) {
         view = new LayoutEditorView();
         this.roomEditor = roomEditor;
@@ -78,6 +83,10 @@ public class LayoutEditorController {
         initialize();
     }
 
+    /**
+     * Methode initialize setzt die Funktionen für die jeweiligen
+     * Buttons, installiert die ganzen Listener und startet die jeweiligen Nutzer bezogenen Funktionen
+     */
     private void initialize() {
 
         controlBox.prefHeightProperty().bind(view.heightProperty());
@@ -87,11 +96,13 @@ public class LayoutEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
             try {
+                refreshView();
                 roomEditor.saveRoom();
+                switcher.switchView("PlaceableEditor");
             } catch (JsonWritingException ex) {
                 showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
             }
-            refreshView();
+            //refreshView();
         });
 
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -161,15 +172,15 @@ public class LayoutEditorController {
         });
 
         view.setOnKeyPressed(e -> {
-            Pane item = (Pane) getNodeByRowColumnIndex(actMouseY, actMouseX, dragRaster);
+            Pane item = (Pane) getNodeByRowColumnIndex(currMouseY, currMouseX, dragRaster);
 
             Pane clearPane = new Pane();
-            GridPane.setConstraints(clearPane, actMouseX, actMouseY);
+            GridPane.setConstraints(clearPane, currMouseX, currMouseY);
 
             if (e.getCode() == KeyCode.D) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() + 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() + 1);
             } else if (e.getCode() == KeyCode.A) {
-                roomEditor.getActLayoutItem().setLength(roomEditor.getActLayoutItem().getLength() - 1);
+                roomEditor.getCurrLayoutItem().setLength(roomEditor.getCurrLayoutItem().getLength() - 1);
             } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
                 roomEditor.rotateItem();
             } 
@@ -181,7 +192,7 @@ public class LayoutEditorController {
             
             //scrollableRaster.removeEventHandler(ScrollEvent.SCROLL, scrollHandler);
 
-            actualizeDragPane(actMouseX, actMouseY, item, clearPane, false);
+            refreshDragPane(currMouseX, currMouseY, item, clearPane, false);
             refreshPreview();
         });
         view.setOnKeyReleased(e ->{
@@ -189,8 +200,6 @@ public class LayoutEditorController {
             
             //scrollableRaster.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
         });
-
-        
 
         initInteractionPane();
         refreshHighlightedButton();
@@ -226,18 +235,18 @@ public class LayoutEditorController {
             door.getStyleClass().remove("selected-button");
             updateSelectedButton();
 
-            if (roomEditor.getActLayoutItem().getType() == LayoutItemType.DOOR){
+            if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.DOOR){
                 door.getStyleClass().add("selected-button");
-            } else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WINDOW){
+            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WINDOW){
                 window.getStyleClass().add("selected-button");
-            }else if (roomEditor.getActLayoutItem().getType() == LayoutItemType.WALL){
+            }else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WALL){
                 wall.getStyleClass().add("selected-button");
             }
         }
     }
 
     public void updateSelectedButton(){
-        LayoutItem item = roomEditor.getActLayoutItem();
+        LayoutItem item = roomEditor.getCurrLayoutItem();
         
         wall.prefWidthProperty().unbind();
         door.prefWidthProperty().unbind();
@@ -289,7 +298,15 @@ public class LayoutEditorController {
         return result;
     }
 
-    private void actualizeDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
+    /**
+     * TODO
+     * @param x
+     * @param y
+     * @param itemPane
+     * @param clearPane
+     * @param onlyDel
+     */
+    private void refreshDragPane(int x, int y, Pane itemPane, Pane clearPane, boolean onlyDel){
         if (this.action != Action.PLACE) return;
 
             try{
@@ -301,10 +318,10 @@ public class LayoutEditorController {
         
         if (onlyDel) return;
                     
-        if (roomEditor.getActLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getActLayoutItem().getOrientation() == Orientation.BOTTOM ){
-            GridPane.setConstraints(itemPane, x, y,roomEditor.getActLayoutItem().getWidth(),roomEditor.getActLayoutItem().getLength());
+        if (roomEditor.getCurrLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getCurrLayoutItem().getOrientation() == Orientation.BOTTOM ){
+            GridPane.setConstraints(itemPane, x, y,roomEditor.getCurrLayoutItem().getWidth(),roomEditor.getCurrLayoutItem().getLength());
         } else{
-            GridPane.setConstraints(itemPane, x, y, roomEditor.getActLayoutItem().getLength(), roomEditor.getActLayoutItem().getWidth());
+            GridPane.setConstraints(itemPane, x, y, roomEditor.getCurrLayoutItem().getLength(), roomEditor.getCurrLayoutItem().getWidth());
         }
 
         try{
@@ -315,6 +332,12 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * diese Methode ist dafür zuständig die Interaktionen des Nutzers visuell anzuzeigen
+     * bedeutet wenn er ein Objekt auswählt und sich entscheidet wohin er es setzt (Objekt Preview)
+     * das Objekt platziert wird
+     * und die jeweiligen Veränderungen im RoomEditor
+     */
     public void initInteractionPane(){
         Pane itemPane = new Pane();
         itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
@@ -332,13 +355,13 @@ public class LayoutEditorController {
                 dragRaster.getChildren().add(clearPane);
 
                 dragElement.setOnMouseEntered(e->{
-                   actualizeDragPane(x, y, itemPane, clearPane, false);
-                   actMouseX = x;
-                   actMouseY = y;
+                   refreshDragPane(x, y, itemPane, clearPane, false);
+                   currMouseX = x;
+                   currMouseY = y;
                 });
 
                 dragElement.setOnMouseExited(e->{
-                    actualizeDragPane(x, y, itemPane, clearPane, true);
+                    refreshDragPane(x, y, itemPane, clearPane, true);
                 });
 
                 clearPane.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
@@ -349,7 +372,7 @@ public class LayoutEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-                    if (this.action == Action.PLACE) roomEditor.placeActItem(x, y);
+                    if (this.action == Action.PLACE) roomEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);
                     else if (this.action == Action.EDIT) {
 
@@ -369,13 +392,18 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * RootController wird gesetzt
+     * @param rootController
+     */
     public void setSwitcher(RootController rootController){
         this.switcher=rootController;
     }
 
+
     public void refreshPreview(){
 
-        LayoutItem item = roomEditor.getActLayoutItem();
+        LayoutItem item = roomEditor.getCurrLayoutItem();
         int size = 19;
         Image textureImage;
 
@@ -420,6 +448,13 @@ public class LayoutEditorController {
         view.itemPreviewGrid.getChildren().add(itemPane);
     }
 
+    /**
+     * Diese Methoden setzt die Items in ein Raster
+     * gibt die Texturen der jeweiligen Items mit deren Texturen
+     *
+     * @param items
+     * @param layout
+     */
     public void updateItems(ArrayList<LayoutItem> items, byte[][]layout){
 
         for(LayoutItem w : items){
@@ -456,6 +491,9 @@ public class LayoutEditorController {
         }
     }
 
+    /**
+     * updated die View und befüllt das Raster mit der dementsprechenden Farbe des Pixels 
+     */
     public void refreshView(){
 
         byte[][] layout = roomEditor.getRoom().getLayout();
@@ -506,6 +544,11 @@ public class LayoutEditorController {
        
     }
 
+    /**
+     * wirft eine Warnung raus wenn der Raum nicht standardgemäß validiert werden kann
+     * @param title
+     * @param message
+     */
     private void showAlert(String title, String message){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setGraphic(null);

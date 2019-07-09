@@ -30,20 +30,17 @@ public class PlaceableEditorView extends Pane {
     public ScrollPane scrollableRaster;
     public GridPane itemPreviewGrid = new GridPane();
     public Button finish = new Button("FERTIG");
+    public Label objectName = new Label();
     public Button rotate = new Button();
     public Button delete = new Button();
     public Button edit = new Button();
     public HBox objectInteraction = new HBox();
     public VBox buttonPane = new VBox();
-    public Pane wall = new Pane();
-    public Pane window = new Pane();
-    public Pane door = new Pane();
-    public HBox selectItemPane = new HBox();
     public ZoomableScrollPane zoomPane;
     public StackPane zoomAndScroll;
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
-    public ListView<PlacableItem> listView= new ListView<PlacableItem>();
+    public ListView<PlacableItem> listView=new ListView<PlacableItem>();
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
@@ -54,17 +51,15 @@ public class PlaceableEditorView extends Pane {
                 "-fx-background-size: cover");
         scrollableRaster = new ScrollPane(zoomPane);
 
-        zoomPane.setStyle("-fx-background-color: black;");
-
+        raster.getStyleClass().add("grid");
 
 
         rotate.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("rotate") + "\";");
         edit.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("edit") + "\";");
         delete.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("delete") + "\";");
-        window.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("window") + "\";");
-        door.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("door") + "\";");
-        wall.setStyle("-fx-background-color: black;-fx-shape: \"" + LayoutItemType.svgToPath("wall") + "\";");
-
+        rotate.getStyleClass().add("action-button");
+        edit.getStyleClass().add("action-button");
+        delete.getStyleClass().add("action-button");
 
         /*
         SVGPath shape = new SVGPath();
@@ -108,20 +103,8 @@ public class PlaceableEditorView extends Pane {
 
 
 
-        wall.minHeightProperty().bind(wall.widthProperty());
-        wall.maxHeightProperty().bind(wall.widthProperty());
-        wall.setMaxWidth(160);
-        wall.prefWidthProperty().bind(selectItemPane.widthProperty().multiply(0.4));
 
-        window.minHeightProperty().bind(window.widthProperty());
-        window.maxHeightProperty().bind(window.widthProperty());
-        window.setMaxWidth(100);
-        window.prefWidthProperty().bind(selectItemPane.widthProperty().multiply(0.25));
 
-        door.minHeightProperty().bind(door.widthProperty());
-        door.maxHeightProperty().bind(door.widthProperty());
-        door.setMaxWidth(100);
-        door.prefWidthProperty().bind(selectItemPane.widthProperty().multiply(0.25));
 
         rotate.minHeightProperty().bind(rotate.widthProperty());
         rotate.maxHeightProperty().bind(rotate.widthProperty());
@@ -142,9 +125,8 @@ public class PlaceableEditorView extends Pane {
         finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
         finish.minHeightProperty().bind(finish.widthProperty().divide(5));
         finish.maxHeightProperty().bind(finish.widthProperty().divide(5));
+        finish.getStyleClass().add("submit-button");
 
-        selectItemPane.setAlignment(Pos.CENTER);
-        selectItemPane.setSpacing(30);
         buttonPane.setAlignment(Pos.CENTER);
         objectInteraction.setAlignment(Pos.CENTER);
 
@@ -153,7 +135,7 @@ public class PlaceableEditorView extends Pane {
         interactionRow.setPercentHeight(75);
         previewRow.setPercentHeight(25);
 
-        buttonPane.setSpacing(25);
+        buttonPane.setSpacing(10);
         objectInteraction.setSpacing(30);
         controlBox.setPadding(new Insets(40, 20, 40, 20));
         //controlBox.setSpacing(20);
@@ -178,8 +160,7 @@ public class PlaceableEditorView extends Pane {
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
 
         itemPreviewPane.getChildren().add(itemPreviewGrid);
-        selectItemPane.getChildren().addAll(window, wall, door);
-        buttonPane.getChildren().addAll(regionVerticalForButtons0, selectItemPane, regionVerticalForButtons1, listView, regionVerticalForButtons2,
+        buttonPane.getChildren().addAll(objectName,regionVerticalForButtons0, listView, regionVerticalForButtons1, regionVerticalForButtons2,
                 objectInteraction, regionVerticalForButtons3, finish, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
@@ -188,6 +169,7 @@ public class PlaceableEditorView extends Pane {
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
+
 
     }
 

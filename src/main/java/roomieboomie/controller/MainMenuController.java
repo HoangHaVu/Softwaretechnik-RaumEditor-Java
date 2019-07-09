@@ -8,26 +8,30 @@ public class MainMenuController {
     private RoomieBoomieManager roomieBoomieManager;
 
     @FXML
-    public void choosePlay(){
+    public void choosePlay() {
         switcher.switchView("ChoosePlay");
     }
+
     @FXML
-    public void toTutorial(){
+    public void toTutorial() {
         switcher.switchView("Tutorial");
     }
+
     @FXML
-    public void chooseEdit(){
+    public void chooseEdit() {
         switcher.switchView("ChooseEdit");
     }
+
     @FXML
-    public void toHighscore(){
+    public void toHighscore() {
         switcher.switchView("Highscore");
     }
 
-    public void setSwitcher(RootController rootController){
+    public void setSwitcher(RootController rootController) {
         this.switcher = rootController;
     }
-    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+
+    public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
         this.roomieBoomieManager = roomieBoomieManager;
     }
 

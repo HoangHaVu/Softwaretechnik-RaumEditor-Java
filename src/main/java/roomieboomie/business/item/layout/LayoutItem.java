@@ -34,7 +34,6 @@ public class LayoutItem extends RoomItem {
     /**
      * gibt Kopie von sich selbst zurück
      */
-
     public LayoutItem clone(){
         return new LayoutItem(this.type, this.getLength(), this.getWidth(), this.getOrientation());
     }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /**
  * Gibt den Wert eines Attributs aus der Konfigurationsdatei config.json zurueck
+ *
  * @param attributeName Name des Attributes
  * @return Wert des Attributs als String
  */
@@ -44,14 +45,14 @@ public class Config {
     /**
      * Privater Konstruktor, um Singleton zu gewaehren
      */
-    private Config(){
-        HashMap<String,String> configMap = null;
+    private Config() {
+        HashMap<String, String> configMap = null;
         try {
             configMap = jsonHandler.getConfigMap();
         } catch (JsonLoadingException e) {
             System.err.println("Fehler beim Laden der configMap.\n" + e.getMessage());
         }
-        NOPICTUREPATH= configMap.get("noPicturePath");
+        NOPICTUREPATH = configMap.get("noPicturePath");
         USERPATH = configMap.get("userPath");
         LEVELROOMPATH = configMap.get("levelRoomPath");
         CREATIVEROOMPATH = configMap.get("creativeRoomPath");
@@ -82,8 +83,8 @@ public class Config {
     /**
      * @return Instanz von Config, ueber die anschliessend Attribute abfragbar sind.
      */
-    public static Config get(){
-        if (instance == null){
+    public static Config get() {
+        if (instance == null) {
             instance = new Config();
         }
         return instance;
@@ -101,18 +102,19 @@ public class Config {
         return CREATIVEROOMPATH;
     }
 
-    public String CREATIVETHUMBNAILPATH(){
+    public String CREATIVETHUMBNAILPATH() {
         return CREATIVETHUMBNAILPATH;
     }
 
-    public String LEVELTHUMBNAILPATH(){
+    public String LEVELTHUMBNAILPATH() {
         return LEVELTHUMBNAILPATH;
     }
-    public String NOPICTUREPATH(){
+
+    public String NOPICTUREPATH() {
         return NOPICTUREPATH;
     }
 
-    public String ICONTEXTUREPATH(){
+    public String ICONTEXTUREPATH() {
         return ICONTEXTUREPATH;
     }
 
@@ -183,4 +185,5 @@ public class Config {
     public byte GAMEWALLVALUE() {
         return GAMEWALL;
     }
+
 }
