@@ -105,7 +105,7 @@ public class PlaceableEditorController {
             try {
                 roomEditor.saveRoom();
             } catch (JsonWritingException ex) {
-                showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
+                showAlert("Fehler!", "Ups, dein Raum kommte leider nicht gespeichert werden.");
             }
             refreshView();
         });

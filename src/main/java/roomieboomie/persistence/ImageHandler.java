@@ -103,7 +103,7 @@ public class ImageHandler {
         try {
             ImageIO.write(image, FORMAT, outputfile);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(String.format("Thumbnail von Raum %s konnte nicht gespeichert werden. Bitte Pfad ueberpruefen."));
         }
     }
 }

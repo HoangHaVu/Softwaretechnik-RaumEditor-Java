@@ -16,6 +16,7 @@ import roomieboomie.persistence.exception.JsonValidatingException;
 import roomieboomie.persistence.exception.JsonWritingException;
 
 import javax.json.*;
+import javax.json.stream.JsonParsingException;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,13 +83,31 @@ public class JsonHandler {
      * @throws JsonValidatingException
      */
     private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
-        JsonObject jsonObject = loadFromJson(fullPath);
-        //layout
-        int totalWidth = jsonObject.getInt("totalWidth");
-        int totalHeight = jsonObject.getInt("totalHeight");
-        int startX = jsonObject.getInt("startX");
-        int startY = jsonObject.getInt("startY");
+        int totalWidth, totalHeight, startX, startY;
+        JsonArray layoutsArrays, placableitemArray;
+        ArrayList<LayoutItem> walls, windows, doors;
 
+        JsonObject jsonObject = loadFromJson(fullPath);
+
+        //Werte aus Datei ziehen
+        try {
+            totalWidth = jsonObject.getInt("totalWidth");
+            totalHeight = jsonObject.getInt("totalHeight");
+            startX = jsonObject.getInt("startX");
+            startY = jsonObject.getInt("startY");
+            layoutsArrays = jsonObject.getJsonArray("layout");
+            placableitemArray = jsonObject.getJsonArray("placableItemList");
+
+            walls = getLayoutItemArray(jsonObject.getJsonArray("walls")); //Walls
+            windows = getLayoutItemArray(jsonObject.getJsonArray("windows")); //Windows
+            doors = getLayoutItemArray(jsonObject.getJsonArray("doors")); //Doors
+        } catch (NullPointerException e){
+            throw new JsonLoadingException("Fehlendes Attribut: Raum unter " + fullPath + " konnte nicht geladen werden.");
+        } catch(JsonParsingException ex){
+            throw new JsonLoadingException("Fehler beim Parsen: Raum unter " + fullPath + " konnte nicht geladen werden.");
+        }
+
+        //Layout
         byte[][] jLayout = new byte[totalHeight][totalWidth];
 
         byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
@@ -98,7 +117,6 @@ public class JsonHandler {
             }
         }
 
-        JsonArray layoutsArrays = jsonObject.getJsonArray("layout");
         int x = layoutsArrays.size();
         int y = ((JsonArray) layoutsArrays.get(0)).size();
         for (int i = 0; i < x; i++) {
@@ -110,19 +128,12 @@ public class JsonHandler {
         }
 
         //itemList
-        JsonArray itemArray = jsonObject.getJsonArray("placableItemList");
         ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
-        for (JsonValue value : itemArray) {
+        for (JsonValue value : placableitemArray) {
             String str = String.valueOf(value).replace("\"", "");
             PlacableItemType type = PlacableItemType.valueOf(str);
             placableItemsList.add(new PlacableItem(type));
         }
-
-        ArrayList<LayoutItem> walls = getLayoutItemArray(jsonObject.getJsonArray("walls")); //Walls
-
-        ArrayList<LayoutItem> windows = getLayoutItemArray(jsonObject.getJsonArray("windows")); //Windows
-
-        ArrayList<LayoutItem> doors = getLayoutItemArray(jsonObject.getJsonArray("doors")); //Doors
 
         if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList, walls, windows, doors)) {
             throw new JsonValidatingException();
@@ -284,27 +295,34 @@ public class JsonHandler {
      * @throws JsonValidatingException Wenn das JSON-File nicht valide ist (in einem anderen Zustand als bei der letzten Speicherung)
      */
     private RoomPreview loadRoomPreview(String fullPath) throws JsonValidatingException, JsonLoadingException {
+        String jName;
+        HighscoreList jHighscoreList = new HighscoreList();
+        int jNeededScore;
+        boolean jLevel;
+
         JsonObject jsonObject = loadFromJson(fullPath);
 
-        //name
-        String jName = jsonObject.getString("name");
+        try{
+            jName = jsonObject.getString("name"); //name
 
-        //highscoreList
-        JsonArray highscoreArray = jsonObject.getJsonArray("highscoreList");
-        HighscoreList jHighscoreList = new HighscoreList();
-        for (JsonValue value : highscoreArray) {
-            JsonObject object = (JsonObject) value;
-            int time = object.getInt("time");
-            int points = object.getInt("points");
-            String username = object.getString("username");
-            jHighscoreList.addRecord(new HighscoreRecord(time, points, username));
+            //highscoreList
+            JsonArray highscoreArray = jsonObject.getJsonArray("highscoreList");
+            for (JsonValue value : highscoreArray) {
+                JsonObject object = (JsonObject) value;
+                int time = object.getInt("time");
+                int points = object.getInt("points");
+                String username = object.getString("username");
+                jHighscoreList.addRecord(new HighscoreRecord(time, points, username));
+            }
+
+            jNeededScore = jsonObject.getInt("neededScore"); //neededScore
+
+            jLevel = jsonObject.getBoolean("level"); //level
+        } catch (NullPointerException e){
+            throw new JsonLoadingException("Fehlendes Attribut: RoomPreview unter " + fullPath + " konnte nicht geladen werden.");
+        } catch(JsonParsingException ex){
+            throw new JsonLoadingException("Fehler beim Parsen: RoomPreview unter " + fullPath + " konnte nicht geladen werden.");
         }
-
-        //neededScore
-        int jNeededScore = jsonObject.getInt("neededScore");
-
-        //level
-        boolean jLevel = jsonObject.getBoolean("level");
 
         if (jsonObject.getInt("previewHash") != RoomPreview.testHash(jName, jNeededScore, jLevel, jHighscoreList)) {
             throw new JsonValidatingException();
@@ -323,8 +341,7 @@ public class JsonHandler {
         try {
             Files.delete(Paths.get(path + room.getName() + ".json"));
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new JsonDeletingException();
+            throw new JsonDeletingException("Raum " + room.getName() + " konnte aufgrund eines IO-Fehlers nicht geloescht werden.");
         }
     }
 
