@@ -1,5 +1,7 @@
 package roomieboomie.gui.views;
 
+import java.util.HashSet;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -45,7 +47,10 @@ public class PlaceableEditorView extends Pane {
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca");
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
+                "-fx-background-position: center center; " +
+                "-fx-background-repeat: stretch;" +
+                "-fx-background-size: cover");
         scrollableRaster = new ScrollPane(zoomPane);
 
         raster.getStyleClass().add("grid");

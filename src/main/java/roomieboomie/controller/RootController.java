@@ -131,6 +131,7 @@ public class RootController {
             case "LayoutEditor_load":
                 LayoutEditorController layoutEditorController_load = new LayoutEditorController(this.roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController_load.getView(), 1000, 600);
+                scene.getStylesheets().add("application.css");
                 layoutEditorController_load.setSwitcher(this);
                 try {
                     roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom,true);

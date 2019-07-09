@@ -246,6 +246,7 @@ public class RoomEditor {
     }
 
     private void updatePreviewPlaceableItems() {
+        /*
         new Thread() {
             int startX, endX, startY, endY;
             byte itemNumber = -1;
@@ -283,8 +284,8 @@ public class RoomEditor {
                 }
             }
 
-        }.start();
-    }
+        }.start();*/
+    } 
 
     public PlaceableEditor getPlaceableEditor() {
         return placeableEditor;
