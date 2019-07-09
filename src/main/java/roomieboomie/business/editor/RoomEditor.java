@@ -95,7 +95,10 @@ public class RoomEditor {
             room.setLayout(unvalidatedLayout);
             room.setPlacableItemList(new ArrayList<PlacableItem>());
         }
-        this.placableItemList = room.getPlacableItemList();
+        if(room.getPlacableItemList().size()!=0){
+            this.placableItemList = room.getPlacableItemList();
+        }
+
     }
 
     /**
@@ -231,7 +234,7 @@ public class RoomEditor {
 
     public void initDefaultPlaceableItem() {
         for (PlacableItemType i : PlacableItemType.values()) {
-            placableItemList.add(new PlacableItem(i));
+            this.placableItemList.add(new PlacableItem(i));
         }
     }
 

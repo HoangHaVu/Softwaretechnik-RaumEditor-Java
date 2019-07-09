@@ -129,7 +129,7 @@ public class RootController {
                 layoutEditorController.refreshView();
                 break;
             case "LayoutEditor_load":
-                LayoutEditorController layoutEditorController_load = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
+                LayoutEditorController layoutEditorController_load = new LayoutEditorController(this.roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController_load.getView(), 1000, 600);
                 layoutEditorController_load.setSwitcher(this);
                 try {
@@ -144,9 +144,9 @@ public class RootController {
                 layoutEditorController_load.refreshView();
                 break;
             case "PlaceableEditor":
-                PlaceableEditorController placeableEditorController=new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
-                Scene scene1 = new Scene(placeableEditorController.getView(), 1000, 600);
-                primaryStage.setScene(scene1);
+                PlaceableEditorController placeableEditorController=new PlaceableEditorController(this.roomieBoomieManager.getRoomEditor());
+                this.scene = new Scene(placeableEditorController.getView(), 1000, 600);
+                primaryStage.setScene(scene);
                 primaryStage.show();
                 placeableEditorController.refreshView();
 
