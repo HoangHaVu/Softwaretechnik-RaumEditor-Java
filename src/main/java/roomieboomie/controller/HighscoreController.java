@@ -1,9 +1,7 @@
 package roomieboomie.controller;
 
-import javafx.fxml.FXML;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.highscore.HighscoreList;
-import roomieboomie.business.highscore.HighscoreRecord;
 
 import javax.swing.table.TableColumn;
 import javax.swing.text.TableView;

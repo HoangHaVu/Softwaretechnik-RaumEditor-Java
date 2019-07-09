@@ -29,6 +29,10 @@ buttonStyle{
 	src: url('/fonts/KOMTXTBI.ttf');
 }
 
+.action-button:pressed {
+    -fx-effect: dropshadow(three-pass-box, rgb(0, 0, 0),20, 0, 0, 0);
+}
+
 .action-button:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(163, 111, 87, 1), 8, 0, 0, 0);
 }

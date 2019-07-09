@@ -1,6 +1,7 @@
 package roomieboomie.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -21,7 +22,6 @@ import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
@@ -50,7 +50,8 @@ public class LayoutEditorController {
     String backGroundStyle = ("-fx-background-color: black;");
     int currMouseX = 0, currMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
-    private RoomPreview roomPreview;
+    HashSet<String> currentlyActiveKeys;
+
 
     /**
      * Konstruktor des LayoutEditorControllers
@@ -59,7 +60,6 @@ public class LayoutEditorController {
      */
     public LayoutEditorController(RoomEditor roomEditor) {
         view = new LayoutEditorView();
-        this.roomPreview = null;
         this.roomEditor = roomEditor;
         this.raster = view.raster;
         this.completeEditor = view.completeEditor;
@@ -79,6 +79,7 @@ public class LayoutEditorController {
         this.interactionRaster = view.interactionRaster;
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
+        this.currentlyActiveKeys = view.currentlyActiveKeys;
         initialize();
     }
 
@@ -105,6 +106,11 @@ public class LayoutEditorController {
         });
 
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            if (this.action == Action.EDIT){
+                this.action = Action.PLACE;
+                refreshHighlightedButton();
+                return;
+            }
             this.action = Action.EDIT;
             refreshHighlightedButton();
         });
@@ -179,8 +185,20 @@ public class LayoutEditorController {
                 roomEditor.rotateItem();
             } 
 
+            String codeString = e.getCode().toString();
+            if (!currentlyActiveKeys.contains(codeString)) {
+                currentlyActiveKeys.add(codeString);
+            }
+            
+            //scrollableRaster.removeEventHandler(ScrollEvent.SCROLL, scrollHandler);
+
             refreshDragPane(currMouseX, currMouseY, item, clearPane, false);
             refreshPreview();
+        });
+        view.setOnKeyReleased(e ->{
+            currentlyActiveKeys.remove(e.getCode().toString());
+            
+            //scrollableRaster.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
         });
 
         initInteractionPane();
@@ -263,14 +281,7 @@ public class LayoutEditorController {
                 window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.25));
     
             }
-        } /*else {
-                window.setMaxWidth(100);
-                window.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-                wall.setMaxWidth(100);
-                wall.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-                door.setMaxWidth(100);
-                door.prefWidthProperty().bind(view.selectItemPane.widthProperty().multiply(0.3));
-        }*/
+        } 
 
     }
 
@@ -454,7 +465,6 @@ public class LayoutEditorController {
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.getStyleClass().add("layout-item");
-            //item.setStyle(style);
             if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
 
                 GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
@@ -468,7 +478,6 @@ public class LayoutEditorController {
                 if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
                 else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
                 else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
-                //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
 
             }
 
@@ -489,7 +498,6 @@ public class LayoutEditorController {
 
         byte[][] layout = roomEditor.getRoom().getLayout();
         view.raster.getChildren().clear();
-        Image textureImage = new Image(iconTexturePath + "grassTexture.jpg");
 
         for (int i = 0; i < layout.length; i++){
             for(int j = 0; j < layout[0].length; j++){

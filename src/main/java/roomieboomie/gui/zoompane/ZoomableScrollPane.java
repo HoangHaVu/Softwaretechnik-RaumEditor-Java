@@ -1,5 +1,7 @@
 package roomieboomie.gui.zoompane;
 
+import java.util.HashSet;
+
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -10,9 +12,10 @@ import javafx.scene.layout.VBox;
 
 public class ZoomableScrollPane extends ScrollPane {
     private double scaleValue = 0.7;
-    
+    private double zoomIntensity = 0.02;
     private Node target;
     private Node zoomNode;
+    private HashSet<String> currentlyActiveKeys;
 
     public ZoomableScrollPane(Node target) {
         super();
@@ -33,10 +36,10 @@ public class ZoomableScrollPane extends ScrollPane {
         updateScale();
     }
 
-    public ZoomableScrollPane(Node target, String style){
+    public ZoomableScrollPane(Node target, HashSet<String> currentlyActiveKeys, String style){
         super();
         this.target = target;
-        
+        this.currentlyActiveKeys = currentlyActiveKeys;
         this.zoomNode = new Group(target);
         
         Node outerNode = outerNode(zoomNode);
@@ -60,6 +63,11 @@ public class ZoomableScrollPane extends ScrollPane {
             
             onZoom(e.getZoomFactor(), new Point2D(e.getX(), e.getY()));
         });
+        outerNode.setOnScroll(e->{
+            if (currentlyActiveKeys.contains("ALT"))
+                ifScrolled(e.getDeltaY(), new Point2D(e.getX(), e.getY()));
+            
+        });
         return outerNode;
     }
 
@@ -72,6 +80,10 @@ public class ZoomableScrollPane extends ScrollPane {
     private void updateScale() {
         target.setScaleX(scaleValue);
         target.setScaleY(scaleValue);
+    }
+    public void ifScrolled(double wheelDelta, Point2D mousePoint){
+        double zoomFactor = Math.exp(wheelDelta * zoomIntensity);
+        onZoom(zoomFactor, mousePoint);
     }
 
     private void onZoom(double zoomFactor, Point2D mousePoint) {

@@ -42,10 +42,10 @@ public class Validator {
 
         if (
                 validateLayoutField(findInsideRoomLayout, x - 1, y) &&
-                        validateLayoutField(findInsideRoomLayout, x + 1, y) &&
-                        validateLayoutField(findInsideRoomLayout, x, y - 1) &&
-                        validateLayoutField(findInsideRoomLayout, x, y + 1)
-        ) {
+                validateLayoutField(findInsideRoomLayout, x + 1, y) &&
+                validateLayoutField(findInsideRoomLayout, x, y - 1) &&
+                validateLayoutField(findInsideRoomLayout, x, y + 1)
+        ){
             return true;
         }
 

@@ -1,5 +1,7 @@
 package roomieboomie.gui.views;
 
+import java.util.HashSet;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -45,11 +47,12 @@ public class LayoutEditorView extends Pane {
     public StackPane zoomAndScroll;
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
+    public HashSet<String> currentlyActiveKeys = new HashSet<>();
 
     public LayoutEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca");
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, currentlyActiveKeys, "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
         
         raster.getStyleClass().add("grid");
