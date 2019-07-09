@@ -300,10 +300,11 @@ public class PlaceableEditorController {
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if (this.action == Action.PLACE) placeableEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE)
-                        roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
+                        //roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
+                        placeableEditor.delete(x,y);
                     else if (this.action == Action.EDIT) {
 
-                        roomEditor.editItem(roomEditor.getRoom().getLayout()[y][x]);
+                        placeableEditor.editItem(x,y);
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
                         //edit.setStyle("");

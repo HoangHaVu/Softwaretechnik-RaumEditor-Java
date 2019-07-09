@@ -53,12 +53,14 @@ public class PlaceableEditor {
         int itemHeight = currentItem.getType().getHeight().getValue();
         int itemShelterHeight = currentItem.getType().getShelterHeight().getValue();
 
-        endX = currentItem.getWidth();
-        endY = currentItem.getLength();
+        endX = currentItem.getY()+currentItem.getLength();
+        endY = currentItem.getX()+currentItem.getWidth();
+
+
 
         if (currentItem.getOrientation() == Orientation.TOP || currentItem.getOrientation() == Orientation.BOTTOM) {
-            endX = currentItem.getLength();
-            endY = currentItem.getWidth();
+            endX = currentItem.getX()+currentItem.getWidth();
+            endY = currentItem.getY()+currentItem.getLength();
         }
 
         for (int i = currentItem.getX(); i <= endX; i++) {
@@ -104,9 +106,8 @@ public class PlaceableEditor {
         currentItem.turnRight();
     }
 
-    public void delete() {
-        int x = currentItem.getX();
-        int y = currentItem.getY();
+    public void delete(int x,int y) {
+
         boolean del = false;
         byte itemNumber = 0;
         if (flat[x][y] == 0 && small[x][y] == 0 && medium[x][y] == 0 && high[x][y] == 0) {
@@ -128,12 +129,14 @@ public class PlaceableEditor {
         int itemHeight = currentItem.getType().getHeight().getValue();
         int itemShelterHeight = currentItem.getType().getShelterHeight().getValue();
 
-        int endX = currentItem.getWidth();
-        int endY = currentItem.getLength();
+        int endX,endY;
+
+        endX = currentItem.getY()+currentItem.getLength();
+        endY = currentItem.getX()+currentItem.getWidth();
 
         if (currentItem.getOrientation() == Orientation.TOP || currentItem.getOrientation() == Orientation.BOTTOM) {
-            endX = currentItem.getLength();
-            endY = currentItem.getWidth();
+            endX = currentItem.getX()+currentItem.getWidth();
+            endY = currentItem.getY()+currentItem.getLength();
         }
 
         for (int i = currentItem.getX(); i <= endX; i++) {
@@ -174,12 +177,11 @@ public class PlaceableEditor {
         room.getPlacableItemList().remove(currentItem);
     }
 
-    public void editItem(byte layoutNumber) {
+    public void editItem(int x,int y) {
         List<PlacableItem> roomItemList = room.getPlacableItemList();
         byte itemNumber = 0;
-        PlacableItem itemToEdit = null;
-        int x = currentItem.getX();
-        int y = currentItem.getY();
+
+
         if (flat[x][y] == 0 && small[x][y] == 0 && medium[x][y] == 0 && high[x][y] == 0) {
             return;
         }
@@ -193,10 +195,12 @@ public class PlaceableEditor {
             itemNumber = flat[x][y];
         }
 
+        PlacableItem itemToEdit = room.getPlacableItemList().get(itemNumber-1);
+
         currentItem = room.getPlacableItemList().get(itemNumber - 1);
 
         //itemToEdit = roomItemList.get(index);
-        delete();
+        delete(x,y);
 
         currentItem = itemToEdit;
     }
