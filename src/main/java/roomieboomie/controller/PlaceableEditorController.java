@@ -49,6 +49,7 @@ public class PlaceableEditorController {
     ScrollPane scrollableRaster;
     Label objectName;
     Action action;
+    TextField roomName;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     String backgroundStyle = ("-fx-background-color: black;");
@@ -80,6 +81,7 @@ public class PlaceableEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         this.listView = view.listView;
+        this.roomName = view.roomName;
         initialize();
     }
 
