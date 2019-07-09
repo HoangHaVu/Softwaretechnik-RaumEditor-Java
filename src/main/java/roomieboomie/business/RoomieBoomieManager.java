@@ -32,7 +32,24 @@ public class RoomieBoomieManager {
      * Konstruktor
      */
     public RoomieBoomieManager() {
-        init();
+        this.roomEditor = new RoomEditor();
+
+        roomEditor.loadNewRoom("meinRaum", false);
+        this.jsonHandler = new JsonHandler();
+
+        try {
+            this.userMap = new UserMap(jsonHandler.getUserMap());
+        } catch (JsonLoadingException e) {
+            System.err.println(e.getMessage());
+        }
+
+        try {
+            HashMap level = jsonHandler.getRoomMapLevel();
+            HashMap creative = jsonHandler.getRoomMapCreative();
+            this.roomMaps = new RoomMaps(level, creative);
+        } catch (JsonLoadingException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public UserMap getUserMap() {
@@ -67,29 +84,6 @@ public class RoomieBoomieManager {
         return jsonHandler;
     }
 
-    /**
-     * initialisiert alle benötigten Attribute //TODO warum nicht einfach in den Konstruktor?
-     */
-    public void init() {
-        this.roomEditor = new RoomEditor();
-        
-        roomEditor.loadNewRoom("meinRaum", false);
-        this.jsonHandler = new JsonHandler();
-
-        try {
-            this.userMap = new UserMap(jsonHandler.getUserMap());
-        } catch (JsonLoadingException e) {
-            e.printStackTrace();
-        }
-        try {
-            HashMap level = jsonHandler.getRoomMapLevel();
-            HashMap creative = jsonHandler.getRoomMapCreative();
-            this.roomMaps = new RoomMaps(level, creative);
-        } catch (JsonLoadingException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * startet eine neue Game-Session

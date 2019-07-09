@@ -30,13 +30,13 @@ public class ImageHandler {
         try {
             image = new Image(new FileInputStream(noDirectory));
         } catch (FileNotFoundException e) {
-            System.out.println("kein Pseudo VorzeigeBild vorhanden - Die Datei noPicture.png wurde nicht gefunden");
+            System.err.println("Kein Pseudo VorzeigeBild vorhanden. Die Datei noPicture.png wurde nicht gefunden.");
         }
 
         try {
             image = new Image(new FileInputStream(directory + name + "." + FORMAT));
         } catch (IOException e) {
-            System.out.println("Anzeigebild des Raums wurde nicht gefunden");
+            System.err.println("Anzeigebild des Raums " + name + " konnte nicht geladen werden.");
         }
 
         return image;

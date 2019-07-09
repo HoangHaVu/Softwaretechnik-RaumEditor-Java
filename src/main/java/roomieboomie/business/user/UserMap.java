@@ -43,14 +43,18 @@ public class UserMap{
     /**
      * Fuegt einen User hinzu
      * @param user User-Objekt
-     * @throws UserException wenn der Username bereits existiert
      */
-    public void addUser(User user) throws UserException{
-        if (userMap.containsKey(user.getName())){
-            throw new UserException();
-        } else{
-            userMap.put(user.getName(), user);
-        }
+    public void addUser(User user){
+        userMap.put(user.getName(), user);
+    }
+
+    /**
+     * Gibt zurueck, ob es einen Eintrag mit einem entsprechenden Namen gibt
+     * @param username Name, nach dem gesucht werden soll
+     * @return true, wenn es einen User mit diesem Namen gibt
+     */
+    public boolean containsUsername(String username){
+        return userMap.containsKey(username);
     }
 
 }

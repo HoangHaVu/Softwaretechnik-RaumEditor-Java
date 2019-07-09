@@ -1,5 +1,6 @@
 package roomieboomie.controller;
 
+import javafx.fxml.FXML;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.highscore.HighscoreList;
 
