@@ -49,6 +49,7 @@ public class PlaceableEditorController {
     ScrollPane scrollableRaster;
     Label objectName;
     Action action;
+    TextField roomName;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     String backgroundStyle = ("-fx-background-color: black;");
@@ -80,6 +81,7 @@ public class PlaceableEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         this.listView = view.listView;
+        this.roomName = view.roomName;
         initialize();
     }
 
@@ -377,6 +379,43 @@ public class PlaceableEditorController {
         view.itemPreviewGrid.getChildren().add(itemPane);
     }
 
+    public void setLayout(ArrayList<LayoutItem>layoutItems,byte[][]layout){
+        for(LayoutItem w : layoutItems){
+
+            Pane item = new Pane();
+            Image textureImage;
+
+            item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
+            item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
+            item.getStyleClass().add("layout-item");
+            //item.setStyle(style);
+            if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
+
+                GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
+                if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");
+                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureVertical.jpg");
+                else textureImage = new Image(iconTexturePath + "doorTextureVertical.png");
+
+            } else{
+
+                GridPane.setConstraints(item, w.getX(), w.getY(), w.getLength(), w.getWidth());
+                if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
+                else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
+                else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
+                //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
+
+            }
+
+            ImageView texture = new ImageView(textureImage);
+
+            texture.fitWidthProperty().bind(item.widthProperty());
+            texture.fitHeightProperty().bind(item.heightProperty());
+
+            item.getChildren().add(texture);
+            raster.getChildren().add(item);
+        }
+    }
+
     /**
      * - new Method selectItemTexture!!! - zum laden der Texture TODO
      * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
@@ -386,7 +425,7 @@ public class PlaceableEditorController {
      * @param items
      * @param layout
      */
-    //public void setItemsIntoView(ArrayList<LayoutItem> items, byte[][] layout) {
+
     public void setItemsIntoView(ArrayList<PlacableItem> items, byte[][] layout) {
         for (PlacableItem w : items) {
 
@@ -479,8 +518,10 @@ public class PlaceableEditorController {
         }
 
 
-
-        setItemsIntoView(placeableEditor.getPlacableItems(),layout);
+        setLayout(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
+        setLayout(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
+        setLayout(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
+        setItemsIntoView(placeableEditor.getRoom().getPlacableItemList(),layout);
     }
 
     private void showAlert(String title, String message) {

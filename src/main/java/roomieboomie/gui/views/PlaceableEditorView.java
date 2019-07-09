@@ -1,5 +1,7 @@
 package roomieboomie.gui.views;
 
+import java.util.HashSet;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -29,6 +31,7 @@ public class PlaceableEditorView extends Pane {
     public GridPane itemPreviewGrid = new GridPane();
     public Button finish = new Button("FERTIG");
     public Label objectName = new Label();
+    public TextField roomName = new TextField();
     public Button rotate = new Button();
     public Button delete = new Button();
     public Button edit = new Button();
@@ -38,12 +41,16 @@ public class PlaceableEditorView extends Pane {
     public StackPane zoomAndScroll;
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
+    public HBox savePane = new HBox();
     public ListView<PlacableItem> listView=new ListView<PlacableItem>();
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, "-fx-background-color: #cacaca");
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
+                "-fx-background-position: center center; " +
+                "-fx-background-repeat: stretch;" +
+                "-fx-background-size: cover");
         scrollableRaster = new ScrollPane(zoomPane);
 
         raster.getStyleClass().add("grid");
@@ -116,6 +123,8 @@ public class PlaceableEditorView extends Pane {
         edit.setMaxWidth(50);
         delete.setMaxWidth(50);
 
+
+        roomName.setPromptText("Raum Name");
         finish.setMinWidth(120);
         finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
         finish.minHeightProperty().bind(finish.widthProperty().divide(5));
@@ -154,9 +163,10 @@ public class PlaceableEditorView extends Pane {
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
 
+        savePane.getChildren().addAll(roomName,finish);
         itemPreviewPane.getChildren().add(itemPreviewGrid);
         buttonPane.getChildren().addAll(objectName,regionVerticalForButtons0, listView, regionVerticalForButtons1, regionVerticalForButtons2,
-                objectInteraction, regionVerticalForButtons3, finish, regionVerticalForButtons4);
+                objectInteraction, regionVerticalForButtons3,savePane, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
         controlBox.add(itemPreviewPane, 0, 0);
