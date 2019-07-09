@@ -42,6 +42,8 @@ public class PlaceableEditor {
         currentItem.setY(y);
         currentItem.setX(x);
         addItem(currentItem);
+        currentItem = currentItem.clone();
+
     }
 
 
