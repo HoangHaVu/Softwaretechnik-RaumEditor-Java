@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.TutorialController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.TutorialController">
    <top>
       <AnchorPane prefHeight="102.0" prefWidth="700.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,7 +32,7 @@
    <bottom>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="57.0" layoutY="142.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="27.0" prefWidth="59.0" text="zurück" />
+            <Button layoutX="57.0" layoutY="142.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="27.0" prefWidth="69.0" styleClass="back-button" stylesheets="@../application.css" text="zurück" />
          </children>
       </AnchorPane>
    </bottom>

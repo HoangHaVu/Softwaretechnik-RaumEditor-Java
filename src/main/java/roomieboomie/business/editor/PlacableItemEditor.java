@@ -12,11 +12,44 @@ public class PlacableItemEditor {
     private Room room;
     private byte [][] layout;
     private ArrayList<PlacableItem> placableItemList;
+    PlacableItem curItem;
 
     public PlacableItemEditor(Room room){
         this.room = room;
         placableItemList = room.getPlacableItemList();
         initializeLayout();
+    }
+
+    public void rotateAktItem(){
+
+        PlacableItem item = curItem.clone(), newCurrItem, akt, aktCurrItem;
+        newCurrItem = item.clone();
+        newCurrItem.removeItemFromThis();
+        newCurrItem.turnRight();
+        aktCurrItem = newCurrItem;
+
+        while (item.hasNext()){
+            akt = item.clone();
+            akt.removeItemFromThis();
+            akt.turnRight();
+            aktCurrItem.placeItemOnThis(akt);
+            aktCurrItem = newCurrItem.getNext();
+            item = item.getNext();
+        }
+
+        this.curItem = newCurrItem;
+
+    }
+
+    public void editItem(int x, int y){
+
+        if (this.layout[y][x] <= 0 ) return;
+
+        PlacableItem item = this.placableItemList.get(this.layout[y][x] - 1);
+
+        this.curItem = item.findItemByCoordinates(x, y);
+        delItem(x, y);
+
     }
 
     public void delItem(int x, int y){
@@ -28,7 +61,7 @@ public class PlacableItemEditor {
         PlacableItem delItem = placableItemList.get(layout[y][x] - 1);
         PlacableItem item = delItem;
 
-        if (!delItem.hasNextOn(x, y)){
+        if (!delItem.hasNextOn(x - delItem.getX(), y - delItem.getY())){
             int startX = item.getX();
             int startY = item.getY();
             int endX = startX + item.getLength();
@@ -39,10 +72,10 @@ public class PlacableItemEditor {
                 endY = startY + item.getLength();
             }
 
-            placableItemList.remove(delItem);
+            room.getPlacableItemList().remove(delItem);
             
-            for (int i = startY; y < endY; y++){
-                for (int j = startX; x < endX; x++){
+            for (int i = startY; i < endY; i++){
+                for (int j = startX; j < endX; j++){
                     layout[i][j] = 0;
                 }
             }
@@ -52,7 +85,7 @@ public class PlacableItemEditor {
         }
 
 
-        while (delItem.getNext() != null && delItem.hasNextOn(x,y)){
+        while (delItem.getNext() != null && delItem.hasNextOn(x - delItem.getX(),y - delItem.getY())){
             item = delItem;
             delItem = delItem.getNext();
         }
@@ -60,12 +93,19 @@ public class PlacableItemEditor {
         item.removeItemFromThis();
     }
 
+    public void placeCurrItem(int x, int y){
+        this.curItem.setX(x);
+        this.curItem.setY(y);
+        addItem(this.curItem);
+        this.curItem = curItem.clone();
+    }
+
     public void addItem(PlacableItem item){
 
         int startX = item.getX();
         int startY = item.getY();
-        
-        if (layout[startX][startY] != 0){
+
+        if (layout[startX][startY] > 0){
             PlacableItem unterItem = placableItemList.get(layout[startX][startY] - 1);
             item.setX(item.getX() - unterItem.getX());
             item.setY(item.getY() - unterItem.getY());
@@ -119,11 +159,7 @@ public class PlacableItemEditor {
     }
 
 
-
-
-
-
-
-
-
+    public ArrayList<PlacableItem> getPlacableItemList() {
+        return placableItemList;
+    }
 }

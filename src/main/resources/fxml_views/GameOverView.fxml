@@ -6,28 +6,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="500.0" minWidth="700.0" prefHeight="500.0" prefWidth="700.0" stylesheets="@../application.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.GameOverController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.GameOverController">
    <top>
-      <AnchorPane prefHeight="129.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="273.0" layoutY="15.0" minHeight="-Infinity" prefHeight="67.0" prefWidth="344.0" text="GAME OVER" AnchorPane.leftAnchor="273.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="15.0">
+            <Label text="GAME OVER" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="192.0" AnchorPane.rightAnchor="159.5" AnchorPane.topAnchor="44.0">
                <font>
-                  <Font name="Arial Bold" size="44.0" />
-               </font>
-            </Label>
-            <Label layoutX="275.0" layoutY="72.0" prefHeight="47.0" prefWidth="195.0" text="Du hast verloren !">
-               <font>
-                  <Font size="21.0" />
+                  <Font name="Arial Bold" size="57.0" />
                </font>
             </Label>
          </children>
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane prefHeight="420.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="275.0" layoutY="203.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="63.0" prefWidth="273.0" styleClass="buttonStyle" stylesheets="@../application.css" text="Hauptmenü" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="252.0" AnchorPane.topAnchor="203.0" />
-            <Button layoutX="275.0" layoutY="292.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="273.0" styleClass="buttonStyle" stylesheets="@../application.css" text="nochmal spielen" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="252.0" />
+            <Button layoutX="230.0" layoutY="119.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="273.0" styleClass="submit-button" stylesheets="@../application.css" text="Hauptmenü" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="197.0" />
+            <Button layoutX="230.0" layoutY="206.0" mnemonicParsing="false" prefHeight="63.0" prefWidth="273.0" styleClass="submit-button" stylesheets="@../application.css" text="nochmal spielen" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="197.0" />
          </children>
       </AnchorPane>
    </center>
