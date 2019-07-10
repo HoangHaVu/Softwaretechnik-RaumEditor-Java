@@ -26,11 +26,19 @@ public class PlaceableEditor {
 
     public PlaceableEditor(Room room) {
         this.room = room;
+
         flat = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         small = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         medium = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
         high = new byte[Config.get().MAXHEIGHT()][Config.get().MAXWIDTH()];
-        currentItem = new PlacableItem(UNICORN);
+
+
+        /*
+        flat=new byte[5][5];
+        small=new byte[5][5];
+        medium= new byte[5][5];
+        high=new byte [5][5];
+        currentItem = new PlacableItem(UNICORN); */
     }
 
     public void selectPlaceableItem(PlacableItemType type) {
@@ -97,6 +105,7 @@ public class PlaceableEditor {
             }
 
         }
+
 
 
     }
@@ -210,6 +219,43 @@ public class PlaceableEditor {
 
     public PlacableItem getCurrentItem() {
         return currentItem;
+    }
+    public void printArray(){
+        System.out.println("flat");
+        for (int i =0;i<flat.length;i++){
+            for(int j=0;j<flat[0].length;j++){
+                System.out.print(small[i][j]);
+            }
+            System.out.println("");
+        }
+
+        System.out.println("\nsmall");
+
+        for (int i =0;i<small.length;i++){
+            for(int j=0;j<small[0].length;j++){
+                System.out.print(small[i][j]);
+            }
+            System.out.println("");
+        }
+
+        System.out.println("\nmedium");
+
+        for (int i =0;i<medium.length;i++){
+            for(int j=0;j<medium[0].length;j++){
+                System.out.print(small[i][j]);
+            }
+            System.out.println("");
+        }
+
+        System.out.println("\nhigh");
+
+        for (int i =0;i<high.length;i++){
+            for(int j=0;j<high[0].length;j++){
+                System.out.print(small[i][j]);
+            }
+            System.out.println("");
+
+        }
     }
 
 

@@ -6,22 +6,22 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.MainMenuController">
-   <left>
-      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="292.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button layoutX="50.0" layoutY="14.0" mnemonicParsing="false" onAction="#choosePlay" prefHeight="50.0" prefWidth="150.0" text="Spiel Starten" AnchorPane.leftAnchor="50.0" />
-            <Button layoutX="50.0" layoutY="89.0" mnemonicParsing="false" onAction="#chooseEdit" prefHeight="50.0" prefWidth="150.0" text="Raum gestalten" AnchorPane.leftAnchor="50.0" />
-            <Button layoutX="50.0" layoutY="167.0" mnemonicParsing="false" onAction="#toHighscore" prefHeight="50.0" prefWidth="150.0" text="Highscore" AnchorPane.leftAnchor="50.0" />
-            <Button layoutX="50.0" layoutY="242.0" mnemonicParsing="false" onAction="#toTutorial" prefHeight="50.0" prefWidth="150.0" text="Tutorial" AnchorPane.leftAnchor="50.0" />
-         </children>
-      </AnchorPane>
-   </left>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.MainMenuController">
    <top>
-      <Label text="ROOMIEBOOMIE" BorderPane.alignment="CENTER">
+      <Label prefHeight="95.0" prefWidth="394.0" text="ROOMIEBOOMIE" BorderPane.alignment="CENTER">
          <font>
             <Font size="50.0" />
          </font>
       </Label>
    </top>
+   <left>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="292.0" prefWidth="287.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="50.0" layoutY="14.0" mnemonicParsing="false" onAction="#choosePlay" prefHeight="50.0" prefWidth="150.0" styleClass="submit-button" stylesheets="@../application.css" text="Spiel Starten" AnchorPane.leftAnchor="50.0" />
+            <Button layoutX="50.0" layoutY="89.0" mnemonicParsing="false" onAction="#chooseEdit" prefHeight="50.0" prefWidth="150.0" styleClass="submit-button" stylesheets="@../application.css" text="Raum gestalten" AnchorPane.leftAnchor="50.0" />
+            <Button layoutX="50.0" layoutY="167.0" mnemonicParsing="false" onAction="#toHighscore" prefHeight="50.0" prefWidth="150.0" styleClass="submit-button" stylesheets="@../application.css" text="Highscore" AnchorPane.leftAnchor="50.0" />
+            <Button layoutX="50.0" layoutY="242.0" mnemonicParsing="false" onAction="#toTutorial" prefHeight="50.0" prefWidth="150.0" styleClass="submit-button" stylesheets="@../application.css" text="Tutorial" AnchorPane.leftAnchor="50.0" />
+         </children>
+      </AnchorPane>
+   </left>
 </BorderPane>

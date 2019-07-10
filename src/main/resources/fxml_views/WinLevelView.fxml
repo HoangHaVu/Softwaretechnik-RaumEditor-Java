@@ -9,8 +9,8 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.WinLevelController">
-   <center>
-      <AnchorPane prefHeight="332.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+   <left>
+      <AnchorPane prefHeight="308.0" prefWidth="435.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="528.0" fitWidth="1000.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -22,9 +22,9 @@
                   <Font name="Arial Bold" size="30.0" />
                </font>
             </Label>
-            <Button layoutX="275.0" layoutY="92.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="179.0" styleClass="buttonStyle" stylesheets="@../application.css" text="Nächstes Level spielen" AnchorPane.bottomAnchor="203.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="246.0" />
-            <Button layoutX="275.0" layoutY="174.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="183.0" styleClass="buttonStyle" stylesheets="@../application.css" text="Hauptmenü" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="246.0" />
+            <Button layoutX="275.0" layoutY="92.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="179.0" styleClass="submit-button" stylesheets="@../application.css" text="Nächstes Level spielen" AnchorPane.bottomAnchor="203.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="246.0" />
+            <Button layoutX="275.0" layoutY="174.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="183.0" styleClass="submit-button" stylesheets="@../application.css" text="Hauptmenü" AnchorPane.bottomAnchor="128.0" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="246.0" />
          </children>
       </AnchorPane>
-   </center>
+   </left>
 </BorderPane>

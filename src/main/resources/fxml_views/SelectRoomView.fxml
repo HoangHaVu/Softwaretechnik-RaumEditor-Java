@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.SelectRoomController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="roomieboomie.controller.SelectRoomController">
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="303.0" BorderPane.alignment="CENTER">
          <children>
@@ -16,15 +16,15 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="roomlistView" layoutX="40.0" layoutY="62.0" prefHeight="242.0" prefWidth="200.0" />
-            <Button layoutX="160.0" layoutY="341.0" mnemonicParsing="false" onAction="#loadRoom" text="Raum laden" />
+            <ListView fx:id="roomlistView" layoutX="40.0" layoutY="62.0" prefHeight="242.0" prefWidth="200.0" AnchorPane.bottomAnchor="96.0" AnchorPane.topAnchor="62.0" />
+            <Button layoutX="143.0" layoutY="340.0" mnemonicParsing="false" onAction="#loadRoom" styleClass="submit-button" stylesheets="@../application.css" text="Raum laden" AnchorPane.bottomAnchor="32.0" AnchorPane.rightAnchor="64.5" />
          </children>
       </AnchorPane>
    </right>
    <left>
       <AnchorPane prefHeight="400.0" prefWidth="232.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="32.0" layoutY="29.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="31.0" prefWidth="65.0" text="zurück" />
+            <Button layoutX="32.0" layoutY="29.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="31.0" prefWidth="65.0" styleClass="back-button" stylesheets="@../application.css" text="zurück" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="29.0" />
          </children>
       </AnchorPane>
    </left>
