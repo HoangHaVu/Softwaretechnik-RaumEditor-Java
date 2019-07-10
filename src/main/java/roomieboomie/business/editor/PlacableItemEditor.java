@@ -138,4 +138,8 @@ public class PlacableItemEditor {
     public ArrayList<PlacableItem> getPlacableItemList() {
         return placableItemList;
     }
+
+    public PlacableItem getCurItem() {
+        return curItem;
+    }
 }

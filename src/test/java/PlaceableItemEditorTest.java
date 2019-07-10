@@ -37,10 +37,7 @@ public class PlaceableItemEditorTest {
      * getestete Funktionen: Auswahl und Platzieren von Gegenstaenden,die übereinander sind
      * Beweis:
      */
-    public void placeableItemPlatzieren(){
-
-
-
+    public void placePlaceableItem(){
         //placeableItemEditor.addItem(teppich);
         placeableItemEditor.addItem(tisch);
         placeableItemEditor.addItem(dino);
@@ -52,11 +49,44 @@ public class PlaceableItemEditorTest {
     @Test
     /**
      * getestete Funktionen: platzieren von 2 Gegenstaeden die aufeinanderliegen
-     * Beweis:
+     * Beweis: im layout vom Tisch ist der Wert vom Dino drinne
      */
-    public void placeablteItemsPlatzieren(){
+    public void placeItems(){
         placeableItemEditor.addItem(tisch);
         placeableItemEditor.addItem(dino);
+        assertTrue(!placeableItemEditor.getPlacableItemList().isEmpty());
+        assertTrue(placeableItemEditor.getPlacableItemList().get(0)!=null);//TODO Bedingung hinzufuegen (hasNext ungleich null)
+        assertTrue(true);//TODO Bedingung hinzufuegen
+    }
+
+
+    @Test
+    /**
+     * getestete Funktionen: loeschen von Gegenstaenden
+     * Beweis: der Tisch hat keine Werte in seinem layout --> Dino wurde geloescht
+     */
+    public void deletePlaceableItem(){
+        placeableItemEditor.addItem(tisch);
+        placeableItemEditor.addItem(dino);
+        placeableItemEditor.delItem(3,4);
+        assertTrue(true); //TODO Bedingung hinzufuegen (tisch hasNext null)
+    }
+
+    @Test
+    /**
+     * getestete Funktionen: editieren von Gegenstaenden
+     * Beweis: der ausgewaehlte Gegenstand wird zunaechst geloescht und als aktuellen Gegenstand gesetzt
+     */
+    public void editPlaceableEditor(){
+        placeableItemEditor.addItem(tisch);
+        placeableItemEditor.addItem(dino);
+
+        placeableItemEditor.editItem(3,3);
+        //Liste sollte leer sein weil Dino auf dem Tisch liegt
+        assertTrue(placeableItemEditor.getPlacableItemList().isEmpty());
+        //aktueller Gegenstand sollte dann der Tisch sein
+        assertTrue(placeableItemEditor.getCurItem().getType().equals(PlacableItemType.TABLE));
+        //TODO Bedingung hinzufuegen (tisch hasNext isEmpty)
     }
 
 
