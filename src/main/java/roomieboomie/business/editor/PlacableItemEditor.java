@@ -20,6 +20,27 @@ public class PlacableItemEditor {
         initializeLayout();
     }
 
+    public void rotateAktItem(){
+
+        PlacableItem item = curItem.clone(), newCurrItem, akt, aktCurrItem;
+        newCurrItem = item.clone();
+        newCurrItem.removeItemFromThis();
+        newCurrItem.turnRight();
+        aktCurrItem = newCurrItem;
+
+        while (item.hasNext()){
+            akt = item.clone();
+            akt.removeItemFromThis();
+            akt.turnRight();
+            aktCurrItem.placeItemOnThis(akt);
+            aktCurrItem = newCurrItem.getNext();
+            item = item.getNext();
+        }
+
+        this.curItem = newCurrItem;
+
+    }
+
     public void editItem(int x, int y){
 
         if (this.layout[y][x] <= 0 ) return;
@@ -72,16 +93,19 @@ public class PlacableItemEditor {
         item.removeItemFromThis();
     }
 
+    public void placeCurrItem(int x, int y){
+        this.curItem.setX(x);
+        this.curItem.setY(y);
+        addItem(this.curItem);
+        this.curItem = curItem.clone();
+    }
+
     public void addItem(PlacableItem item){
 
         int startX = item.getX();
         int startY = item.getY();
 
-
-
-
         if (layout[startX][startY] > 0){
-            System.out.println(layout[startX][startY]);
             PlacableItem unterItem = placableItemList.get(layout[startX][startY] - 1);
             item.setX(item.getX() - unterItem.getX());
             item.setY(item.getY() - unterItem.getY());
