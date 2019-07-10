@@ -36,6 +36,21 @@ public class PlacableItem extends RoomItem {
     }
 
 
+    public PlacableItem findItemByCoordinates(int x, int y){
+
+
+        x = x - this.getX();
+        y = y - this.getY();
+
+        if (this.layout[y][x] == 0) return this;
+
+        else{
+
+            return next.findItemByCoordinates(x, y);
+        }
+
+    }
+
     public boolean hasNextOn(int x, int y){
         
         if (this.layout[y][x] != 0){
