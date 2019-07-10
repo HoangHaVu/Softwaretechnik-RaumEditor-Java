@@ -47,10 +47,7 @@ public class PlaceableEditorView extends Pane {
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-image: url('"+"iconsandtextures/concreteTexture.jpg"+ "'); " +
-                "-fx-background-position: center center; " +
-                "-fx-background-repeat: stretch;" +
-                "-fx-background-size: cover");
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
 
         raster.getStyleClass().add("grid");

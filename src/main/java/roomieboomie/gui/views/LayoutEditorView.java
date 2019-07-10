@@ -23,6 +23,7 @@ import javafx.scene.shape.SVGPath;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
+
 public class LayoutEditorView extends Pane {
 
     public GridPane raster = new GridPane();

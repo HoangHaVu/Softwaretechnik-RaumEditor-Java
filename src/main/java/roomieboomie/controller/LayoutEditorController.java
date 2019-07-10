@@ -151,7 +151,7 @@ public class LayoutEditorController {
             refreshPreview();
         });
 
-        zoomPane.addEventHandler(ZoomEvent.ZOOM, e -> {
+        /*zoomPane.addEventHandler(ZoomEvent.ZOOM, e -> {
 
             Scale newScale = new Scale();
             newScale.setPivotX(e.getX());
@@ -161,7 +161,7 @@ public class LayoutEditorController {
             zoomPane.getTransforms().add(newScale);
 
             e.consume();
-        });
+        });*/
 
         sizeSlider.valueProperty().addListener((observable, oldvar, newvar) -> {
 
