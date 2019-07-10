@@ -1,5 +1,7 @@
 package roomieboomie.business.item.placable;
 
+import java.util.Arrays;
+
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.RoomItem;
 
@@ -18,6 +20,9 @@ public class PlacableItem extends RoomItem {
      * @param orientation Richtung
      * @param type Typ des Items
      */
+
+    
+
     public PlacableItem(int x, int y, Orientation orientation, PlacableItemType type) {
         super(x, y,type.getLength(),type.getWidth(), orientation);
         this.type = type;
@@ -30,6 +35,12 @@ public class PlacableItem extends RoomItem {
         }
     }
 
+    public boolean hasNext(){
+        
+        if (this.next == null) return false;
+
+        return true;
+    }
 
     public PlacableItem getNext(){
         return this.next;
@@ -132,6 +143,24 @@ public class PlacableItem extends RoomItem {
     public int hashCode() {
         return type.toString().hashCode();
     }
+    public void setNext(PlacableItem item){
+        this.next = item;
+    }
 
-    public PlacableItem clone(){ return new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());}
+    public void setLayout(byte[][] layout){
+        this.layout = layout;
+    }
+
+    public PlacableItem clone(){ 
+
+        byte[][] array = new byte[layout.length][];
+        for(int i = 0; i < layout.length; i++){
+            array[i] = Arrays.copyOf(this.layout[i], this.layout[i].length);
+        }
+        PlacableItem newItem = new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());
+        newItem.setLayout(array);
+        newItem.setNext(this.next.clone());
+        return  newItem;
+        
+    }
 }
