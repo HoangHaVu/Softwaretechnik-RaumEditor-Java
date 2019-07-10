@@ -40,12 +40,10 @@ public class Validator {
 
         findInsideRoomLayout[y][x] = 0;
 
-        if (
-                validateLayoutField(findInsideRoomLayout, x - 1, y) &&
+        if (validateLayoutField(findInsideRoomLayout, x - 1, y) &&
                 validateLayoutField(findInsideRoomLayout, x + 1, y) &&
                 validateLayoutField(findInsideRoomLayout, x, y - 1) &&
-                validateLayoutField(findInsideRoomLayout, x, y + 1)
-        ){
+                validateLayoutField(findInsideRoomLayout, x, y + 1)) {
             return true;
         }
 
@@ -61,6 +59,10 @@ public class Validator {
      * @return
      */
     public boolean validateRoom(Room room) {
+        if (room.getDoors().isEmpty() || room.getWindows().isEmpty()){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
+            return false;
+        }
+
         int startX = room.getDoors().get(0).getX();
         int startY = room.getDoors().get(0).getY();
         boolean field1, field2;

@@ -124,7 +124,7 @@ public class PlaceableEditorView extends Pane {
         delete.setMaxWidth(50);
 
 
-        roomName.setPromptText("Raum Name");
+        roomName.setPromptText("Raumname");
         finish.setMinWidth(120);
         finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
         finish.minHeightProperty().bind(finish.widthProperty().divide(5));

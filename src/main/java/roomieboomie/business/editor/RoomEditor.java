@@ -152,12 +152,18 @@ public class RoomEditor {
     }
 
     /**
-     * speichert Raum über JsonHandler falls dieser erfolgreich validiert wurde
+     * Validiert den aktuellen Room ueber den Validator. Dabei werden height und width des Rooms gesetzt.
+     * @return true, wenn der Raum erfolgreich validiert wurde
+     */
+    public boolean validateRoom(){
+        return validator.validateRoom(this.room);
+    }
+
+    /**
+     * Speichert den aktuellen Raum ueber den JsonHandler
+     * @throws JsonWritingException Wenn der Room im JsonHandler nicht geschrieben werden kann
      */
     public void saveRoom() throws JsonWritingException {
-        if (!validator.validateRoom(this.room)) return;
-
-        room.getRoomPreview().setHighscoreList(new HighscoreList());
         jsonHandler.saveRoom(this.room);
     }
 

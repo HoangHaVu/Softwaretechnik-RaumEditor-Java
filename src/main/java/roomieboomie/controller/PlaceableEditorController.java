@@ -56,7 +56,7 @@ public class PlaceableEditorController {
     int actMouseX = 0, actMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
-    ListView<PlacableItem> listView = new ListView<PlacableItem>();
+    ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
 
     public PlaceableEditorController(RoomEditor roomEditor) {
@@ -104,11 +104,20 @@ public class PlaceableEditorController {
         raster.setPrefSize(1000, 1000);
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            try {
-                roomEditor.saveRoom();
-            } catch (JsonWritingException ex) {
-                showAlert("Fehler!", "Ups, dein Raum kommte leider nicht gespeichert werden.");
+            if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
+                try {
+                    //TODO Raum noch auf Placeables validieren
+                    roomEditor.getRoom().setName(roomName.getText());
+                    roomEditor.saveRoom();
+                    showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    switcher.switchView("ChooseEdit");
+                } catch (JsonWritingException ex) {
+                    showAlert("Fehler!", "Ups, dein Raum kommte leider nicht gespeichert werden.");
+                }
+            } else{
+                showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
+
             refreshView();
         });
 

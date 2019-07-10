@@ -402,10 +402,17 @@ public class Room {
     // Ab hier wird zu RoomPreview durchgereicht
 
     /**
+     * Name des Raums
+     */
+    public void setName(String name){
+        roomPreview.setName(name);
+    }
+
+    /**
      * @return Name des Raums
      */
     public String getName(){
-        return this.roomPreview.getName();
+        return roomPreview.getName();
     }
 
     /**
@@ -420,7 +427,7 @@ public class Room {
      * @param value Wert des Raumtyps
      */
     public void setLevel(boolean value){
-        this.roomPreview.setLevel(value);
+        roomPreview.setLevel(value);
     }
 
     /**

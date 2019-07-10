@@ -95,14 +95,12 @@ public class LayoutEditorController {
         raster.setPrefSize(1000, 1000);
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-            try {
-                refreshView();
-                roomEditor.saveRoom();
+            refreshView();
+            if (roomEditor.validateRoom()){
                 switcher.switchView("PlaceableEditor");
-            } catch (JsonWritingException ex) {
-                showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
+            } else{
+                showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
             }
-            //refreshView();
         });
 
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -396,8 +394,8 @@ public class LayoutEditorController {
      * RootController wird gesetzt
      * @param rootController
      */
-    public void setSwitcher(RootController rootController){
-        this.switcher=rootController;
+    public void setSwitcher(RootController rootController) {
+        this.switcher = rootController;
     }
 
 
