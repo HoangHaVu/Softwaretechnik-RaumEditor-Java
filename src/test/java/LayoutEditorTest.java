@@ -1,6 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.RoomEditor;
+import roomieboomie.business.exception.validationExceptions.DoorMissplaceException;
+import roomieboomie.business.exception.validationExceptions.LayoutItemMissplaceException;
+import roomieboomie.business.exception.validationExceptions.WallMissplaceException;
+import roomieboomie.business.exception.validationExceptions.WindowMissplaceException;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -34,7 +38,7 @@ public class LayoutEditorTest {
      * getestete Funktionen: Auswahl und Platzieren einer Wand
      * Beweis: byte [][] wird mit 1 befüllt von [1][1] bis [10][1] wegen der Länge der senkrechten Wand
      */
-    public void placeWall() {
+    public void placeWall() throws LayoutItemMissplaceException, WindowMissplaceException, DoorMissplaceException, WallMissplaceException {
         int x = 1;
         int y = 1;
         testEditor.selectnewItem(LayoutItemType.WALL);
@@ -52,7 +56,7 @@ public class LayoutEditorTest {
      * getestete Funktionen: Auswahl, Rotieren und Platzieren eines Fensters
      * Beweis: byte [][] wird mit -3 an den jeweiligen Koordinaten befüllt
      */
-    public void placeWindow() {
+    public void placeWindow() throws LayoutItemMissplaceException, WindowMissplaceException, DoorMissplaceException, WallMissplaceException {
         int x = 1;
         int y = 5;
         int endY = y + window.getLength();
@@ -74,7 +78,7 @@ public class LayoutEditorTest {
      * getestete Funktionen: loeschen von platzierten Objekten
      * Beweis: das byte[][] wird durchiteriert und schaut ob es noch eine Wand gibt(im byte[][] der Zahl 1 gekennzeichnet
      */
-    public void deleteItem() {
+    public void deleteItem() throws LayoutItemMissplaceException, WindowMissplaceException, DoorMissplaceException, WallMissplaceException {
         int x = 1;
         int y = 1;
         int layoutHeight = testEditor.getRoom().getLayout().length;

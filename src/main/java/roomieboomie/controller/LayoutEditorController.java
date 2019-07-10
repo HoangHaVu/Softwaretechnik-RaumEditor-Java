@@ -13,20 +13,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.transform.Scale;
 import roomieboomie.business.editor.RoomEditor;
-import roomieboomie.business.exception.editorExceptions.*;
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.exception.JsonWritingException;
 
 public class LayoutEditorController {
 

@@ -1,7 +1,6 @@
 package roomieboomie.business.editor;
 
-import roomieboomie.business.exception.editorExceptions.*;
-import roomieboomie.business.highscore.HighscoreList;
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;

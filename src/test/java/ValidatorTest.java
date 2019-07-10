@@ -1,7 +1,9 @@
 import org.junit.Before;
 import org.junit.Test;
-import roomieboomie.business.editor.PlaceableEditor;
-import roomieboomie.business.editor.RoomEditor;
+import roomieboomie.business.exception.validationExceptions.DoorMissplaceException;
+import roomieboomie.business.exception.validationExceptions.LayoutItemMissplaceException;
+import roomieboomie.business.exception.validationExceptions.WallMissplaceException;
+import roomieboomie.business.exception.validationExceptions.WindowMissplaceException;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -19,6 +21,7 @@ public class ValidatorTest {
     LayoutItem window;
     LayoutItem door;
     Validator validator;
+    PlacableItem dino;
     byte[][] layout;
 
     @Before
@@ -38,11 +41,34 @@ public class ValidatorTest {
 
     }
     @Test
-    public void validate(){
+    public void validateLayoutTests() throws LayoutItemMissplaceException, WallMissplaceException, DoorMissplaceException, WindowMissplaceException {
+        boolean success = true;
 
-        assertTrue(validator.validateLayoutPlacement(wall,layout));
-        assertFalse(validator.validateLayoutPlacement(window,layout));
-        assertFalse(validator.validateLayoutPlacement(door,layout));
+        assertTrue(validator.validateLayoutPlacement(wall, layout));
+        try {
+            validator.validateLayoutPlacement(window, layout);
+        } catch (WallMissplaceException e) {
+            success = false;
+        }
+        try {
+            validator.validateLayoutPlacement(door, layout);
+        } catch (WindowMissplaceException e) {
+            success = false;
+        }
+        assert success;
+    }
+
+    @Test
+    public void validateInFrontDoor_and_setInInterior_Test(){
+        boolean success = true;
+        byte[][] layout = new byte[][]{
+                { 1, 1, 1, 1, 1, 2, 2, 2, 1, 1 },
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                { 3, 0, 1, 1, 1, 0, 0, 0, 0, 1 },
+                { 3, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+                { 1, 1, 1, 1, 3, 3, 1, 1, 1, 1 }
+        };
+        PlacableItem dino = new PlacableItem(PlacableItemType.DINO);
 
     }
 }
