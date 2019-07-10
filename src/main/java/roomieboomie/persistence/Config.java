@@ -5,15 +5,8 @@ import roomieboomie.persistence.exception.JsonLoadingException;
 import java.util.HashMap;
 
 /**
- * Gibt den Wert eines Attributs aus der Konfigurationsdatei config.json zurueck
- *
- * @param attributeName Name des Attributes
- * @return Wert des Attributs als String
- */
-
-/**
  * Klasse, die Konfigurationsattribute beinhaltet. Instanz ist per Config.get() aufrufbar.
- * Attribute nachach ueber ihren Namen in Caps
+ * Attribute danach ueber ihren Namen in Caps
  */
 public class Config {
     private JsonHandler jsonHandler = new JsonHandler();
@@ -41,6 +34,12 @@ public class Config {
     private final byte GAMEDOOR;
     private final byte GAMEWINDOW;
     private final byte GAMEWALL;
+    private final String SOUNDPATH;
+    private final String EATSOUND;
+    private final String FAILSOUND;
+    private final String LOSESOUND;
+    private final String SUCCESSSOUND;
+    private final String WINSOUND;
 
     /**
      * Privater Konstruktor, um Singleton zu gewaehren
@@ -76,6 +75,12 @@ public class Config {
         GAMEDOOR = Byte.valueOf(configMap.get("gameDoor"));
         GAMEWINDOW = Byte.valueOf(configMap.get("gameWindow"));
         GAMEWALL = Byte.valueOf(configMap.get("gameWall"));
+        SOUNDPATH = configMap.get("soundPath");
+        EATSOUND = configMap.get("eatSound");
+        FAILSOUND = configMap.get("failSound");
+        LOSESOUND = configMap.get("loseSound");
+        SUCCESSSOUND = configMap.get("successSound");
+        WINSOUND = configMap.get("winSound");
     }
 
     private static Config instance;
@@ -186,4 +191,27 @@ public class Config {
         return GAMEWALL;
     }
 
+    public String SOUNDPATH() {
+        return SOUNDPATH;
+    }
+
+    public String EATSOUND() {
+        return EATSOUND;
+    }
+
+    public String FAILSOUND() {
+        return FAILSOUND;
+    }
+
+    public String LOSESOUND() {
+        return LOSESOUND;
+    }
+
+    public String SUCCESSSOUND() {
+        return SUCCESSSOUND;
+    }
+
+    public String WINSOUND() {
+        return WINSOUND;
+    }
 }

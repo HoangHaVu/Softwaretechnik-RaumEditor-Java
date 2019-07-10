@@ -32,6 +32,7 @@ public class RoomSaveLoadTest {
 
     @Before
     public void init(){
+
         jsonHandler = new JsonHandler();
         highscoreList = new HighscoreList();
 

@@ -3,9 +3,10 @@ package roomieboomie.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import roomieboomie.business.RoomieBoomieManager;
-import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.exception.JsonLoadingException;
 import roomieboomie.persistence.exception.JsonValidatingException;
@@ -24,14 +25,16 @@ public class RootController {
 
     /**
      * SwitchView Methode ist für den Wechsel zwischen den Views zuständig
+     *
      * @param view
      */
-    public void switchView(String view){
-        switch (view){
+    public void switchView(String view) {
+        switch (view) {
             case "Login":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/LoginView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
+                    scene.getStylesheets().add("application.css");
                     LoginController loginController = loader.getController();
                     loginController.setSwitcher(this);
                     loginController.setRoomieBoomieManager(roomieBoomieManager);
@@ -45,7 +48,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/MainMenuView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    MainMenuController mainMenuController= loader.getController();
+                    MainMenuController mainMenuController = loader.getController();
                     mainMenuController.setSwitcher(this);
                     mainMenuController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
@@ -83,7 +86,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/ChoosePlayView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    ChoosePlayController choosePlayController= loader.getController();
+                    ChoosePlayController choosePlayController = loader.getController();
                     choosePlayController.setSwitcher(this);
                     choosePlayController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
@@ -96,7 +99,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/HighscoreView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 600);
-                    HighscoreController highscoreController= loader.getController();
+                    HighscoreController highscoreController = loader.getController();
                     highscoreController.setSwitcher(this);
                     highscoreController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
@@ -109,7 +112,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/SelectRoomView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    SelectRoomController selectRoomController= loader.getController();
+                    SelectRoomController selectRoomController = loader.getController();
                     selectRoomController.setSwitcher(this);
                     selectRoomController.setCreative(creative);
                     selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
@@ -134,20 +137,22 @@ public class RootController {
                 scene.getStylesheets().add("application.css");
                 layoutEditorController_load.setSwitcher(this);
                 try {
-                    roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom,true);
+                    roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom, true);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                    layoutEditorController_load.refreshView();
                 } catch (JsonValidatingException e) {
-                    e.printStackTrace();
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht erfolgreich validiert werden.");
                 } catch (JsonLoadingException e) {
-                    e.printStackTrace();
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht geladen werden.");
                 }
-                primaryStage.setScene(scene);
-                primaryStage.show();
-                layoutEditorController_load.refreshView();
+
                 break;
             case "PlaceableEditor":
-                PlaceableEditorController placeableEditorController=new PlaceableEditorController(this.roomieBoomieManager.getRoomEditor());
-                this.scene = new Scene(placeableEditorController.getView(), 1000, 600);
-                primaryStage.setScene(scene);
+                PlaceableEditorController placeableEditorController = new PlaceableEditorController(roomieBoomieManager.getRoomEditor());
+                placeableEditorController.setSwitcher(this);
+                Scene scene1 = new Scene(placeableEditorController.getView(), 1000, 600);
+                primaryStage.setScene(scene1);
                 primaryStage.show();
                 placeableEditorController.refreshView();
 
@@ -159,7 +164,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/GameOverView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    GameOverController gameOverController= loader.getController();
+                    GameOverController gameOverController = loader.getController();
                     gameOverController.setSwitcher(this);
                     gameOverController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
@@ -172,7 +177,7 @@ public class RootController {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/WinLevelView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    WinLevelController winLevelController= loader.getController();
+                    WinLevelController winLevelController = loader.getController();
                     winLevelController.setSwitcher(this);
                     winLevelController.setRoomieBoomieManager(roomieBoomieManager);
                     primaryStage.setScene(scene);
@@ -185,15 +190,17 @@ public class RootController {
     }
 
     /**
-     * Setter Methode für das Attribut Stage
+     * Setter-Methode für das Attribut Stage
+     *
      * @param stage
      */
-    public void setPrimaryStage(Stage stage){
+    public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
 
     /**
-     * Setter Methode für das Objekt RoomieBoomieManager
+     * Setter-Methode für das Objekt RoomieBoomieManager
+     *
      * @param roomieBoomieManager
      */
     public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
@@ -201,12 +208,24 @@ public class RootController {
     }
 
     /**
-     * Setter Methode für den Boolean Wert
+     * Setter-Methode für den Boolean Wert
+     *
      * @param value
      */
-    public void setCreative(boolean value){
+    public void setCreative(boolean value) {
         this.creative = value;
     }
 
-    public void setSelectedRoom(RoomPreview roomPreview){this.selectedRoom=roomPreview;}
+    public void setSelectedRoom(RoomPreview roomPreview) {
+        this.selectedRoom = roomPreview;
+    }
+
+    private void showAlert(String title, String message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

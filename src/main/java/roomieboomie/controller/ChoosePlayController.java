@@ -8,23 +8,27 @@ public class ChoosePlayController {
     private RootController switcher;
 
     @FXML
-    public void creativePlayMod(){
+    public void creativePlayMod() {
         switcher.setCreative(true);
         switcher.switchView("SelectRoom");
     }
+
     @FXML
-    public void levelPlayMod(){
+    public void levelPlayMod() {
         switcher.setCreative(false);
         switcher.switchView("SelectRoom");
     }
-    public void setSwitcher(RootController rootController){
+
+    public void setSwitcher(RootController rootController) {
         this.switcher = rootController;
     }
-    public void setRoomieBoomieManager (RoomieBoomieManager roomieBoomieManager){
+
+    public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {
         this.roomieBoomieManager = roomieBoomieManager;
     }
+
     @FXML
-    public void backToMenu(){
+    public void backToMenu() {
         switcher.switchView("MainMenu");
     }
 }

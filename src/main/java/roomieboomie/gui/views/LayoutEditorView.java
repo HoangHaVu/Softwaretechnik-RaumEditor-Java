@@ -32,7 +32,7 @@ public class LayoutEditorView extends Pane {
     public GridPane controlBox = new GridPane();
     public ScrollPane scrollableRaster;
     public GridPane itemPreviewGrid = new GridPane();
-    public Button finish = new Button("FERTIG");
+    public Button finish = new Button("WEITER");
     public Slider sizeSlider = new Slider(0, 1, 0.5);
     public HBox sliderPane = new HBox();
     public Button rotate = new Button();

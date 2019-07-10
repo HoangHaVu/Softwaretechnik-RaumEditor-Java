@@ -4,8 +4,8 @@ import javafx.fxml.FXML;
 import roomieboomie.business.RoomieBoomieManager;
 
 public class ChooseEditorController {
-    private RootController switcher;
     private RoomieBoomieManager roomieBoomieManager;
+    private RootController switcher;
 
     @FXML
     public void createNewRoom() {

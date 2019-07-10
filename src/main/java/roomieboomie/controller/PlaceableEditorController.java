@@ -49,13 +49,14 @@ public class PlaceableEditorController {
     ScrollPane scrollableRaster;
     Label objectName;
     Action action;
+    TextField roomName;
     ZoomableScrollPane zoomPane;
     StackPane zoomAndScroll;
     String backgroundStyle = ("-fx-background-color: black;");
     int actMouseX = 0, actMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     private RoomPreview roomPreview;
-    ListView<PlacableItem> listView = new ListView<PlacableItem>();
+    ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
 
     public PlaceableEditorController(RoomEditor roomEditor) {
@@ -80,6 +81,7 @@ public class PlaceableEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         this.listView = view.listView;
+        this.roomName = view.roomName;
         initialize();
     }
 
@@ -102,11 +104,20 @@ public class PlaceableEditorController {
         raster.setPrefSize(1000, 1000);
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-            try {
-                roomEditor.saveRoom();
-            } catch (JsonWritingException ex) {
-                showAlert("Fehler!", "Ups, dein Raum kommte leider nciht gespeichert werden.");
+            if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
+                try {
+                    //TODO Raum noch auf Placeables validieren
+                    roomEditor.getRoom().setName(roomName.getText());
+                    roomEditor.saveRoom();
+                    showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    switcher.switchView("ChooseEdit");
+                } catch (JsonWritingException ex) {
+                    showAlert("Fehler!", "Ups, dein Raum kommte leider nicht gespeichert werden.");
+                }
+            } else{
+                showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
+
             refreshView();
         });
 
@@ -300,10 +311,11 @@ public class PlaceableEditorController {
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if (this.action == Action.PLACE) placeableEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE)
-                        roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
+                        //roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
+                        placeableEditor.delete(x,y);
                     else if (this.action == Action.EDIT) {
 
-                        roomEditor.editItem(roomEditor.getRoom().getLayout()[y][x]);
+                        placeableEditor.editItem(x,y);
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
                         //edit.setStyle("");
@@ -557,7 +569,7 @@ public class PlaceableEditorController {
                         i = new Image(new FileInputStream(noDirectory));
                         image.setImage(i);
                     } catch (FileNotFoundException e) {
-                        System.out.println("Anzeigebild des Objekts wurde nicht gefunden");
+                        System.err.println("Anzeigebild des Objekts wurde nicht gefunden");
                     }
                 } else {
                     image.setImage(i);

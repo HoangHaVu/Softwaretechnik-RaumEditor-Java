@@ -24,34 +24,32 @@ public class LoginController {
     }
 
     @FXML
-    public void toMenu(){
-        System.out.println();
-        if(usernameField.getText().isEmpty()){
+    public void toMenu() {
+
+        if (usernameField.getText().isEmpty()) { // kein Name angegeben
             showAlert("Fehler", "Bitte gib einen Namen ein.");
-        } else{
+        } else { // Name angegeben
             String username = usernameField.getText();
-            User user = roomieBoomieManager.getUserMap().getUser(username);
-            if (user == null){
+            User user;
+
+            if (roomieBoomieManager.getUserMap().containsUsername(username)) { // User bereits vorhanden
+                user = roomieBoomieManager.getUserMap().getUser(username);
+            } else { // User anlegen und speichern
                 user = new User(username);
-
-                try { //TODO wird eigentlich schon ueberprueft, Exception weglassen?
-                    roomieBoomieManager.getUserMap().addUser(user);
-                } catch (UserException e) {
-                    e.printStackTrace();
-                }
-
+                roomieBoomieManager.getUserMap().addUser(user);
                 try {
                     roomieBoomieManager.getJsonHandler().saveUser(user);
                 } catch (JsonWritingException e) {
-                   showAlert("Ups!", "Leider konnte dein Profil nicht gespeichert werden. Versuche es erneut.");
-                   return;
+                    showAlert("Ups!", "Leider konnte dein Profil nicht gespeichert werden. Versuche es erneut.");
+                    return;
                 }
-
                 showAlert("Hallo!", "Willkommen bei deinem ersten Spiel!");
             }
+
             roomieBoomieManager.setCurrentUser(user);
             switcher.switchView("MainMenu");
         }
+
     }
 
     @FXML
