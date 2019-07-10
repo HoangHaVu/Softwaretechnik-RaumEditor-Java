@@ -22,5 +22,11 @@
     "editorMaxWindow": "-3",
     "gameDoor": "-2",
     "gameWindow": "-3",
-    "gameWall": "-4"
+    "gameWall": "-4",
+    "soundPath": "src/main/resources/sounds/",
+    "eatSound": "eat.wav",
+    "failSound": "fail.wav",
+    "loseSound": "lose.wav",
+    "successSound": "success.wav",
+    "winSound": "win.wav"
 }
