@@ -1,9 +1,12 @@
 package roomieboomie.business.validation;
 
+import roomieboomie.business.exception.editorExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
+import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.room.Room;
+import roomieboomie.persistence.Config;
 
 
 public class Validator {
@@ -58,9 +61,12 @@ public class Validator {
      * @param room
      * @return
      */
-    public boolean validateRoom(Room room) {
-        if (room.getDoors().isEmpty() || room.getWindows().isEmpty()){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
-            return false;
+    public boolean validateRoom(Room room) throws MissingDoorException, MissingWindowException, getIntoRoomException {
+        if (room.getDoors().isEmpty()){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
+            throw new MissingDoorException();
+        }
+        if( room.getWindows().isEmpty()){
+            throw new MissingWindowException();
         }
 
         int startX = room.getDoors().get(0).getX();
@@ -84,7 +90,7 @@ public class Validator {
             } else if (!field1 && field2) {
                 validateLayoutField(finalLayout, startX + 1, startY);
                 room.setLayout(finalLayout);
-            } else return false;
+            } else throw new getIntoRoomException();
 
         } else {
             field1 = validateLayoutField(room.getLayout(), startX, startY - 1);
@@ -102,7 +108,7 @@ public class Validator {
             } else if (!field1 && field2) {
                 validateLayoutField(finalLayout, startX, startY + 1);
                 room.setLayout(finalLayout);
-            } else return false;
+            } else throw new getIntoRoomException();
         }
 
         room.setStartX(this.smallestX);
@@ -112,11 +118,42 @@ public class Validator {
         return true;
     }
 
-    public boolean validatePlacement(LayoutItem item) {
-        return true;
+    public boolean validateLayoutPlacement(LayoutItem item,byte[][]layout) throws LayoutItemMissplaceException, WallMissplaceException, DoorMissplaceException, WindowMissplaceException {
+
+        if (item.getX()!=layout.length||item.getX()!=0&&item.getY()!=layout[0].length||item.getY()!=0){
+            if (item.getType().equals(LayoutItemType.WALL)){
+                for(int x=item.getX();x<(item.getLength()+item.getX());x++){
+                    for(int y=item.getY();y<(item.getWidth()+item.getY());y++) {
+                        if(layout[x][y]!= Config.get().LAYOUTEXTERIORVALUE()){
+                            throw new WallMissplaceException();
+                        }
+                    }
+                }
+                return true;
+            }
+            if(item.getType().equals(LayoutItemType.DOOR)||item.getType().equals(LayoutItemType.WINDOW)){
+                for(int x=item.getX();x<(item.getLength()+item.getX());x++){
+                    for(int y=item.getY();(y<item.getWidth()+item.getY());y++) {
+                        if(layout[x][y]< Config.get().EDITORMINWALLVALUE()){
+                            if(item.getType().equals(LayoutItemType.DOOR)){
+                                throw new DoorMissplaceException();
+                            }else{
+                                throw new WindowMissplaceException();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+
+        throw new LayoutItemMissplaceException();
+
     }
 
     public boolean validatePlacement(PlacableItem item) {
+
+
         return true;
     }
 

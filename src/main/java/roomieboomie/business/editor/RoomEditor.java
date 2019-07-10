@@ -1,5 +1,6 @@
 package roomieboomie.business.editor;
 
+import roomieboomie.business.exception.editorExceptions.*;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
@@ -119,11 +120,11 @@ public class RoomEditor {
      */
     public void selectnewItem(LayoutItemType type) {
         if (type == LayoutItemType.WALL) {
-            currLayoutItem = new LayoutItem(type, 10, 1, Orientation.TOP);
+            currLayoutItem = new LayoutItem(type, 10, 1, Orientation.TOP); //TODO CONFIG
         } else if (type == LayoutItemType.WINDOW) {
-            currLayoutItem = new LayoutItem(type, 4, 1, Orientation.RIGHT);
+            currLayoutItem = new LayoutItem(type, 4, 1, Orientation.RIGHT); //TODO CONFIG
         } else if (type == LayoutItemType.DOOR) {
-            currLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
+            currLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT); //TODO CONFIG
         }
     }
 
@@ -139,23 +140,21 @@ public class RoomEditor {
      * @param x Koordinate
      * @param y Koordinate
      */
-    public void placeCurrItem(int x, int y) {
+    public void placeCurrItem(int x, int y) throws WindowMissplaceException, LayoutItemMissplaceException, DoorMissplaceException, WallMissplaceException {
         currLayoutItem.setX(x);
         currLayoutItem.setY(y);
-
-        if (!validator.validatePlacement(currLayoutItem)) {
-            return;
+        if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
+            addItem(currLayoutItem);
+            currLayoutItem = currLayoutItem.clone();
         }
 
-        addItem(currLayoutItem);
-        currLayoutItem = currLayoutItem.clone();
     }
 
     /**
      * Validiert den aktuellen Room ueber den Validator. Dabei werden height und width des Rooms gesetzt.
      * @return true, wenn der Raum erfolgreich validiert wurde
      */
-    public boolean validateRoom(){
+    public boolean validateRoom() throws MissingWindowException, MissingDoorException, getIntoRoomException {
         return validator.validateRoom(this.room);
     }
 
