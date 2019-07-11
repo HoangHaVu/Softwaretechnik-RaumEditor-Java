@@ -26,7 +26,7 @@ public class PlaceableEditorView extends Pane {
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
     public GridPane completeEditor = new GridPane();
-    public GridPane controlBox = new GridPane();
+    public GridPane controlBox = new GridPane(), placableRaster = new GridPane();
     public ScrollPane scrollableRaster;
     public GridPane itemPreviewGrid = new GridPane();
     public Button finish = new Button("FERTIG");
@@ -46,7 +46,7 @@ public class PlaceableEditorView extends Pane {
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
-        zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
+        zoomAndScroll.getChildren().addAll(raster, placableRaster, dragRaster, interactionRaster);
         zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
 

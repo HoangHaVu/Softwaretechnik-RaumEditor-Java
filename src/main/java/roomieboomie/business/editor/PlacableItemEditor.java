@@ -62,8 +62,8 @@ public class PlacableItemEditor {
 
         if (this.layout[y][x] <= 0 ) return;
 
-
-        PlacableItem delItem = placableItemList.get(layout[y][x] - 1);
+        int itemNumber = layout[y][x] - 1;
+        PlacableItem delItem = placableItemList.get(itemNumber);
         PlacableItem item = delItem;
 
         if (!delItem.hasNextOn(x - delItem.getX(), y - delItem.getY())){
@@ -76,14 +76,24 @@ public class PlacableItemEditor {
                 endX = startX + item.getWidth();
                 endY = startY + item.getLength();
             }
+            delItem.removeItemFromThis();
 
-            room.getPlacableItemList().remove(delItem);
+            this.getPlacableItemList().remove(delItem);
             
             for (int i = startY; i < endY; i++){
                 for (int j = startX; j < endX; j++){
                     layout[i][j] = 0;
                 }
             }
+
+            for (int i = 0; i < this.layout.length; i++){
+                for (int j = 0; j < this.layout[0].length; j++){
+                    if (layout[i][j] > itemNumber){
+                        layout[i][j] -= 1;
+                    }
+                }
+            }
+
 
             return;
 
@@ -117,8 +127,8 @@ public class PlacableItemEditor {
         }
 
 
-        if (layout[startX][startY] > 0){
-            PlacableItem unterItem = placableItemList.get(layout[startX][startY] - 1);
+        if (layout[startY][startX] > 0){
+            PlacableItem unterItem = placableItemList.get(layout[startY][startX] - 1);
             item.setX(item.getX() - unterItem.getX());
             item.setY(item.getY() - unterItem.getY());
             unterItem.placeItemOnThis(item);
@@ -172,7 +182,11 @@ public class PlacableItemEditor {
 
 
     public ArrayList<PlacableItem> getPlacableItemList() {
-        return placableItemList;
+        return this.placableItemList;
+    }  
+
+    public byte[][] getLayout(){
+        return this.layout;
     }
 
     public PlacableItem getCurrentItem() {

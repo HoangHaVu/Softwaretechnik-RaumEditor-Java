@@ -43,7 +43,7 @@ public class PlaceableEditorController {
     PlacableItemEditor placableItemEditor;
     RoomEditor roomEditor;
     PlaceableEditorView view;
-    GridPane raster, interactionRaster, dragRaster;
+    GridPane raster, interactionRaster, dragRaster, placableRaster;
     GridPane completeEditor;
     GridPane controlBox;
     GridPane itemPreview;
@@ -60,6 +60,7 @@ public class PlaceableEditorController {
     private RoomPreview roomPreview;
     ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
+
 
     public PlaceableEditorController(RoomEditor roomEditor) {
         view = new PlaceableEditorView();
@@ -84,6 +85,7 @@ public class PlaceableEditorController {
         this.dragRaster = view.dragRaster;
         this.listView = view.listView;
         this.roomName = view.roomName;
+        this.placableRaster = view.placableRaster;
         initialize();
     }
 
@@ -120,12 +122,12 @@ public class PlaceableEditorController {
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
 
-            refreshView();
         });
 
         edit.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             this.action = Action.EDIT;
             refreshHighlightedButton();
+            refreshPlacableLayout(placableItemEditor.getPlacableItemList(), placableItemEditor.getLayout());
         });
 
         delete.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -137,6 +139,7 @@ public class PlaceableEditorController {
             delete.setFocusTraversable(true);
             this.action = Action.DELETE;
             refreshHighlightedButton();
+            refreshPlacableLayout(placableItemEditor.getPlacableItemList(), placableItemEditor.getLayout());
         });
 
         rotate.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -181,7 +184,7 @@ public class PlaceableEditorController {
             }
         });
 
-
+        refreshLayoutView();
         initInteraction();
         refreshHighlightedButton();
         refreshPreviewObject();
@@ -323,7 +326,7 @@ public class PlaceableEditorController {
                         //edit.setStyle("");
                         refreshPreviewObject();
                     }
-                    refreshView();
+                    refreshPlacableLayout(placableItemEditor.getPlacableItemList(), placableItemEditor.getLayout());
                     e.consume();
                 });
 
@@ -390,16 +393,92 @@ public class PlaceableEditorController {
         view.itemPreviewGrid.getChildren().add(itemPane);
     }
 
-    public void setLayout(ArrayList<LayoutItem>layoutItems,byte[][]layout){
-        for(LayoutItem w : layoutItems){
+    public void refreshPlacableLayout(ArrayList<PlacableItem>placableItems,byte[][]layout){
+        placableRaster.getChildren().clear();
+
+        for (int i = 0; i < placableItemEditor.getLayout().length; i++) {
+            for (int j = 0; j < layout[0].length; j++) {
+                Pane element = new Pane();
+
+                element.prefHeightProperty().bind(view.raster.widthProperty().divide(placableItemEditor.getLayout()[0].length));
+                element.prefWidthProperty().bind(view.raster.widthProperty().divide(placableItemEditor.getLayout()[0].length));
+
+                GridPane.setConstraints(element, i, j);
+
+
+                placableRaster.getChildren().add(element);
+
+            }
+        }
+        for(PlacableItem placable : placableItems){
+
+            
+            PlacableItem cur = placable;
+            int x = 0; 
+            int y = 0;
+
+            do{
+                Pane item = new Pane();
+                Image textureImage;
+                item.prefHeightProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
+                item.prefWidthProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
+                //item.getStyleClass().add("layout-item");
+                //item.setStyle(style);
+                x += cur.getX();
+                y += cur.getY();
+                if (cur.getOrientation() == Orientation.TOP || cur.getOrientation() == Orientation.BOTTOM){
+
+                    GridPane.setConstraints(item, x, y, cur.getWidth(), cur.getLength());
+                    item.setStyle("-fx-background-color: rgba(0,0,0,.2);");
+                    
+
+                    /*
+                    if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");
+                    else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureVertical.jpg");
+                    else textureImage = new Image(iconTexturePath + "doorTextureVertical.png");
+                    */
+
+                } else{
+
+                    GridPane.setConstraints(item ,x,y, cur.getLength(), cur.getWidth());
+                    item.setStyle("-fx-background-color: rgba(0,0,0,.2);");
+                    /*
+                    if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
+                    else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
+                    else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
+                    //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
+                    */
+
+                }
+
+                /*ImageView texture = new ImageView(textureImage);
+
+                texture.fitWidthProperty().bind(item.widthProperty());
+                texture.fitHeightProperty().bind(item.heightProperty());
+
+                item.getChildren().add(texture);
+                */
+                placableRaster.getChildren().add(item);
+
+                cur = cur.getNext();
+
+            } while (cur != null);
+
+
+
+            
+        }
+    }
+    public void updateItems(ArrayList<LayoutItem> items, byte[][]layout){
+
+        for(LayoutItem w : items){
 
             Pane item = new Pane();
             Image textureImage;
-
+            
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.getStyleClass().add("layout-item");
-            //item.setStyle(style);
             if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
 
                 GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
@@ -413,7 +492,6 @@ public class PlaceableEditorController {
                 if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
                 else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
                 else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
-                //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
 
             }
 
@@ -426,7 +504,6 @@ public class PlaceableEditorController {
             raster.getChildren().add(item);
         }
     }
-
     /**
      * - new Method selectItemTexture!!! - zum laden der Texture TODO
      * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
@@ -437,6 +514,7 @@ public class PlaceableEditorController {
      * @param layout
      */
     public void setItemsIntoView(ArrayList<PlacableItem> items, byte[][] layout) {
+        
         for (PlacableItem w : items) {
 
             Pane item = new Pane();
@@ -483,7 +561,7 @@ public class PlaceableEditorController {
      * Setzt jeweils für jedes Pixel die bestimmte Farbe je nachdem was im Byte Array steht
      * Ruft jeweils die Methode setItemsIntoView auf um die gesetzten Objekte anzuzeigen
      */
-    public void refreshView() {
+    public void refreshLayoutView() {
         byte[][] layout = roomEditor.getRoom().getLayout();
         view.raster.getChildren().clear();
         Image textureImage = new Image(iconTexturePath + "grassTexture.jpg");
@@ -525,10 +603,10 @@ public class PlaceableEditorController {
             }
         }
 
-        setLayout(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
-        setLayout(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
-        setLayout(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
-        setItemsIntoView(roomEditor.getRoom().getPlacableItemList(),layout);
+        updateItems(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
+        updateItems(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
+        updateItems(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
+        //setItemsIntoView(roomEditor.getRoom().getPlacableItemList(),layout);
     }
 
     private void showAlert(String title, String message) {
