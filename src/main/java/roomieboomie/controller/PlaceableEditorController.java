@@ -226,14 +226,6 @@ public class PlaceableEditorController {
             edit.getStyleClass().remove("selected-button");
             delete.getStyleClass().remove("selected-button");
 
-            /*
-            if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.DOOR) {
-                door.getStyleClass().add("selected-button");
-            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WINDOW) {
-                window.getStyleClass().add("selected-button");
-            } else if (roomEditor.getCurrLayoutItem().getType() == LayoutItemType.WALL) {
-                wall.getStyleClass().add("selected-button");
-            }*/
         }
     }
 
@@ -449,8 +441,6 @@ public class PlaceableEditorController {
                 Image textureImage = cur.getTextureImage();
                 item.prefHeightProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
                 item.prefWidthProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
-                //item.getStyleClass().add("layout-item");
-                //item.setStyle(style);
                 x += cur.getX();
                 y += cur.getY();
                 if (cur.getOrientation() == Orientation.TOP || cur.getOrientation() == Orientation.BOTTOM){
