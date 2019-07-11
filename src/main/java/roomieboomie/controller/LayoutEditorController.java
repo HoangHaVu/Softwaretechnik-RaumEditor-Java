@@ -13,12 +13,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ZoomEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.transform.Scale;
 import roomieboomie.business.editor.RoomEditor;
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -96,13 +95,18 @@ public class LayoutEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
             refreshView();
-
-            if (roomEditor.validateRoom()){
-                switcher.switchView("PlaceableEditor");
-                SoundHandler.get().SUCCESSSOUND().play();
-            } else{
-                SoundHandler.get().FAILSOUND().play();
-                showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
+            try {
+                if (roomEditor.validateRoom()){
+                    switcher.switchView("PlaceableEditor");
+                } else{
+                    showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
+                }
+            } catch (MissingWindowException ex) {
+                ex.printStackTrace();
+            } catch (MissingDoorException ex) {
+                ex.printStackTrace();
+            } catch (getIntoRoomException ex) {
+                ex.printStackTrace();
             }
         });
 
@@ -373,7 +377,19 @@ public class LayoutEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
-                    if (this.action == Action.PLACE) roomEditor.placeCurrItem(x, y);
+                    if (this.action == Action.PLACE) {
+                        try {
+                            roomEditor.placeCurrItem(x, y);
+                        } catch (WindowMissplaceException ex) {
+                            ex.printStackTrace();
+                        } catch (LayoutItemMissplaceException ex) {
+                            ex.printStackTrace();
+                        } catch (DoorMissplaceException ex) {
+                            ex.printStackTrace();
+                        } catch (WallMissplaceException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);
                     else if (this.action == Action.EDIT) {
 

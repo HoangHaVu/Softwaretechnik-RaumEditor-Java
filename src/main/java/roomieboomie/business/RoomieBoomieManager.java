@@ -32,6 +32,7 @@ public class RoomieBoomieManager {
      * Konstruktor
      */
     public RoomieBoomieManager() {
+
         this.roomEditor = new RoomEditor();
 
         roomEditor.loadNewRoom("meinRaum", false);

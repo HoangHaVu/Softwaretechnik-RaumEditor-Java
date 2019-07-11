@@ -4,6 +4,11 @@ buttonStyle{
     -fx-font-size: 14;
 
 }
+.startBtn:hover{
+    -fx-background-color: #ffc349;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16;
+}
 
 .header{
     -fx-font-family: "Comix Loud";
@@ -82,5 +87,19 @@ buttonStyle{
     -fx-font-family: "Comix Loud";
     -fx-font-size:14;
 
+}
+.back-button{
+    -fx-background-color: white;
+    -fx-background-radius: 5, 5;
+    -fx-background-insets: -1.4, 0;
+    -fx-effect: dropshadow(three-pass-box, rgb(150, 150, 150), 10, 0, 0, 0);
+    -fx-text-fill: rgb(150, 150, 150);
+}
+.back-button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgb(224, 54, 7), 15, 0, 0, 0);
+}
+.back-button:pressed {
+    -fx-background-color: rgb(224, 54, 7);
+    -fx-text-fill: rgb(255, 255, 255);
 }
 

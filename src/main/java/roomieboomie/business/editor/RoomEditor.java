@@ -1,5 +1,6 @@
 package roomieboomie.business.editor;
 
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
@@ -32,7 +33,8 @@ public class RoomEditor {
     private PlacableItem currPlaceableItem;
     private byte[][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
-    private PlaceableEditor placeableEditor;
+
+    private PlacableItemEditor placableEditor;
 
     byte layoutDoor = Config.get().EDITORDOORVALUE();
     byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
@@ -50,6 +52,7 @@ public class RoomEditor {
         selectnewItem(LayoutItemType.WALL);
         selectnewPlaceableItem(PlacableItemType.TABLE);
         initDefaultPlaceableItem();
+        placableEditor = new PlacableItemEditor();
     }
 
     /**
@@ -68,15 +71,15 @@ public class RoomEditor {
         this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), roomPreview);
         this.validator = new Validator();
         this.room.setLevel(level);
+        this.room.setPlacableItemList(new ArrayList<PlacableItem>());
         selectnewItem(LayoutItemType.WALL);
-
-        this.placeableEditor = new PlaceableEditor(this.room);
+        placableEditor = new PlacableItemEditor();
     }
 
     public void loadNewRoom(String name, boolean level) {
         RoomPreview newPreview = new RoomPreview(name, level, jsonHandler);
         this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), newPreview);
-        this.placeableEditor = new PlaceableEditor(room);
+
     }
 
     public void loadRoom(RoomPreview roomPreview, boolean editLayout) throws JsonValidatingException, JsonLoadingException {
@@ -119,11 +122,11 @@ public class RoomEditor {
      */
     public void selectnewItem(LayoutItemType type) {
         if (type == LayoutItemType.WALL) {
-            currLayoutItem = new LayoutItem(type, 10, 1, Orientation.TOP);
+            currLayoutItem = new LayoutItem(type, 10, 1, Orientation.TOP); //TODO CONFIG
         } else if (type == LayoutItemType.WINDOW) {
-            currLayoutItem = new LayoutItem(type, 4, 1, Orientation.RIGHT);
+            currLayoutItem = new LayoutItem(type, 4, 1, Orientation.RIGHT); //TODO CONFIG
         } else if (type == LayoutItemType.DOOR) {
-            currLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT);
+            currLayoutItem = new LayoutItem(type, 2, 1, Orientation.RIGHT); //TODO CONFIG
         }
     }
 
@@ -139,24 +142,29 @@ public class RoomEditor {
      * @param x Koordinate
      * @param y Koordinate
      */
-    public void placeCurrItem(int x, int y) {
+    public void placeCurrItem(int x, int y) throws WindowMissplaceException, LayoutItemMissplaceException, DoorMissplaceException, WallMissplaceException {
         currLayoutItem.setX(x);
         currLayoutItem.setY(y);
+        /*if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
 
-        if (!validator.validatePlacement(currLayoutItem)) {
-            return;
-        }
-
+        }*/
         addItem(currLayoutItem);
         currLayoutItem = currLayoutItem.clone();
+
     }
 
     /**
      * Validiert den aktuellen Room ueber den Validator. Dabei werden height und width des Rooms gesetzt.
      * @return true, wenn der Raum erfolgreich validiert wurde
      */
-    public boolean validateRoom(){
-        return validator.validateRoom(this.room);
+    public boolean validateRoom() throws MissingDoorException, MissingWindowException, getIntoRoomException {
+
+        boolean sucess = validator.validateRoom(this.room);
+        placableEditor.setRoom(this.room);
+
+
+
+        return sucess;
     }
 
     /**
@@ -164,6 +172,7 @@ public class RoomEditor {
      * @throws JsonWritingException Wenn der Room im JsonHandler nicht geschrieben werden kann
      */
     public void saveRoom() throws JsonWritingException {
+        placableEditor.saveRoom();
         jsonHandler.saveRoom(this.room);
     }
 
@@ -293,13 +302,32 @@ public class RoomEditor {
         }.start();*/
     } 
 
-    public PlaceableEditor getPlaceableEditor() {
-        return placeableEditor;
+    public PlacableItemEditor getPlaceableEditor() {
+        return placableEditor;
     }
 
     public void rotatePlaceableItem() {
-        placeableEditor.rotateItem();
+        placableEditor.rotateCurItem();
     }
+
+    public void placeCurrPlacableItem (int x, int y){
+        placableEditor.placeCurrItem(x, y);
+    }
+
+    public void editPlacableItem(int x, int y){
+        placableEditor.editItem(x, y);
+    }
+
+    public void delPlacableItem(int x, int y){
+        placableEditor.delItem(x, y);
+    }
+
+    public void setCurItem(PlacableItemType type){
+        placableEditor.setCurItem(type);
+    }
+
+
+    /*
 
     public void selectPlaceableItem(PlacableItemType type) {
         placeableEditor.selectPlaceableItem(type);
@@ -309,5 +337,13 @@ public class RoomEditor {
     public void placePlaceableItem(int x, int y) {
         placeableEditor.placeCurrItem(x, y);
     }
+    */
 
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public void setPlacableItemList(ArrayList<PlacableItem> placableItemList) {
+        this.placableItemList = placableItemList;
+    }
 }

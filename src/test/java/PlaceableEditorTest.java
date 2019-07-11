@@ -61,8 +61,8 @@ public class PlaceableEditorTest {
        placeableItemPlatzieren();
 
        //erst wird die Couch entfernt danach der Teppich
-       //placeableEditor.delete(); //FIXME
-       //placeableEditor.delete(); //FIXME
+       placeableEditor.delete(x,y);
+       placeableEditor.delete(x,y);
 
        for(int i =0;i<layout.length;i++){
            for (int j=0;j<layout[0].length;j++){
@@ -72,5 +72,14 @@ public class PlaceableEditorTest {
         assertTrue(true);
 
    }
+   @Test
+    public void placeTest(){
+        placeableEditor.selectPlaceableItem(PlacableItemType.CARPET);
+        placeableEditor.placeCurrItem(2,2);
+        placeableEditor.selectPlaceableItem(PlacableItemType.TABLE);
+        placeableEditor.placeCurrItem(2,2);
+
+   }
+
 
 }
