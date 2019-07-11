@@ -145,11 +145,12 @@ public class RoomEditor {
     public void placeCurrItem(int x, int y) throws WindowMissplaceException, LayoutItemMissplaceException, DoorMissplaceException, WallMissplaceException {
         currLayoutItem.setX(x);
         currLayoutItem.setY(y);
-        /*if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
+        if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
+            addItem(currLayoutItem);
+            currLayoutItem = currLayoutItem.clone();
+            return;
+        }
 
-        }*/
-        addItem(currLayoutItem);
-        currLayoutItem = currLayoutItem.clone();
 
     }
 

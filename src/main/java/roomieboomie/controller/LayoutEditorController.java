@@ -381,13 +381,13 @@ public class LayoutEditorController {
                         try {
                             roomEditor.placeCurrItem(x, y);
                         } catch (WindowMissplaceException ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                         } catch (LayoutItemMissplaceException ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                         } catch (DoorMissplaceException ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                         } catch (WallMissplaceException ex) {
-                            ex.printStackTrace();
+                            System.out.println(ex.getMessage());
                         }
                     }
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);

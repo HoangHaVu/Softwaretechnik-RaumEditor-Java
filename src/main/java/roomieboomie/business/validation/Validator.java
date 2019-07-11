@@ -132,11 +132,11 @@ public class Validator {
      */
     public boolean validateLayoutPlacement(LayoutItem item,byte[][]layout) throws LayoutItemMissplaceException, WallMissplaceException, DoorMissplaceException, WindowMissplaceException {
 
-        if (item.getX()!=layout.length||item.getX()!=0&&item.getY()!=layout[0].length||item.getY()!=0){
+        if (item.getX()!=layout.length&&item.getX()!=0&&item.getY()!=layout[0].length&&item.getY()!=0){
             if (item.getType().equals(LayoutItemType.WALL)){
                 for(int x=item.getX();x<(item.getLength()+item.getX());x++){
                     for(int y=item.getY();y<(item.getWidth()+item.getY());y++) {
-                        if(layout[x][y]!= Config.get().LAYOUTEXTERIORVALUE()){
+                        if(layout[y][x]!= Config.get().LAYOUTEXTERIORVALUE()){
                             throw new WallMissplaceException();
                         }
                     }
@@ -146,7 +146,7 @@ public class Validator {
             if(item.getType().equals(LayoutItemType.DOOR)||item.getType().equals(LayoutItemType.WINDOW)){
                 for(int x=item.getX();x<(item.getLength()+item.getX());x++){
                     for(int y=item.getY();(y<item.getWidth()+item.getY());y++) {
-                        if(layout[x][y]< Config.get().EDITORMINWALLVALUE()){
+                        if(layout[y][x]< Config.get().EDITORMINWALLVALUE()){
                             if(item.getType().equals(LayoutItemType.DOOR)){
                                 throw new DoorMissplaceException();
                             }else{
@@ -159,7 +159,7 @@ public class Validator {
             }
         }
 
-        throw new LayoutItemMissplaceException();
+        throw new LayoutItemMissplaceException("LayoutItem darf nicht an die Wand platziert werden");
 
     }
 
