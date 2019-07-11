@@ -1,4 +1,4 @@
-package roomieboomie.business.exception.gameExceptions;
+package roomieboomie.business.exception.validationExceptions;
 
 import roomieboomie.business.exception.GameException;
 
