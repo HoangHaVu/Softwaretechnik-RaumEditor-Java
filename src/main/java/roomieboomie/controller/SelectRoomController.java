@@ -36,7 +36,7 @@ public class SelectRoomController {
 
     @FXML
     public void backToMenu() {
-        switcher.switchView("MainMenu");
+        switcher.switchView("ChooseEdit");
     }
 
     @FXML

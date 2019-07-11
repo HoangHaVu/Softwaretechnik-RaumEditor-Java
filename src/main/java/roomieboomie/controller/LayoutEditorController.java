@@ -39,7 +39,7 @@ public class LayoutEditorController {
     GridPane controlBox;
     GridPane itemPreview;
     Pane wall, window, door;
-    Button rotate, delete, edit, finish;
+    Button rotate, delete, edit, finish,backToMenu;
     ScrollPane scrollableRaster;
     Slider sizeSlider;
     Action action;
@@ -69,6 +69,7 @@ public class LayoutEditorController {
         this.sizeSlider = view.sizeSlider;
         this.window = view.window;
         this.door = view.door;
+        this.backToMenu = view.backToMenu;
         this.action = Action.PLACE;
         this.delete = view.delete;
         this.edit = view.edit;
@@ -158,17 +159,10 @@ public class LayoutEditorController {
             refreshPreview();
         });
 
-        /*zoomPane.addEventHandler(ZoomEvent.ZOOM, e -> {
+        backToMenu.addEventHandler(MouseEvent.MOUSE_CLICKED,event -> {
+            switcher.switchView("MainMenu");
+        });
 
-            Scale newScale = new Scale();
-            newScale.setPivotX(e.getX());
-            newScale.setPivotY(e.getY());
-            newScale.setX(zoomPane.getScaleX() * e.getZoomFactor());
-            newScale.setY(zoomPane.getScaleY() * e.getZoomFactor());
-            zoomPane.getTransforms().add(newScale);
-
-            e.consume();
-        });*/
 
         sizeSlider.valueProperty().addListener((observable, oldvar, newvar) -> {
 
@@ -194,16 +188,14 @@ public class LayoutEditorController {
             if (!currentlyActiveKeys.contains(codeString)) {
                 currentlyActiveKeys.add(codeString);
             }
-            
-            //scrollableRaster.removeEventHandler(ScrollEvent.SCROLL, scrollHandler);
+
 
             refreshDragPane(currMouseX, currMouseY, item, clearPane, false);
             refreshPreview();
         });
         view.setOnKeyReleased(e ->{
             currentlyActiveKeys.remove(e.getCode().toString());
-            
-            //scrollableRaster.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
+
         });
 
         initInteractionPane();
@@ -413,7 +405,6 @@ public class LayoutEditorController {
                         roomEditor.editItem(roomEditor.getRoom().getLayout()[y][x]);
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
-                        //edit.setStyle("");
                         refreshPreview();
                     }
                     refreshView();     

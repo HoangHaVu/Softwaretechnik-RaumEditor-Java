@@ -375,15 +375,7 @@ public class PlaceableEditorController {
         }
 
         Pane itemPane = new Pane();
-        //itemPane.setStyle("-fx-background-color: rgb(1,1,1)");
-        /*if (item.getType() == LayoutItemType.WALL) {
-            textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
-        } else if (item.getType() == LayoutItemType.WINDOW) {
-            textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
-        } else {
-            textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
-        }
-        */
+
         ImageView texture = new ImageView(textureImage);
         texture.fitWidthProperty().bind(itemPane.widthProperty());
         texture.fitHeightProperty().bind(itemPane.heightProperty());
@@ -446,25 +438,10 @@ public class PlaceableEditorController {
                 if (cur.getOrientation() == Orientation.TOP || cur.getOrientation() == Orientation.BOTTOM){
 
                     GridPane.setConstraints(item, x, y, cur.getWidth(), cur.getLength());
-                    //item.setStyle("-fx-background-color: rgba(0,0,0,.2);");
-                    
-
-                    /*
-                    if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");
-                    else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureVertical.jpg");
-                    else textureImage = new Image(iconTexturePath + "doorTextureVertical.png");
-                    */
 
                 } else{
 
                     GridPane.setConstraints(item ,x,y, cur.getLength(), cur.getWidth());
-                    //item.setStyle("-fx-background-color: rgba(0,0,0,.2);");
-                    /*
-                    if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
-                    else if (w.getType() == LayoutItemType.WINDOW) textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
-                    else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
-                    //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
-                    */
 
                 }
 
@@ -521,59 +498,7 @@ public class PlaceableEditorController {
             raster.getChildren().add(item);
         }
     }
-    /**
-     * - new Method selectItemTexture!!! - zum laden der Texture TODO
-     * - das gesetzte Objekt wird im backend gespeichert/ im array gesetzt
-     * - bestimmt auch diese Fläche des Objektes also die Breite und die Länge des Objektes und wie das angezeigt wird
-     * - und auf der richtigen View angezeigt
-     *
-     * @param items
-     * @param layout
-     */
-    /*
-    public void setItemsIntoView(ArrayList<PlacableItem> items, byte[][] layout) {
-        
-        for (PlacableItem w : items) {
 
-            Pane item = new Pane();
-            Image textureImage;
-
-            item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
-            item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
-            item.getStyleClass().add("layout-item");
-            //item.setStyle(style);
-            if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM) {
-
-                GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
-                /*if (w.getType() == LayoutItemType.WALL)
-                    textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");
-                else if (w.getType() == LayoutItemType.WINDOW)
-                    textureImage = new Image(iconTexturePath + "windowTextureVertical.jpg");
-                else textureImage = new Image(iconTexturePath + "doorTextureVertical.png");
-
-            } else {
-
-                GridPane.setConstraints(item, w.getX(), w.getY(), w.getLength(), w.getWidth());
-                /*if (w.getType() == LayoutItemType.WALL)
-                    textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
-                else if (w.getType() == LayoutItemType.WINDOW)
-                    textureImage = new Image(iconTexturePath + "windowTextureHorizontal.jpg");
-                else textureImage = new Image(iconTexturePath + "doorTextureHorizontal.png");
-                //textureImage = new Image(iconTexturePath + "wallTextureHorizontal.jpg");
-
-            }
-            /*
-            ImageView texture = new ImageView(textureImage);
-
-            texture.fitWidthProperty().bind(item.widthProperty());
-            texture.fitHeightProperty().bind(item.heightProperty());
-
-            //item.getChildren().add(texture);
-            item.setStyle("-fx-background-color: rgb(1,1,1)");
-            raster.getChildren().add(item);
-        }
-    }
-    */
     /**
      * Updatet die eigentliche View
      * Setzt jeweils für jedes Pixel die bestimmte Farbe je nachdem was im Byte Array steht
@@ -625,7 +550,7 @@ public class PlaceableEditorController {
         updateItems(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
         updateItems(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
         updateItems(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
-        //setItemsIntoView(roomEditor.getRoom().getPlacableItemList(),layout);
+
     }
 
     private void showAlert(String title, String message) {

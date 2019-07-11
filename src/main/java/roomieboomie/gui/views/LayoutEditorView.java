@@ -35,6 +35,8 @@ public class LayoutEditorView extends StackPane {
     public Button finish = new Button("WEITER");
     public Slider sizeSlider = new Slider(0, 1, 0.5);
     public HBox sliderPane = new HBox();
+    public Button backToMenu = new Button("ZURUECK");
+    public HBox backForward = new HBox();
     public Button rotate = new Button();
     public Button delete = new Button();
     public Button edit = new Button();
@@ -140,11 +142,19 @@ public class LayoutEditorView extends StackPane {
         delete.setMaxWidth(50);
 
         finish.setMinWidth(120);
-        finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
-        finish.minHeightProperty().bind(finish.widthProperty().divide(5));
-        finish.maxHeightProperty().bind(finish.widthProperty().divide(5));
+        finish.setMinHeight(30);
+        //finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
+        //finish.minHeightProperty().bind(finish.widthProperty().divide(5));
+        //finish.maxHeightProperty().bind(finish.widthProperty().divide(5));
         finish.getStyleClass().add("submit-button");
-        
+
+        backToMenu.setMinWidth(120);
+        backToMenu.setMinHeight(30);
+        backToMenu.getStyleClass().add("submit-button");
+
+        backForward.getChildren().addAll(backToMenu,finish);
+        backForward.setSpacing(15);
+        backForward.setAlignment(Pos.CENTER);
         selectItemPane.setAlignment(Pos.CENTER);
         selectItemPane.setSpacing(30);
         buttonPane.setAlignment(Pos.CENTER);
@@ -180,7 +190,7 @@ public class LayoutEditorView extends StackPane {
         itemPreviewPane.getChildren().add(itemPreviewGrid);
         selectItemPane.getChildren().addAll(window, wall, door);
         buttonPane.getChildren().addAll(regionVerticalForButtons0, selectItemPane, regionVerticalForButtons1, sliderPane, regionVerticalForButtons2, 
-            objectInteraction, regionVerticalForButtons3, finish, regionVerticalForButtons4);
+            objectInteraction, regionVerticalForButtons3, backForward, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         sliderPane.getChildren().addAll(new Label("L\u00e4nge"), sizeSlider);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
