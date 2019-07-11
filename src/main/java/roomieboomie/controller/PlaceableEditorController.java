@@ -36,6 +36,7 @@ public class PlaceableEditorController {
     private enum Action {
         DELETE, PLACE, EDIT
     }
+
     PlacableItem selectedItem;
     RootController switcher;
     PlaceableEditor placeableEditor;
@@ -62,7 +63,7 @@ public class PlaceableEditorController {
     public PlaceableEditorController(RoomEditor roomEditor) {
         view = new PlaceableEditorView();
         this.roomEditor = roomEditor;
-        this.placeableEditor = roomEditor.getPlaceableEditor();
+       // this.placeableEditor = roomEditor.getPlaceableEditor();
         this.selectedItem = placeableEditor.getCurrentItem();
         this.roomPreview = null;
         this.objectName = view.objectName;

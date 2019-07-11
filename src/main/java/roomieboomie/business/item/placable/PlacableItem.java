@@ -27,12 +27,24 @@ public class PlacableItem extends RoomItem {
         super(x, y,type.getLength(),type.getWidth(), orientation);
         this.type = type;
         this.next = null;
-        this.layout = new byte[this.getLength()][this.getWidth()];
-        for (int i = 0; i < this.getLength(); i++){
-            for (int j = 0; j < this.getWidth(); j++){
-                this.layout[i][j] = 0;
+
+        if (this.getOrientation() == Orientation.TOP || this.getOrientation() == Orientation.BOTTOM){
+            this.layout = new byte[this.getLength()][this.getWidth()];
+            for (int i = 0; i < this.getLength(); i++){
+                for (int j = 0; j < this.getWidth(); j++){
+                    this.layout[i][j] = 0;
+                }
+            }
+        } else{
+            this.layout = new byte[this.getWidth()][this.getLength()];
+            for (int i = 0; i < this.getWidth(); i++){
+                for (int j = 0; j < this.getLength(); j++){
+                    this.layout[i][j] = 0;
+                }
             }
         }
+
+
     }
 
     public boolean hasNext(){
@@ -74,9 +86,15 @@ public class PlacableItem extends RoomItem {
 
     public void placeItemOnThis(PlacableItem item){
         this.next = item;
-
         int startX = item.getX();
         int startY = item.getY();
+        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+            int temp = startX;
+            startX = startY;
+            startY = temp;
+        }
+
+
 
         if (this.layout[startX][startY] != 0){
             item.setX(item.getX() - this.getX());
@@ -89,7 +107,7 @@ public class PlacableItem extends RoomItem {
         int endY = startY + item.getWidth();
         byte placeNumber = 1;
 
-        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+        if (item.getOrientation() == Orientation.LEFT || item.getOrientation() == Orientation.RIGHT){
             endX = startX + item.getWidth();
             endY = startY + item.getLength();
         }
@@ -151,15 +169,10 @@ public class PlacableItem extends RoomItem {
         this.layout = layout;
     }
 
-    public PlacableItem clone(){ 
+    public PlacableItem clone(){
 
-        byte[][] array = new byte[layout.length][];
-        for(int i = 0; i < layout.length; i++){
-            array[i] = Arrays.copyOf(this.layout[i], this.layout[i].length);
-        }
         PlacableItem newItem = new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());
-        newItem.setLayout(array);
-        newItem.setNext(this.next.clone());
+        if (this.next != null) newItem.setNext(this.next.clone());
         return  newItem;
         
     }

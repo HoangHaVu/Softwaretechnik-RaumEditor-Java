@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.persistence.Config;
 
@@ -14,30 +15,30 @@ public class PlacableItemEditor {
     private ArrayList<PlacableItem> placableItemList;
     PlacableItem curItem;
 
-    public PlacableItemEditor(Room room){
+    public PlacableItemEditor(){
+        curItem = new PlacableItem(PlacableItemType.TEDDY);
+    }
+
+    public void setRoom (Room room){
         this.room = room;
         placableItemList = room.getPlacableItemList();
+        curItem = new PlacableItem(PlacableItemType.TEDDY);
         initializeLayout();
     }
 
-    public void rotateAktItem(){
+    public void saveRoom (){
+        this.room.setPlacableItemList(this.placableItemList);
+    }
 
-        PlacableItem item = curItem.clone(), newCurrItem, akt, aktCurrItem;
-        newCurrItem = item.clone();
-        newCurrItem.removeItemFromThis();
-        newCurrItem.turnRight();
-        aktCurrItem = newCurrItem;
 
-        while (item.hasNext()){
-            akt = item.clone();
-            akt.removeItemFromThis();
-            akt.turnRight();
-            aktCurrItem.placeItemOnThis(akt);
-            aktCurrItem = newCurrItem.getNext();
-            item = item.getNext();
-        }
+    public void setCurItem(PlacableItemType type){
+        this.curItem = new PlacableItem(type);
+    }
 
-        this.curItem = newCurrItem;
+    public void rotateCurItem(){
+
+        this.curItem.turnRight();
+        this.curItem.removeItemFromThis();
 
     }
 
@@ -101,9 +102,16 @@ public class PlacableItemEditor {
     }
 
     public void addItem(PlacableItem item){
+        int startX;
+        int startY;
+        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+            startX = item.getX();
+            startY = item.getY();
+        } else{
+            startX = item.getY();
+            startY = item.getX();
+        }
 
-        int startX = item.getX();
-        int startY = item.getY();
 
         if (layout[startX][startY] > 0){
             PlacableItem unterItem = placableItemList.get(layout[startX][startY] - 1);
