@@ -42,7 +42,6 @@ public class PlacableItemEditor {
     public void rotateCurItem(){
 
         this.curItem.turnRight();
-        this.curItem.removeItemFromThis();
 
     }
 
@@ -53,6 +52,7 @@ public class PlacableItemEditor {
         PlacableItem item = this.placableItemList.get(this.layout[y][x] - 1);
 
         this.curItem = item.findItemByCoordinates(x, y);
+        this.curItem = item;
         delItem(x, y);
 
     }

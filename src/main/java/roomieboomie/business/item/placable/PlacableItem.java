@@ -22,9 +22,6 @@ public class PlacableItem extends RoomItem {
      * @param orientation Richtung
      * @param type Typ des Items
      */
-
-    
-
     public PlacableItem(int x, int y, Orientation orientation, PlacableItemType type) {
         super(x, y,type.getLength(),type.getWidth(), orientation);
         this.type = type;
@@ -45,7 +42,30 @@ public class PlacableItem extends RoomItem {
                 }
             }
         }
+    }
 
+    /**
+     * Neues PlacableItem ohne Informationen zu Platzierung
+     * @param type Typ des Items
+     */
+    public PlacableItem(PlacableItemType type){
+        super(type.getLength(),type.getWidth(),Orientation.TOP);
+        this.type = type;
+        if (this.getOrientation() == Orientation.TOP || this.getOrientation() == Orientation.BOTTOM){
+            this.layout = new byte[this.getLength()][this.getWidth()];
+            for (int i = 0; i < this.getLength(); i++){
+                for (int j = 0; j < this.getWidth(); j++){
+                    this.layout[i][j] = 0;
+                }
+            }
+        } else{
+            this.layout = new byte[this.getWidth()][this.getLength()];
+            for (int i = 0; i < this.getWidth(); i++){
+                for (int j = 0; j < this.getLength(); j++){
+                    this.layout[i][j] = 0;
+                }
+            }
+        }
 
     }
 
@@ -130,14 +150,7 @@ public class PlacableItem extends RoomItem {
         }
     }
 
-    /**
-     * Neues PlacableItem ohne Informationen zu Platzierung
-     * @param type Typ des Items
-     */
-    public PlacableItem(PlacableItemType type){
-        super(type.getLength(),type.getWidth(),Orientation.TOP);
-        this.type = type;
-    }
+
 
     /**
      * @return Typ des Items
