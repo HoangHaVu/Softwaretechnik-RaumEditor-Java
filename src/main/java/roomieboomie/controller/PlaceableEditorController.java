@@ -3,6 +3,7 @@ package roomieboomie.controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,6 +63,7 @@ public class PlaceableEditorController {
     private RoomPreview roomPreview;
     ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
+    HashSet<String> currentlyActiveKeys;
 
 
     public PlaceableEditorController(RoomEditor roomEditor) {
@@ -88,6 +90,7 @@ public class PlaceableEditorController {
         this.listView = view.listView;
         this.roomName = view.roomName;
         this.placableRaster = view.placableRaster;
+        this.currentlyActiveKeys = view.currentlyActiveKeys;
         initialize();
     }
 
@@ -177,8 +180,19 @@ public class PlaceableEditorController {
                 placableItemEditor.rotateCurItem();
             }
 
+            String codeString = e.getCode().toString();
+            if (!currentlyActiveKeys.contains(codeString)) {
+                currentlyActiveKeys.add(codeString);
+            }
+
             movePreviewObject(actMouseX, actMouseY, item, clearPane, false);
             refreshPreviewObject();
+        });
+
+        view.setOnKeyReleased(e ->{
+            currentlyActiveKeys.remove(e.getCode().toString());
+
+            //scrollableRaster.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
         });
 
         listView.setCellFactory(new Callback<ListView<PlacableItem>, ListCell<PlacableItem>>() {

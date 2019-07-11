@@ -43,11 +43,12 @@ public class PlaceableEditorView extends Pane {
     public HBox itemPreviewPane = new HBox();
     public HBox savePane = new HBox();
     public ListView<PlacableItem> listView=new ListView<PlacableItem>();
+    public HashSet<String> currentlyActiveKeys = new HashSet<>();
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, placableRaster, dragRaster, interactionRaster);
-        zoomPane = new ZoomableScrollPane(zoomAndScroll, new HashSet<String>(), "-fx-background-color: #cacaca");
+        zoomPane = new ZoomableScrollPane(zoomAndScroll, currentlyActiveKeys, "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
 
         raster.getStyleClass().add("grid");
