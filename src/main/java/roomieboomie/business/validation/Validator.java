@@ -191,7 +191,7 @@ public class Validator {
             for(int x=item.getX();x<endX;x++){
                 for(int y=item.getY();y<endY;y++) {
                     if(placableItems.size()>0){
-                        if(item.getType().equals(PlacableItemType.CARPET)&&placableItems.get(layout[y][x]-1).getType().equals(PlacableItemType.CARPET)){
+                        if(item.getType().equals(PlacableItemType.CARPET)&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().equals(PlacableItemType.CARPET)){
                             System.out.println("man kann keine Teppiche aufeinander legen");
                             return false;
                         }
