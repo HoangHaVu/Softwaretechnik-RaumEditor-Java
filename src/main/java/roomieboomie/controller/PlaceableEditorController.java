@@ -392,8 +392,10 @@ public class PlaceableEditorController {
             }
         }
 
-        itemPane.prefHeightProperty().bind(view.itemPreviewGrid.heightProperty().divide(size));
-        itemPane.prefWidthProperty().bind(view.itemPreviewGrid.widthProperty().divide(size));
+        //itemPane.prefHeightProperty(texture.getFitWidth());
+        //itemPane.prefWidthProperty(texture.getFitHeight());
+        itemPane.prefHeight(texture.getFitHeight());
+        itemPane.prefWidth(texture.getFitWidth());
 
         GridPane.setConstraints(itemPane, size / 2 - item.getLength() / 2, size / 2 - item.getWidth() / 2, item.getLength(), item.getWidth());
         if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM) {
@@ -401,7 +403,7 @@ public class PlaceableEditorController {
         }
 
         itemPane.getChildren().add(texture);
-        view.itemPreviewGrid.getChildren().add(itemPane);
+        view.itemPreviewGrid.getChildren().add(itemPane);//TODO
     }
 
     public void refreshPlacableLayout(ArrayList<PlacableItem>placableItems,byte[][]layout){

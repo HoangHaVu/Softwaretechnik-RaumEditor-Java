@@ -17,6 +17,7 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
+
 public class PlaceableEditorView extends StackPane {
 
     public GridPane raster = new GridPane();
@@ -42,6 +43,7 @@ public class PlaceableEditorView extends StackPane {
     public Label messageLabel = new Label("test"); //Label fuer Fehlermeldungen
     public HashSet<String> currentlyActiveKeys = new HashSet<>();
 
+
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
         zoomAndScroll.getChildren().addAll(raster, placableRaster, dragRaster, interactionRaster);
@@ -49,7 +51,7 @@ public class PlaceableEditorView extends StackPane {
         scrollableRaster = new ScrollPane(zoomPane);
 
         raster.getStyleClass().add("grid");
-        
+
         rotate.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("rotate") + "\";");
         edit.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("edit") + "\";");
         delete.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("delete") + "\";");
@@ -70,6 +72,9 @@ public class PlaceableEditorView extends StackPane {
         completeEditor.prefWidthProperty().bind(this.widthProperty());
         completeEditor.prefHeightProperty().bind(this.heightProperty());
         raster.setPrefSize(1000, 1000);
+
+
+
         itemPreviewGrid.prefHeightProperty().bind(controlBox.widthProperty());
         itemPreviewGrid.prefWidthProperty().bind(controlBox.widthProperty());
         itemPreviewGrid.maxWidthProperty().bind(itemPreviewGrid.heightProperty());
@@ -125,8 +130,10 @@ public class PlaceableEditorView extends StackPane {
 
         buttonPane.setSpacing(10);
         objectInteraction.setSpacing(30);
-        controlBox.setPadding(new Insets(40, 20, 40, 20));
-        //controlBox.setSpacing(20);
+
+        controlBox.setPadding(new Insets(10, 20, 50, 20));
+
+
 
         VBox regionVerticalForButtons0, regionVerticalForButtons1, regionVerticalForButtons2, regionVerticalForButtons3, regionVerticalForButtons4;
         regionVerticalForButtons0 = new VBox();
@@ -143,6 +150,7 @@ public class PlaceableEditorView extends StackPane {
 
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
+
 
         savePane.getChildren().addAll(roomName,finish);
         itemPreviewPane.getChildren().add(itemPreviewGrid);
