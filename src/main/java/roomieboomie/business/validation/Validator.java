@@ -67,8 +67,8 @@ public class Validator {
         if (room.getDoors().isEmpty()){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
             throw new MissingDoorException();
         }
-        if( room.getWindows().isEmpty()){
-            throw new MissingWindowException();
+        if( room.getWindows().size()<2){
+            throw new MissingWindowException("Man braucht mindestens 2 Fenster");
         }
 
         int startX = room.getDoors().get(0).getX();
@@ -195,7 +195,7 @@ public class Validator {
                             System.out.println("man kann keine Teppiche aufeinander legen");
                             return false;
                         }
-                        if(item.getType().isStorable()&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                        if(item.getType().isStorable()&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
                             System.out.println("deko wurde nicht auf Ablage drauf getan");
                             return false;
                         }
