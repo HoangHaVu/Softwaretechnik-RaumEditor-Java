@@ -27,14 +27,11 @@ public class RoomEditor {
     private ArrayList<PlacableItem> placableItemList;
     private Validator validator;
     private Room room;
-    byte[][] placableLayout;
     private JsonHandler jsonHandler;
     private LayoutItem currLayoutItem;
-    private PlacableItem currPlaceableItem;
-    private byte[][] previewLayout;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
 
-    private PlacableItemEditor placableEditor;
+    private PlacableItemEditor placableItemEditor;
 
     byte layoutDoor = Config.get().EDITORDOORVALUE();
     byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
@@ -50,9 +47,8 @@ public class RoomEditor {
         jsonHandler = new JsonHandler();
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
-        selectnewPlaceableItem(PlacableItemType.TABLE);
         initDefaultPlaceableItem();
-        placableEditor = new PlacableItemEditor();
+        this.placableItemEditor = new PlacableItemEditor();
     }
 
     /**
@@ -73,7 +69,7 @@ public class RoomEditor {
         this.room.setLevel(level);
         this.room.setPlacableItemList(new ArrayList<PlacableItem>());
         selectnewItem(LayoutItemType.WALL);
-        placableEditor = new PlacableItemEditor();
+        this.placableItemEditor = new PlacableItemEditor();
     }
 
     public void loadNewRoom(String name, boolean level) {
@@ -161,7 +157,8 @@ public class RoomEditor {
     public boolean validateRoom() throws MissingDoorException, MissingWindowException, getIntoRoomException {
 
         boolean sucess = validator.validateRoom(this.room);
-        placableEditor.setRoom(this.room);
+        placableItemEditor.setRoom(this.room);
+        placableItemEditor.setValidator(validator);
 
 
 
@@ -173,7 +170,7 @@ public class RoomEditor {
      * @throws JsonWritingException Wenn der Room im JsonHandler nicht geschrieben werden kann
      */
     public void saveRoom() throws JsonWritingException {
-        placableEditor.saveRoom();
+        //placableItemEditor.saveRoom();
         jsonHandler.saveRoom(this.room);
     }
 
@@ -183,10 +180,6 @@ public class RoomEditor {
      */
     public void addItem(LayoutItem item) {
         room.addItem(item);
-    }
-
-    public void addPlaceableItem(PlacableItem item) {
-        room.addPlacableItem(item);
     }
 
     /**
@@ -232,16 +225,8 @@ public class RoomEditor {
         return this.room;
     }
 
-    public byte[][] getPreviewLayout() {
-        return previewLayout;
-    }
-
     public LayoutItem getCurrLayoutItem() {
         return currLayoutItem;
-    }
-
-    public PlacableItem getCurrPlaceableItem() {
-        return currPlaceableItem;
     }
 
     public ArrayList<PlacableItem> getPlacableItemList() {
@@ -254,97 +239,13 @@ public class RoomEditor {
         }
     }
 
-    public void selectnewPlaceableItem(PlacableItemType type) {
-        if (type == PlacableItemType.TABLE) {
-            currPlaceableItem = new PlacableItem(PlacableItemType.TABLE);
-        }
-        updatePreviewPlaceableItems();
-    }
-
-    private void updatePreviewPlaceableItems() {
-        /*
-        new Thread() {
-            int startX, endX, startY, endY;
-            byte itemNumber = -1;
-
-            public void run() {
-                for (int i = 0; i < previewLayout.length; i++) { //FIXME NullPointer
-                    for (int j = 0; j < previewLayout[0].length; j++) {
-                        previewLayout[i][j] = -1;
-                    }
-                }
-
-                if (currPlaceableItem == null) {
-                    return;
-                }
-
-                if (currPlaceableItem.getOrientation() == Orientation.BOTTOM || currPlaceableItem.getOrientation() == Orientation.TOP) {
-                    startY = previewLayout[0].length / 2 - currPlaceableItem.getWidth() / 2;
-                    endY = startY + currPlaceableItem.getWidth();
-                    startX = previewLayout.length / 2 - currPlaceableItem.getLength() / 2;
-                    endX = startX + currLayoutItem.getLength();
-                } else {
-                    startY = previewLayout.length / 2 - currPlaceableItem.getLength() / 2;
-                    endY = startY + currPlaceableItem.getLength();
-                    startX = previewLayout[0].length / 2 - currPlaceableItem.getWidth() / 2;
-                    endX = startX + currPlaceableItem.getWidth();
-                }
-
-                if (currPlaceableItem.getType() == PlacableItemType.TABLE) itemNumber = 1;
-
-                for (int i = startY; i < endY; i++) {
-                    for (int j = startX; j < endX; j++) {
-                        if (i >= 0 && j >= 0 && i < previewLayout[0].length && j < previewLayout.length)
-                            previewLayout[j][i] = itemNumber;
-                    }
-                }
-            }
-
-        }.start();*/
-    } 
 
     public PlacableItemEditor getPlaceableEditor() {
-        return placableEditor;
+        return placableItemEditor;
     }
-
-    public void rotatePlaceableItem() {
-        placableEditor.rotateCurItem();
-    }
-
-    public void placeCurrPlacableItem (int x, int y){
-        placableEditor.placeCurrItem(x, y);
-    }
-
-    public void editPlacableItem(int x, int y){
-        placableEditor.editItem(x, y);
-    }
-
-    public void delPlacableItem(int x, int y){
-        placableEditor.delItem(x, y);
-    }
-
-    public void setCurItem(PlacableItemType type){
-        placableEditor.setCurItem(type);
-    }
-
-
-    /*
-
-    public void selectPlaceableItem(PlacableItemType type) {
-        placeableEditor.selectPlaceableItem(type);
-        currPlaceableItem = placeableEditor.getCurrentItem();
-    }
-
-    public void placePlaceableItem(int x, int y) {
-        placeableEditor.placeCurrItem(x, y);
-    }
-    */
 
     public void setRoom(Room room) {
         this.room = room;
     }
 
-    public void setPlacableItemList(ArrayList<PlacableItem> placableItemList) {
-        this.placableItemList = placableItemList;
-    }
 }
