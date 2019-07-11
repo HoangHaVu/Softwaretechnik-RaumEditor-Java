@@ -131,11 +131,17 @@ public class Validator {
      * @throws WindowMissplaceException - Exception wird geworfen wenn das Fenster falsch platziert wurde -> muss in eine Wand platziert werden
      */
     public boolean validateLayoutPlacement(LayoutItem item,byte[][]layout) throws LayoutItemMissplaceException, WallMissplaceException, DoorMissplaceException, WindowMissplaceException {
+        int endY = item.getY() + item.getWidth();
+        int endX = item.getX() + item.getLength();
 
+        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+            endY = item.getY() + item.getLength();
+            endX = item.getX() + item.getWidth();
+        }
         if (item.getX()!=layout.length&&item.getX()!=0&&item.getY()!=layout[0].length&&item.getY()!=0){
             if (item.getType().equals(LayoutItemType.WALL)){
-                for(int x=item.getX();x<(item.getLength()+item.getX());x++){
-                    for(int y=item.getY();y<(item.getWidth()+item.getY());y++) {
+                for(int x=item.getX();x<endX;x++){
+                    for(int y=item.getY();y<endY;y++) {
                         if(layout[y][x]!= Config.get().LAYOUTEXTERIORVALUE()){
                             throw new WallMissplaceException();
                         }
@@ -144,8 +150,8 @@ public class Validator {
                 return true;
             }
             if(item.getType().equals(LayoutItemType.DOOR)||item.getType().equals(LayoutItemType.WINDOW)){
-                for(int x=item.getX();x<(item.getLength()+item.getX());x++){
-                    for(int y=item.getY();(y<item.getWidth()+item.getY());y++) {
+                for(int x=item.getX();x<endX;x++){
+                    for(int y=item.getY();y<endY;y++) {
                         if(layout[y][x]< Config.get().EDITORMINWALLVALUE()){
                             if(item.getType().equals(LayoutItemType.DOOR)){
                                 throw new DoorMissplaceException();
@@ -175,17 +181,29 @@ public class Validator {
      */
     public boolean validatePlaceItemPlacement(PlacableItem item, byte[][]layout, ArrayList<PlacableItem>placableItems) throws PlaceItemIsNotInInteriorException,ObjectToHighInFrontOfWindowException,ItemIsTooCloseToDoorException {
         if(!checkLayoutInteractions(item,layout)){
-            for(int x=item.getX();x<(item.getLength()+item.getX());x++){
-                for(int y=item.getY();(y<item.getWidth()+item.getY());y++) {
-                    if(item.getType().equals(PlacableItemType.CARPET)&&placableItems.get(layout[x][y]).getType().equals(PlacableItemType.CARPET)){
-                        // wenn teppich auf teppich kommt
-                        return false;
-                    }
-                    if(item.getType().isStorable()&&placableItems.get(layout[x][y]).getType().isStoragePlace()==false){
-                        // wenn deko nicht auf ablage trifft
-                        return false;
-                    }
+            int endY = item.getY() + item.getWidth();
+            int endX = item.getX() + item.getLength();
 
+            if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+                endY = item.getY() + item.getLength();
+                endX = item.getX() + item.getWidth();
+            }
+            for(int x=item.getX();x<endX;x++){
+                for(int y=item.getY();y<endY;y++) {
+                    if(placableItems.size()>0){
+                        if(item.getType().equals(PlacableItemType.CARPET)&&placableItems.get(layout[y][x]-1).getType().equals(PlacableItemType.CARPET)){
+                            System.out.println("man kann keine Teppiche aufeinander legen");
+                            return false;
+                        }
+                        if(item.getType().isStorable()&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                            System.out.println("deko wurde nicht auf Ablage drauf getan");
+                            return false;
+                        }
+                        if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                            System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
+                            return false;
+                        }
+                    }
                 }
             }
 
@@ -203,16 +221,24 @@ public class Validator {
      * @throws ObjectToHighInFrontOfWindowException - Exception wird geworfen wenn das Objekt zu hoch ist um es vor dem Fenster zu platzieren
      */
     public boolean checkLayoutInteractions(PlacableItem item,byte [][]layout) throws ItemIsTooCloseToDoorException,ObjectToHighInFrontOfWindowException,PlaceItemIsNotInInteriorException{
-        for(int x=item.getX()-1;x<(item.getLength()+item.getX()+1);x++){
-            for(int y=item.getY()-1;y<(item.getWidth()+item.getY()+1);y++) {
-                if(layout[x][y]==Config.get().GAMEWINDOWVALUE()&&item.getType().getHeight().getValue()<=2){
+        int endY = item.getY() + item.getWidth();
+        int endX = item.getX() + item.getLength();
+
+        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+            endY = item.getY() + item.getLength();
+            endX = item.getX() + item.getWidth();
+        }
+
+        for(int x=item.getX()-1;x<(endX+1);x++){
+            for(int y=item.getY()-1;y<(endY+1);y++) {
+                if(layout[y][x]==Config.get().GAMEWINDOWVALUE()&&item.getType().getHeight().getValue()>2){
                     throw new ObjectToHighInFrontOfWindowException();
                 }
 
-                if(layout[x][y]== Config.get().EDITORDOORVALUE()){
+                if(layout[y][x]== Config.get().EDITORDOORVALUE()){
                     throw new ItemIsTooCloseToDoorException();
                 }
-                if(x>=item.getX()&&x<(item.getX()+item.getLength())&& y>=item.getY()&&y<(item.getWidth()+item.getY())&&layout[x][y]!= Config.get().LAYOUTINTERIORVALUE()){
+                if(x>=item.getX()&&x<(item.getX()+item.getLength())&& y>=item.getY()&&y<(item.getWidth()+item.getY())&&layout[y][x]< Config.get().LAYOUTINTERIORVALUE()){
                     throw new PlaceItemIsNotInInteriorException();
                 }
 

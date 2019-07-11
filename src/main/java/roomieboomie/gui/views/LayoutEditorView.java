@@ -24,7 +24,7 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
 
-public class LayoutEditorView extends Pane {
+public class LayoutEditorView extends StackPane {
 
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
@@ -49,6 +49,7 @@ public class LayoutEditorView extends Pane {
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
     public HashSet<String> currentlyActiveKeys = new HashSet<>();
+    public Label messageLabel = new Label(); //Label fuer Fehlermeldungen
 
     public LayoutEditorView() {
         zoomAndScroll = new StackPane();
@@ -77,8 +78,6 @@ public class LayoutEditorView extends Pane {
         wall.setStyle("-fx-background-image: url(\" iconsandtextures/wallTexture.jpg\"); -fx-background-repeat: no-repeat;-fx-background-size: cover;");
         wall.setShape(shape);
         */
-        
-        
 
         zoomPane.prefWidthProperty().bind(scrollableRaster.widthProperty());
         zoomPane.prefHeightProperty().bind(scrollableRaster.heightProperty());
@@ -91,7 +90,6 @@ public class LayoutEditorView extends Pane {
         itemPreviewGrid.maxWidthProperty().bind(itemPreviewGrid.heightProperty());
         itemPreviewGrid.setAlignment(Pos.CENTER);
         itemPreviewPane.setAlignment(Pos.CENTER);
-        
 
         controlBox.setAlignment(Pos.CENTER);
         ColumnConstraints layoutCol = new ColumnConstraints();
@@ -100,10 +98,10 @@ public class LayoutEditorView extends Pane {
         RowConstraints interactionRow = new RowConstraints();
 
         /*
-
         zoomPane.prefWidthProperty().bind(scrollableRaster.widthProperty());
         zoomPane.prefHeightProperty().bind(scrollableRaster.heightProperty());
         */
+
         scrollableRaster.setVbarPolicy(ScrollBarPolicy.NEVER);
         scrollableRaster.setHbarPolicy(ScrollBarPolicy.NEVER);
 
@@ -111,9 +109,6 @@ public class LayoutEditorView extends Pane {
         //window.setStyle("-fx-background-color:grey;");
         //door.setStyle("-fx-background-color:grey;");
 
-       
-
-        
         wall.minHeightProperty().bind(wall.widthProperty());
         wall.maxHeightProperty().bind(wall.widthProperty());
         wall.setMaxWidth(160);
@@ -173,14 +168,11 @@ public class LayoutEditorView extends Pane {
         regionVerticalForButtons3 = new VBox();
         regionVerticalForButtons4 = new VBox();
 
-       
-
         VBox.setVgrow(regionVerticalForButtons0, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons1, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons2, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons3, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons4, Priority.ALWAYS);
-
 
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
@@ -190,15 +182,17 @@ public class LayoutEditorView extends Pane {
         buttonPane.getChildren().addAll(regionVerticalForButtons0, selectItemPane, regionVerticalForButtons1, sliderPane, regionVerticalForButtons2, 
             objectInteraction, regionVerticalForButtons3, finish, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
-        sliderPane.getChildren().addAll(new Label("Länge"), sizeSlider);
+        sliderPane.getChildren().addAll(new Label("L\u00e4nge"), sizeSlider);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
         controlBox.add(itemPreviewPane, 0, 0);
         controlBox.add(buttonPane, 0, 1);
+
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
-        
-        
+        messageLabel.setVisible(false);
+        this.setAlignment(Pos.CENTER);
+        this.getChildren().add(messageLabel);
     }
 
     

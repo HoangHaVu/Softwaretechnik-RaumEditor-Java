@@ -2,10 +2,14 @@ package roomieboomie.business.editor;
 
 import java.util.ArrayList;
 
+import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
+import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
+import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
+import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
 
 public class PlacableItemEditor {
@@ -14,9 +18,14 @@ public class PlacableItemEditor {
     private byte [][] layout;
     private ArrayList<PlacableItem> placableItemList;
     private PlacableItem curItem;
+    private Validator validator;
 
     public PlacableItemEditor(){
         curItem = new PlacableItem(PlacableItemType.TEDDY);
+    }
+
+    public void setValidator(Validator validator){
+        this.validator = validator;
     }
 
     public void setRoom (Room room){
@@ -31,6 +40,7 @@ public class PlacableItemEditor {
     }
 
     public void saveRoom (){
+
         this.room.setPlacableItemList(this.placableItemList);
     }
 
@@ -108,11 +118,16 @@ public class PlacableItemEditor {
         item.removeItemFromThis();
     }
 
-    public void placeCurrItem(int x, int y){
+    public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException {
         this.curItem.setX(x);
         this.curItem.setY(y);
-        addItem(this.curItem);
-        this.curItem = curItem.clone();
+
+        if(validator.validatePlaceItemPlacement(curItem,this.layout,room.getPlacableItemList())){
+            addItem(this.curItem);
+            this.curItem = curItem.clone();
+            return;
+        }
+
     }
 
     public void addItem(PlacableItem item){

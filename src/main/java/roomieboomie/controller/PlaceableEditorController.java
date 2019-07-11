@@ -22,6 +22,9 @@ import javafx.util.Callback;
 import roomieboomie.business.editor.PlacableItemEditor;
 import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
+import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
+import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
+import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -109,15 +112,11 @@ public class PlaceableEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
-                try {
-                    //TODO Raum noch auf Placeables validieren
-                    roomEditor.getRoom().setName(roomName.getText());
-                    roomEditor.saveRoom();
-                    showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
-                    switcher.switchView("ChooseEdit");
-                } catch (JsonWritingException ex) {
-                    showAlert("Fehler!", "Ups, dein Raum kommte leider nicht gespeichert werden.");
-                }
+                //TODO Raum noch auf Placeables validieren
+                roomEditor.getRoom().setName(roomName.getText());
+                placableItemEditor.saveRoom();
+                showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                switcher.switchView("ChooseEdit");
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
@@ -314,12 +313,20 @@ public class PlaceableEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    if (this.action == Action.PLACE) placableItemEditor.placeCurrItem(x, y);
+                    if (this.action == Action.PLACE) {
+                        try {
+                            placableItemEditor.placeCurrItem(x, y);
+                        } catch (PlaceItemIsNotInInteriorException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (ObjectToHighInFrontOfWindowException ex) {
+                            System.out.println(ex.getMessage());
+                        } catch (ItemIsTooCloseToDoorException ex) {
+                            System.out.println(ex.getMessage());
+                        }
+                    }
                     else if (this.action == Action.DELETE)
-                        //roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
                         placableItemEditor.delItem(x,y);
                     else if (this.action == Action.EDIT) {
-
                         placableItemEditor.editItem(x,y);
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
