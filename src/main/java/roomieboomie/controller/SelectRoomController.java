@@ -25,6 +25,7 @@ public class SelectRoomController {
     private Collection<RoomPreview> showRooms;
     private ObservableList<RoomPreview> roomlist;
     private RoomPreview selectedRoom;
+    private String roomselectTarget;
 
     @FXML
     private ListView<RoomPreview> roomlistView;
@@ -40,11 +41,15 @@ public class SelectRoomController {
     @FXML
     public void loadRoom() {
         switcher.setSelectedRoom(selectedRoom);
-        switcher.switchView("LayoutEditor_load");
+        switcher.switchView(roomselectTarget);
     }
 
     public void setSwitcher(RootController rootController) {
         this.switcher = rootController;
+    }
+
+    public void setSoomselectTarget(String target){
+        this.roomselectTarget = target;
     }
 
     public void setRoomieBoomieManager(RoomieBoomieManager roomieBoomieManager) {

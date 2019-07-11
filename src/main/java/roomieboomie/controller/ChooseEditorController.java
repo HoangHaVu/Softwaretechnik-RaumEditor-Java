@@ -15,7 +15,7 @@ public class ChooseEditorController {
     @FXML
     public void loadRoom() {
         switcher.setCreative(true);
-        switcher.switchView("SelectRoom");
+        switcher.switchView("SelectEditRoom");
     }
 
     public void setSwitcher(RootController rootController) {

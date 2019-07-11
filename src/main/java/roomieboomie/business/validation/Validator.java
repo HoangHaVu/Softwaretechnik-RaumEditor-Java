@@ -17,7 +17,7 @@ public class Validator {
     /**
      * Hinweis: überschreibt Felder im aktuellen Layout,
      * und sollte deshalb, erst nach vorherigem erfolgreichen durchlaufen, eine richtige Referenz auf das Layout bekomen.
-     * <p>
+     *
      * Validiert einzelne Felder im Layout. Solange Felder Valide sind, werden diese auf 0 gesetzt.
      *
      * @param x X-Koordinate der Tür
@@ -48,18 +48,17 @@ public class Validator {
         }
 
         return false;
-
     }
 
-    /**
-     * Validiert kompletten Raum. Hierbei wird überprüft ob es nur ein Raum mit Tür ist. Sowie alle Wände geschlossen sind, ansonsten return false
-     * Ist Raum valide wird noch die Raumhöhe sowie Breite bestimmt, in der RoomPreview eingetragen und true returned.
+     /**
+     * Validiert einen Room. Dabei wird ueberprueft, ob der Raum eine Tuer und mindestens zwei Fenster hat und
+     * ob alle Waende geschlossen sind. Ist der Room valide, werden height und length im Room eingetragen.
      *
-     * @param room
-     * @return
+     * @param room Raum, der validiert werden soll
+     * @return true, wenn der Raum valide ist
      */
     public boolean validateRoom(Room room) {
-        if (room.getDoors().isEmpty() || room.getWindows().isEmpty()){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
+        if (room.getDoors().isEmpty() || room.getWindows().size() < 2 ){ // Raum ist invalide, wenn er keine Tueren oder Fenster hat
             return false;
         }
 

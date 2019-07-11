@@ -11,13 +11,13 @@ public class LayoutItem extends RoomItem {
 
     /**
      * Initialisiert ein LayoutItem, welches schon einmal existierte.
-     *
      * @param type Typ des Objekts
      */
     public LayoutItem (LayoutItemType type, int x, int y, int length, int width, Orientation orientation) {
         super(x, y, length, width, orientation);
         this.type = type;
     }
+
     /**
      * initialisiert ein komplett neues LayoutItem
      * @param type
@@ -25,7 +25,6 @@ public class LayoutItem extends RoomItem {
      * @param width
      * @param orientation
      */
-
     public LayoutItem(LayoutItemType type, int length, int width, Orientation orientation){
         super(length, width, orientation);
         this.type = type;
@@ -37,8 +36,8 @@ public class LayoutItem extends RoomItem {
     public LayoutItem clone(){
         return new LayoutItem(this.type, this.getLength(), this.getWidth(), this.getOrientation());
     }
+
     /**
-     *
      * @return Typ des Objekts
      */
     public LayoutItemType getType() {

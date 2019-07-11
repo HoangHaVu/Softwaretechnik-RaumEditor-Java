@@ -16,13 +16,25 @@ import java.io.IOException;
 public class ImageHandler {
     private final static String FORMAT = "png";
 
+    private static ImageHandler instance;
+
+    /**
+     * @return Instanz von SoundHandler, ueber die anschliessend Sounds abfragbar sind.
+     */
+    public static ImageHandler get() {
+        if (instance == null) {
+            instance = new ImageHandler();
+        }
+        return instance;
+    }
+
     /**
      * Laedt ein Thumbnail zu einem Raum
      * @param name Name des Raums
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn Kreativ-Modus-Raum
      * @return Image, das Vorschaubild des Raums beinhaltet
      */
-    public static Image getThumbnail(String name, boolean level) {
+    public Image thumbnail(String name, boolean level) {
         String directory = level ? Config.get().LEVELTHUMBNAILPATH() : Config.get().CREATIVETHUMBNAILPATH();
         String noDirectory = Config.get().NOPICTUREPATH();
 
@@ -46,7 +58,7 @@ public class ImageHandler {
      * Erstellt ein Thumbnail des Raums
      * @param room Raum, von dem das Thumbnail erstellt werden soll
      */
-    public static void drawThumbnail(Room room) {
+    public void drawThumbnail(Room room) {
         byte editorDoor = Config.get().EDITORDOORVALUE();
         byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
         byte layoutExterior = Config.get().LAYOUTEXTERIORVALUE();
@@ -105,5 +117,14 @@ public class ImageHandler {
         } catch (IOException e) {
             System.err.println(String.format("Thumbnail von Raum %s konnte nicht gespeichert werden. Bitte Pfad ueberpruefen."));
         }
+    }
+
+    /**
+     * Gibt ein Bild aus dem Ordner der PlacableImage-Texturen zurueck
+     * @param filename Name der Datei ohne .Endung
+     * @return JavaFX-Image
+     */
+    public Image placableItemTexture(String filename){
+        return new Image(Config.get().PLACABLEITEMTEXTUREPATH() + filename + FORMAT);
     }
 }

@@ -29,7 +29,7 @@ public class HighscoreController {
     private TableColumn<HighscoreRecord, Integer> points;
 
     public void init(){
-        /*highscoreList = new HighscoreList(); //TODO nur zum Testen, solange es noch keine HighScores gibt
+        /*highscoreList = new HighscoreList(); //TODO nur zum Testen, solange es noch keine Highscores gibt
         User user1;
         User user2;
         HighscoreRecord record1;

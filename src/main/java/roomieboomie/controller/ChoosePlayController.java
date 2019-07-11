@@ -10,13 +10,13 @@ public class ChoosePlayController {
     @FXML
     public void creativePlayMod() {
         switcher.setCreative(true);
-        switcher.switchView("SelectRoom");
+        switcher.switchView("SelectPlayRoom");
     }
 
     @FXML
     public void levelPlayMod() {
         switcher.setCreative(false);
-        switcher.switchView("SelectRoom");
+        switcher.switchView("SelectPlayRoom");
     }
 
     public void setSwitcher(RootController rootController) {

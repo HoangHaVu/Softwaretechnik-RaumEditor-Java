@@ -58,7 +58,6 @@ public class LayoutEditorView extends Pane {
         
         raster.getStyleClass().add("grid");
 
-
         rotate.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("rotate") + "\";");
         edit.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("edit") + "\";");
         delete.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("delete") + "\";");

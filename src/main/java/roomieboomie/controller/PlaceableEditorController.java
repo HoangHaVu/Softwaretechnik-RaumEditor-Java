@@ -434,7 +434,6 @@ public class PlaceableEditorController {
      * @param items
      * @param layout
      */
-
     public void setItemsIntoView(ArrayList<PlacableItem> items, byte[][] layout) {
         for (PlacableItem w : items) {
 
@@ -483,7 +482,6 @@ public class PlaceableEditorController {
      * Ruft jeweils die Methode setItemsIntoView auf um die gesetzten Objekte anzuzeigen
      */
     public void refreshView() {
-
         byte[][] layout = roomEditor.getRoom().getLayout();
         view.raster.getChildren().clear();
         Image textureImage = new Image(iconTexturePath + "grassTexture.jpg");
@@ -494,7 +492,6 @@ public class PlaceableEditorController {
 
                 element.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
                 element.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
-
 
                 GridPane.setConstraints(element, i, j);
 
@@ -525,7 +522,6 @@ public class PlaceableEditorController {
                 }
             }
         }
-
 
         setLayout(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
         setLayout(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());

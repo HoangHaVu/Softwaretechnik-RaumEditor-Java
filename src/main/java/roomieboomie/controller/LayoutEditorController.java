@@ -25,7 +25,7 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.views.LayoutEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.exception.JsonWritingException;
+import roomieboomie.persistence.SoundHandler;
 
 public class LayoutEditorController {
 
@@ -96,9 +96,12 @@ public class LayoutEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e ->{
             refreshView();
+
             if (roomEditor.validateRoom()){
                 switcher.switchView("PlaceableEditor");
+                SoundHandler.get().SUCCESSSOUND().play();
             } else{
+                SoundHandler.get().FAILSOUND().play();
                 showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
             }
         });
@@ -508,8 +511,9 @@ public class LayoutEditorController {
                 GridPane.setConstraints(element, i, j);
 
                 if (i % 20 == 0 && j % 20 == 0){
-                    
-                    element.setStyle("-fx-background-image: url('"+ iconTexturePath + "raufaserTextur.jpg"+ "'); " +
+
+                    String path = iconTexturePath + "raufaserTextur.jpg";
+                    element.setStyle("-fx-background-image: url('"+ path + "'); " +
                     "-fx-background-position: center center; " +
                     "-fx-background-repeat: stretch;" +
                     "-fx-background-size: cover; -fx-border-color: rgba(0,0,0, .15);" + 
