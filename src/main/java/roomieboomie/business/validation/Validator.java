@@ -138,24 +138,24 @@ public class Validator {
             endY = item.getY() + item.getLength();
             endX = item.getX() + item.getWidth();
         }
-        if (item.getX()!=layout.length&&item.getX()!=0&&item.getY()!=layout[0].length&&item.getY()!=0){
-            if (item.getType().equals(LayoutItemType.WALL)){
-                for(int x=item.getX();x<endX;x++){
-                    for(int y=item.getY();y<endY;y++) {
-                        if(layout[y][x]!= Config.get().LAYOUTEXTERIORVALUE()){
+        if (item.getX() != layout.length && item.getX() != 0 && item.getY() != layout[0].length && item.getY() != 0) {
+            if (item.getType().equals(LayoutItemType.WALL)) {
+                for (int x = item.getX(); x < endX; x++) {
+                    for (int y = item.getY(); y < endY; y++) {
+                        if (layout[y][x] != Config.get().LAYOUTEXTERIORVALUE()) {
                             throw new WallMissplaceException();
                         }
                     }
                 }
                 return true;
             }
-            if(item.getType().equals(LayoutItemType.DOOR)||item.getType().equals(LayoutItemType.WINDOW)){
-                for(int x=item.getX();x<endX;x++){
-                    for(int y=item.getY();y<endY;y++) {
-                        if(layout[y][x]< Config.get().EDITORMINWALLVALUE()){
-                            if(item.getType().equals(LayoutItemType.DOOR)){
+            if (item.getType().equals(LayoutItemType.DOOR) || item.getType().equals(LayoutItemType.WINDOW)) {
+                for (int x = item.getX(); x < endX; x++) {
+                    for (int y = item.getY(); y < endY; y++) {
+                        if (layout[y][x] < Config.get().EDITORMINWALLVALUE()) {
+                            if (item.getType().equals(LayoutItemType.DOOR)) {
                                 throw new DoorMissplaceException();
-                            }else{
+                            } else {
                                 throw new WindowMissplaceException();
                             }
                         }
