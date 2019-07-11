@@ -49,6 +49,7 @@ public class PlacableItem extends RoomItem {
     public PlacableItem(PlacableItemType type){
         super(type.getLength(),type.getWidth(),Orientation.TOP);
         this.type = type;
+        this.next = null;
         if (this.getOrientation() == Orientation.TOP || this.getOrientation() == Orientation.BOTTOM){
             this.layout = new byte[this.getLength()][this.getWidth()];
             for (int i = 0; i < this.getLength(); i++){
@@ -102,6 +103,7 @@ public class PlacableItem extends RoomItem {
     }
 
     public void placeItemOnThis(PlacableItem item){
+        removeItemFromThis();
         this.next = item;
         int startX = item.getX();
         int startY = item.getY();
@@ -191,8 +193,7 @@ public class PlacableItem extends RoomItem {
      */
     public PlacableItem clone(){
 
-        PlacableItem newItem = new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());
-        if (this.next != null) newItem.setNext(this.next.clone());
+        PlacableItem newItem = new PlacableItem(this.getType());
         return  newItem;
 
     }

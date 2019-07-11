@@ -121,12 +121,15 @@ public class PlacableItemEditor {
     public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException {
         this.curItem.setX(x);
         this.curItem.setY(y);
-
+        addItem(this.curItem);
+        this.curItem = curItem.clone();
+        /*
         if(validator.validatePlaceItemPlacement(curItem,this.layout,room.getPlacableItemList())){
-            addItem(this.curItem);
-            this.curItem = curItem.clone();
+            
+            
             return;
         }
+        */
 
     }
 
