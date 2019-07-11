@@ -29,9 +29,10 @@ public class RoomPreview {
     /**
      * Erstellt einen neues RoomPreview-Objekt.
      * @param name Name des Raums
+     * @param highscoreList Highscore-Liste fuer den Room
      * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
-     * @param highscoreList Highscore-Liste fuer den Room
+     * @param jsonHandler JsonHandler, um spaeter den ganzen Raum laden zu koennen
      */
     public RoomPreview(String name, HighscoreList highscoreList, int neededScore, boolean level, JsonHandler jsonHandler) {
         this.name = name;
@@ -86,7 +87,7 @@ public class RoomPreview {
      * @return Thumbnail-Bild
      */
     public Image getThumbnail(){
-        return ImageHandler.getThumbnail(name, isLevel());
+        return ImageHandler.get().thumbnail(name, isLevel());
     }
 
     /**
@@ -172,10 +173,10 @@ public class RoomPreview {
         return testHash(name, neededScore, level, highscoreList);
     }
 
-    /*public void setJsonHandler(JsonHandler handler){
-        this.jsonHandler = handler;
-    }*/
-
+    /**
+     * Setzt die HighscoreListe
+     * @param list {@link HighscoreList}, die gesetzt werden soll
+     */
     public void setHighscoreList(HighscoreList list){
         this.highscoreList = list;
     }

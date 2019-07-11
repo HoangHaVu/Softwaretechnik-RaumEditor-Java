@@ -52,7 +52,6 @@ public class PlaceableEditorView extends Pane {
 
         raster.getStyleClass().add("grid");
 
-
         rotate.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("rotate") + "\";");
         edit.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("edit") + "\";");
         delete.setStyle("-fx-shape: \"" + LayoutItemType.svgToPath("delete") + "\";");
@@ -67,8 +66,6 @@ public class PlaceableEditorView extends Pane {
         wall.setShape(shape);
         */
 
-
-
         zoomPane.prefWidthProperty().bind(scrollableRaster.widthProperty());
         zoomPane.prefHeightProperty().bind(scrollableRaster.heightProperty());
         controlBox.prefHeightProperty().bind(this.heightProperty());
@@ -81,7 +78,6 @@ public class PlaceableEditorView extends Pane {
         itemPreviewGrid.setAlignment(Pos.CENTER);
         itemPreviewPane.setAlignment(Pos.CENTER);
 
-
         controlBox.setAlignment(Pos.CENTER);
         ColumnConstraints layoutCol = new ColumnConstraints();
         ColumnConstraints controlCol = new ColumnConstraints();
@@ -89,7 +85,6 @@ public class PlaceableEditorView extends Pane {
         RowConstraints interactionRow = new RowConstraints();
 
         /*
-
         zoomPane.prefWidthProperty().bind(scrollableRaster.widthProperty());
         zoomPane.prefHeightProperty().bind(scrollableRaster.heightProperty());
         */
@@ -99,11 +94,6 @@ public class PlaceableEditorView extends Pane {
         //wall.setStyle("-fx-background-color:grey;");
         //window.setStyle("-fx-background-color:grey;");
         //door.setStyle("-fx-background-color:grey;");
-
-
-
-
-
 
         rotate.minHeightProperty().bind(rotate.widthProperty());
         rotate.maxHeightProperty().bind(rotate.widthProperty());
@@ -119,7 +109,6 @@ public class PlaceableEditorView extends Pane {
         rotate.setMaxWidth(50);
         edit.setMaxWidth(50);
         delete.setMaxWidth(50);
-
 
         roomName.setPromptText("Raumname");
         finish.setMinWidth(120);
@@ -148,14 +137,11 @@ public class PlaceableEditorView extends Pane {
         regionVerticalForButtons3 = new VBox();
         regionVerticalForButtons4 = new VBox();
 
-
-
         VBox.setVgrow(regionVerticalForButtons0, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons1, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons2, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons3, Priority.ALWAYS);
         VBox.setVgrow(regionVerticalForButtons4, Priority.ALWAYS);
-
 
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
@@ -171,12 +157,6 @@ public class PlaceableEditorView extends Pane {
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
-
-
     }
-
-
-
-
 
 }

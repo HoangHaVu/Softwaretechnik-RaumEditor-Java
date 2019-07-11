@@ -18,30 +18,21 @@ public enum PlacableItemType {
             80, 2, 3, "Teppich"),
     TABLE(false, true, true, false, Height.MEDIUM, Height.MEDIUM,
             110, 2, 3, "Tisch"),
+    CHAIR(false, false,true, false, Height.MEDIUM, Height.FLAT,
+            60, 1, 1, "Stuhl" ),
     TVTABLE(false, true, true, false, Height.SMALL, Height.FLAT,
-            70, 1, 3, "Fernsehtisch"),
+            70, 1, 4, "Fernsehtisch"),
     STOOL(false, false, true, false, Height.MEDIUM, Height.FLAT,
             60, 1, 1, "Hocker"),
     COUCH(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            110, 3, 2, "Sofa"),
+            110, 4, 1, "Sofa"),
     BED(false, false, true, false, Height.MEDIUM, Height.FLAT,
             110, 3, 2, "Bett"),
     LOFTBED(false, false, true, false, Height.HIGH, Height.MEDIUM,
             150, 3, 2, "Hochbett"),
     CLOSET(false, false, true, false, Height.HIGH, Height.FLAT,
-            80, 1, 2, "Closet"),
-    CORNERSOFA(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            200, 2, 4, "Ecksofa"),
-    WALLCLOSET(true, true, false, false, Height.HIGH, Height.SMALL,
-            100, 1, 1, "Wandschrank"),
-    SHELF(true, true, false, false, Height.HIGH, Height.MEDIUM,
-            80, 1, 2,"Wandregal"),
-    WALLCLOCK(true, false, false, false, Height.HIGH, Height.MEDIUM,
-            30, 1, 1, "Wanduhr"),
-    WALLPICTURE(true, false, false, false, Height.HIGH, Height.MEDIUM,
-            50, 1, 2, "Bild");
+            80, 1, 2, "Schrank");
 
-    private String texture;
     private boolean wallItem;
     private boolean storagePlace;
     private boolean floorItem;
@@ -79,13 +70,6 @@ public enum PlacableItemType {
         this.length = length;
         this.width = width;
         this.name = name;
-    }
-
-    /**
-     * @return Textur des PlacableItemTypes
-     */
-    public String getTexture() {
-        return texture;
     }
 
     /**

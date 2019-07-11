@@ -2,8 +2,10 @@ package roomieboomie.business.item.placable;
 
 import java.util.Arrays;
 
+import javafx.scene.image.Image;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.RoomItem;
+import roomieboomie.persistence.ImageHandler;
 
 /**
  * Platzierbares Objekt fuer ein Spiel
@@ -75,14 +77,11 @@ public class PlacableItem extends RoomItem {
     }
 
     public boolean hasNextOn(int x, int y){
-        
         if (this.layout[y][x] != 0){
             return true;
         }
-
         return false;
     }
-
 
     public void placeItemOnThis(PlacableItem item){
         this.next = item;
@@ -131,7 +130,6 @@ public class PlacableItem extends RoomItem {
         }
     }
 
-
     /**
      * Neues PlacableItem ohne Informationen zu Platzierung
      * @param type Typ des Items
@@ -165,6 +163,17 @@ public class PlacableItem extends RoomItem {
         this.next = item;
     }
 
+    /**
+     * @return Kopie des Objekts mit X, Y, Orientation und Typ
+     */
+
+    /**
+     * Ruft ueber den ImageHandler die zum Typ und Orientation passende Datei ab
+     * @return JavaFX-Image
+     */
+    public Image getTexturePath(){
+        return ImageHandler.get().placableItemTexture(type + "_" + getOrientation());
+    }
     public void setLayout(byte[][] layout){
         this.layout = layout;
     }

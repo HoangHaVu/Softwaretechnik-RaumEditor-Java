@@ -19,7 +19,7 @@ import java.util.HashMap;
  */
 public class RoomieBoomieManager {
     private Game game; //TODO
-    private RoomEditor roomEditor; //TODO
+    private RoomEditor roomEditor;
     private JsonHandler jsonHandler;
     private RoomMaps roomMaps;
     private UserMap userMap;

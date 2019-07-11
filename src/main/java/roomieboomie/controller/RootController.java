@@ -79,7 +79,7 @@ public class RootController {
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    break;
                 }
                 break;
             case "ChoosePlay":
@@ -108,19 +108,11 @@ public class RootController {
                     e.printStackTrace();
                 }
                 break;
-            case "SelectRoom":
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/SelectRoomView.fxml"));
-                    this.scene = new Scene((Parent) loader.load(), 700, 500);
-                    SelectRoomController selectRoomController = loader.getController();
-                    selectRoomController.setSwitcher(this);
-                    selectRoomController.setCreative(creative);
-                    selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            case "SelectEditRoom":
+                setSelectRoomScene("LayoutEditor_load");
+                break;
+            case "SelectPlayRoom":
+                setSelectRoomScene("Play");
                 break;
             case "LayoutEditor":
                 LayoutEditorController layoutEditorController = new LayoutEditorController(roomieBoomieManager.getRoomEditor());
@@ -131,21 +123,24 @@ public class RootController {
                 primaryStage.show();
                 layoutEditorController.refreshView();
                 break;
+
             case "LayoutEditor_load":
+                try {
+                    roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom, true);
+                } catch (JsonValidatingException e) {
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht erfolgreich validiert werden.");
+                    break;
+                } catch (JsonLoadingException e) {
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht geladen werden.");
+                    break;
+                }
                 LayoutEditorController layoutEditorController_load = new LayoutEditorController(this.roomieBoomieManager.getRoomEditor());
                 this.scene = new Scene(layoutEditorController_load.getView(), 1000, 600);
                 scene.getStylesheets().add("application.css");
                 layoutEditorController_load.setSwitcher(this);
-                try {
-                    roomieBoomieManager.getRoomEditor().loadRoom(selectedRoom, true);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    layoutEditorController_load.refreshView();
-                } catch (JsonValidatingException e) {
-                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht erfolgreich validiert werden.");
-                } catch (JsonLoadingException e) {
-                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht geladen werden.");
-                }
+                primaryStage.setScene(scene);
+                primaryStage.show();
+                layoutEditorController_load.refreshView();
 
                 break;
             case "PlaceableEditor":
@@ -158,8 +153,20 @@ public class RootController {
 
                 break;
             case "Play":
+                try {
+                    GameController gameController = new GameController(this, selectedRoom.getFullRoom());
+                    scene = new Scene(gameController.getGameview());
+                } catch (JsonValidatingException e) {
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht erfolgreich validiert werden.");
+                    break;
+                } catch (JsonLoadingException e) {
+                    showAlert("Fehler!", "Oh nein! Der Raum konnte nicht geladen werden.");
+                    break;
+                }
+                roomieBoomieManager.initGame();
+                primaryStage.setScene(scene);
+                primaryStage.show();
                 break;
-
             case "GameOver":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/GameOverView.fxml"));
@@ -186,6 +193,26 @@ public class RootController {
                     e.printStackTrace();
                 }
                 break;
+        }
+    }
+
+    /**
+     * Zeigt die Raumauswahl-Szene an, wobei das Ziel der Raumauswahl mitgegeben wird
+     * @param target Ziel beim Auswaehlen eines Raums ("Play" (Game) oder "LayoutEditor_load" (LayoutEditor))
+     */
+    private void setSelectRoomScene(String target) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/SelectRoomView.fxml"));
+            this.scene = new Scene((Parent) loader.load(), 700, 500);
+            SelectRoomController selectRoomController = loader.getController();
+            selectRoomController.setSwitcher(this);
+            selectRoomController.setSoomselectTarget(target);
+            selectRoomController.setCreative(creative);
+            selectRoomController.setRoomieBoomieManager(roomieBoomieManager);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e){
+            e.printStackTrace();
         }
     }
 

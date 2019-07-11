@@ -17,6 +17,7 @@ public class Config {
     private final String LEVELTHUMBNAILPATH;
     private final String CREATIVETHUMBNAILPATH;
     private final String ICONTEXTUREPATH;
+    private final String PLACABLEITEMTEXTUREPATH;
     private final int SECONDSPERITEM;
     private final int MAXWIDTH;
     private final int MAXHEIGHT;
@@ -58,6 +59,7 @@ public class Config {
         LEVELTHUMBNAILPATH = configMap.get("levelThumbnailPath");
         CREATIVETHUMBNAILPATH = configMap.get("creativeThumbnailPath");
         ICONTEXTUREPATH = configMap.get("iconTexturePath");
+        PLACABLEITEMTEXTUREPATH= configMap.get("placableItemTexturePath");
         SECONDSPERITEM = Integer.valueOf(configMap.get("secondsPerItem"));
         MAXWIDTH = Integer.valueOf(configMap.get("maxWidth"));
         MAXHEIGHT = Integer.valueOf(configMap.get("maxHeight"));
@@ -121,6 +123,10 @@ public class Config {
 
     public String ICONTEXTUREPATH() {
         return ICONTEXTUREPATH;
+    }
+
+    public String PLACABLEITEMTEXTUREPATH() {
+        return PLACABLEITEMTEXTUREPATH;
     }
 
     public int SECONDSPERITEM() {
