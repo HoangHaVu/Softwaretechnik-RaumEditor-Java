@@ -47,7 +47,6 @@ public class PlacableItemEditor {
 
     public void setRoomPlacableItemList(){
         this.room.setPlacableItemList(this.placableItemList);
-        jsonHandler.saveRoom(room);
     }
 
 

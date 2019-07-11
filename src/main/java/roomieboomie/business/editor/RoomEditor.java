@@ -170,7 +170,6 @@ public class RoomEditor {
      * @throws JsonWritingException Wenn der Room im JsonHandler nicht geschrieben werden kann
      */
     public void saveRoom() throws JsonWritingException {
-        //placableItemEditor.setRoomPlacableItemList();
         jsonHandler.saveRoom(this.room);
     }
 
