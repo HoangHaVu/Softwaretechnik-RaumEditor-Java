@@ -112,8 +112,8 @@ public class RoomSaveLoadTest {
         };
 
         ArrayList<PlacableItem> placableItemList =  new ArrayList<>();
-        placableItemList.add(new PlacableItem(1,2, Orientation.BOTTOM, PlacableItemType.BED));
-        placableItemList.add(new PlacableItem(7,2, Orientation.TOP, PlacableItemType.SHELF));
+        placableItemList.add(new PlacableItem(1,2, Orientation.BOTTOM, PlacableItemType.CARPET));
+        placableItemList.add(new PlacableItem(7,2, Orientation.TOP, PlacableItemType.BED));
         placableItemList.add(new PlacableItem(1,2, Orientation.LEFT, PlacableItemType.COUCH));
 
         ArrayList<LayoutItem> walls = new ArrayList<>();

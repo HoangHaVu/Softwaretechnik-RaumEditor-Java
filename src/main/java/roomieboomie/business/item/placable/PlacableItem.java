@@ -105,7 +105,7 @@ public class PlacableItem extends RoomItem {
         this.next = item;
         int startX = item.getX();
         int startY = item.getY();
-        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+        if (item.getOrientation() == Orientation.LEFT|| item.getOrientation() == Orientation.RIGHT){
             int temp = startX;
             startX = startY;
             startY = temp;
@@ -113,7 +113,7 @@ public class PlacableItem extends RoomItem {
 
 
 
-        if (this.layout[startX][startY] != 0){
+        if (this.layout[startY][startX] != 0){
             item.setX(item.getX() - this.getX());
             item.setY(item.getY() - this.getY());
             this.next.placeItemOnThis(item);
@@ -194,6 +194,6 @@ public class PlacableItem extends RoomItem {
         PlacableItem newItem = new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());
         if (this.next != null) newItem.setNext(this.next.clone());
         return  newItem;
-        
+
     }
 }

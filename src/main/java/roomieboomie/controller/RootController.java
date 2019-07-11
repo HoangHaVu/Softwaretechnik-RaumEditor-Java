@@ -149,7 +149,7 @@ public class RootController {
                 Scene scene1 = new Scene(placeableEditorController.getView(), 1000, 600);
                 primaryStage.setScene(scene1);
                 primaryStage.show();
-                placeableEditorController.refreshView();
+                placeableEditorController.refreshLayoutView();
 
                 break;
             case "Play":
