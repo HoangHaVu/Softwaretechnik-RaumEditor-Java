@@ -356,7 +356,7 @@ public class PlaceableEditorController {
         PlacableItem item = placableItemEditor.getCurrentItem();
         objectName.setText(item.getType().getName());
         int size = 19;
-        Image textureImage = item.getImage();
+        Image textureImage = item.getTextureImage();
 
         if (item.getLength() > size) {
             return;
@@ -426,7 +426,7 @@ public class PlaceableEditorController {
 
             do{
                 Pane item = new Pane();
-                Image textureImage = cur.getImage();
+                Image textureImage = cur.getTextureImage();
                 item.prefHeightProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
                 item.prefWidthProperty().bind(view.placableRaster.widthProperty().divide(layout[0].length));
                 //item.getStyleClass().add("layout-item");
@@ -646,7 +646,7 @@ public class PlaceableEditorController {
 
             if (!empty) {
                 itemLabel.setText(item.getType().getName());
-                Image i = item.getImage();
+                Image i = item.getTextureImage();
                 if (i == null) {
                     String noDirectory = Config.get().NOPICTUREPATH();
                     try {

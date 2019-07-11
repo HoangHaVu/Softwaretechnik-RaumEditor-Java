@@ -199,7 +199,7 @@ public class Validator {
                             System.out.println("deko wurde nicht auf Ablage drauf getan");
                             return false;
                         }
-                        if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                        if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false){
                             System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
                             return false;
                         }

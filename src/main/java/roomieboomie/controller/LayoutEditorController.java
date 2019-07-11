@@ -226,7 +226,6 @@ public class LayoutEditorController {
             }
             messageLabel.setVisible(false);
         }).start();
-        
     }
 
     public void refreshHighlightedButton(){

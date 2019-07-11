@@ -25,7 +25,7 @@ public enum PlacableItemType {
     STOOL(false, false, true, false, Height.MEDIUM, Height.FLAT,
             60, 1, 1, "Hocker"),
     COUCH(false, false, true, false, Height.MEDIUM, Height.FLAT,
-            110, 4, 1, "Sofa"),
+            110, 2, 4, "Sofa"),
     BED(false, false, true, false, Height.MEDIUM, Height.FLAT,
             110, 3, 2, "Bett"),
     LOFTBED(false, false, true, false, Height.HIGH, Height.MEDIUM,
