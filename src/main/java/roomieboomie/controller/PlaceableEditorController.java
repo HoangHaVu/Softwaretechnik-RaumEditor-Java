@@ -3,6 +3,7 @@ package roomieboomie.controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -21,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import roomieboomie.business.editor.PlacableItemEditor;
-import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
 import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
@@ -64,6 +64,7 @@ public class PlaceableEditorController {
     private RoomPreview roomPreview;
     ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
+    HashSet<String> currentlyActiveKeys;
     Label messageLabel;
 
     public PlaceableEditorController(RoomEditor roomEditor) {
@@ -91,6 +92,7 @@ public class PlaceableEditorController {
         this.roomName = view.roomName;
         this.placableRaster = view.placableRaster;
         this.messageLabel = view.messageLabel;
+        this.currentlyActiveKeys = view.currentlyActiveKeys;
         initialize();
     }
 
@@ -115,15 +117,15 @@ public class PlaceableEditorController {
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
                 roomEditor.getRoom().setName(roomName.getText());
+                placableItemEditor.setRoomPlacableItemList();
 
                 try {
-                    placableItemEditor.saveRoom();
+                    roomEditor.saveRoom();
                     showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
                     switcher.switchView("ChooseEdit");
                 } catch (JsonWritingException ex) {
-                    showAlert("Fehler!", "Dein Raum konnte leider nciht gespeichert werden.");
+                    showAlert("Fehler!", "Raum konnte leider nicht gespeichert werden.");
                 }
-
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
@@ -179,8 +181,19 @@ public class PlaceableEditorController {
                 placableItemEditor.rotateCurItem();
             }
 
+            String codeString = e.getCode().toString();
+            if (!currentlyActiveKeys.contains(codeString)) {
+                currentlyActiveKeys.add(codeString);
+            }
+
             movePreviewObject(actMouseX, actMouseY, item, clearPane, false);
             refreshPreviewObject();
+        });
+
+        view.setOnKeyReleased(e ->{
+            currentlyActiveKeys.remove(e.getCode().toString());
+
+            //scrollableRaster.addEventHandler(ScrollEvent.SCROLL, scrollHandler);
         });
 
         listView.setCellFactory(new Callback<ListView<PlacableItem>, ListCell<PlacableItem>>() {
@@ -288,7 +301,7 @@ public class PlaceableEditorController {
      */
     public void initInteraction() {
         Pane itemPane = new Pane();
-        itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
+        itemPane.setStyle("-fx-background-color: rgba(0,45,150,0.3);");
         for (int i = 0; i < roomEditor.getRoom().getLayout().length; i++) {
             for (int j = 0; j < roomEditor.getRoom().getLayout()[0].length; j++) {
 

@@ -45,7 +45,7 @@ public class PlacableItemEditor {
         this.curItem = new PlacableItem(type);
     }
 
-    public void saveRoom () throws JsonWritingException {
+    public void setRoomPlacableItemList(){
         this.room.setPlacableItemList(this.placableItemList);
         jsonHandler.saveRoom(room);
     }

@@ -1,7 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.PlacableItemEditor;
-import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -54,6 +53,7 @@ public class PlaceableItemEditorTest {
         //placeableItemEditor.rotateCurItem();
         //placeableItemEditor.placeCurrItem(1,1);
 
+        placeableItemEditor.setRoomPlacableItemList();
         try {
             placeableItemEditor.saveRoom();
         } catch (JsonWritingException e) {
