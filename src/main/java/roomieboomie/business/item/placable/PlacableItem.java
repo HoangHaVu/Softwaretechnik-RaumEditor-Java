@@ -1,7 +1,5 @@
 package roomieboomie.business.item.placable;
 
-import java.util.Arrays;
-
 import javafx.scene.image.Image;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.RoomItem;
@@ -177,20 +175,20 @@ public class PlacableItem extends RoomItem {
     }
 
     /**
-     * @return Kopie des Objekts mit X, Y, Orientation und Typ
-     */
-
-    /**
      * Ruft ueber den ImageHandler die zum Typ und Orientation passende Datei ab
      * @return JavaFX-Image
      */
-    public Image getTexturePath(){
-        return ImageHandler.get().placableItemTexture(type + "_" + getOrientation());
+    public Image getTextureImage(){
+        return ImageHandler.get().placableItemImage(type + "_" + getOrientation());
     }
+
     public void setLayout(byte[][] layout){
         this.layout = layout;
     }
 
+    /**
+     * @return Kopie des Objekts mit X, Y, Orientation und Typ
+     */
     public PlacableItem clone(){
 
         PlacableItem newItem = new PlacableItem(this.getX(),this.getY(),this.getOrientation(),this.getType());

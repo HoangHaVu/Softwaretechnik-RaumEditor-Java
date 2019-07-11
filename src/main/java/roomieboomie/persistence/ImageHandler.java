@@ -124,7 +124,7 @@ public class ImageHandler {
      * @param filename Name der Datei ohne .Endung
      * @return JavaFX-Image
      */
-    public Image placableItemTexture(String filename){
+    public Image placableItemImage(String filename){
         return new Image(Config.get().PLACABLEITEMTEXTUREPATH() + filename + FORMAT);
     }
 }
