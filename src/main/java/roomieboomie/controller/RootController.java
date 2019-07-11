@@ -63,6 +63,7 @@ public class RootController {
                     this.scene = new Scene((Parent) loader.load(), 700, 500);
                     TutorialController tutorialController = loader.getController();
                     tutorialController.setSwitcher(this);
+                    tutorialController.init();
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 } catch (IOException e) {

@@ -34,7 +34,7 @@ public class RoomieBoomieManager {
     public RoomieBoomieManager() {
         this.jsonHandler = new JsonHandler();
 
-        this.roomEditor = new RoomEditor(jsonHandler);
+        this.roomEditor = new RoomEditor(jsonHandler, this);
 
         roomEditor.loadNewRoom("meinRaum", false);
 
@@ -44,6 +44,10 @@ public class RoomieBoomieManager {
             System.err.println(e.getMessage());
         }
 
+        updateRoomMaps();
+    }
+
+    public void updateRoomMaps(){
         try {
             HashMap level = jsonHandler.getRoomMapLevel();
             HashMap creative = jsonHandler.getRoomMapCreative();
@@ -85,7 +89,6 @@ public class RoomieBoomieManager {
         return jsonHandler;
     }
 
-
     /**
      * startet eine neue Game-Session
      */
@@ -94,7 +97,6 @@ public class RoomieBoomieManager {
 
     /**
      * kreiert einen neuen Raum
-     *
      * @return
      */
     public Room createRoom() { //TODO

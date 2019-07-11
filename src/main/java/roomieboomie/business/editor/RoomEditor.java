@@ -1,5 +1,6 @@
 package roomieboomie.business.editor;
 
+import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.Orientation;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 public class RoomEditor {
 
+    private RoomieBoomieManager roomieBoomieManager;
     private ArrayList<PlacableItem> placableItemList;
     private Validator validator;
     private Room room;
@@ -40,36 +42,16 @@ public class RoomEditor {
     byte minWall = Config.get().EDITORMINWALLVALUE();
 
     /**
-     * Erstellt und initialisiert RoomEditor zum Editieren eines bereits vorhandenen Raumes.
+     * Erstellt und initialisiert RoomEditor
      */
-    public RoomEditor(JsonHandler jsonHandler) {
+    public RoomEditor(JsonHandler jsonHandler, RoomieBoomieManager roomieBoomieManager) {
         this.placableItemList = new ArrayList<>();
         this.jsonHandler = jsonHandler;
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
         initDefaultPlaceableItem();
         this.placableItemEditor = new PlacableItemEditor(jsonHandler);
-    }
-
-    /**
-     * Erstellt komplett neuen Raum
-     *
-     * @param name          Name des neuen Raumes
-     * @param level         true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
-     * @param placableItems
-     */
-    public RoomEditor(String name, boolean level, ArrayList<PlacableItem> placableItems, JsonHandler jsonHandler) {
-        this.jsonHandler = jsonHandler;
-        RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
-
-        this.placableItemList = placableItems;
-
-        this.room = new Room(Config.get().MAXHEIGHT(), Config.get().MAXWIDTH(), roomPreview);
-        this.validator = new Validator();
-        this.room.setLevel(level);
-        this.room.setPlacableItemList(new ArrayList<PlacableItem>());
-        selectnewItem(LayoutItemType.WALL);
-        this.placableItemEditor = new PlacableItemEditor(jsonHandler);
+        this.roomieBoomieManager = roomieBoomieManager;
     }
 
     public void loadNewRoom(String name, boolean level) {
@@ -155,12 +137,9 @@ public class RoomEditor {
      * @return true, wenn der Raum erfolgreich validiert wurde
      */
     public boolean validateRoom() throws MissingDoorException, MissingWindowException, getIntoRoomException {
-
         boolean sucess = validator.validateRoom(this.room);
         placableItemEditor.setRoom(this.room);
         placableItemEditor.setValidator(validator);
-
-
 
         return sucess;
     }
@@ -171,6 +150,7 @@ public class RoomEditor {
      */
     public void saveRoom() throws JsonWritingException {
         jsonHandler.saveRoom(this.room);
+        roomieBoomieManager.updateRoomMaps();
     }
 
     /**
@@ -188,9 +168,9 @@ public class RoomEditor {
      * @return
      */
     public void editItem(byte layoutNumber) {
-        List<LayoutItem> roomItemList = null;
-        byte index = 0;
-        LayoutItem itemToEdit = null;
+        List<LayoutItem> roomItemList;
+        byte index;
+        LayoutItem itemToEdit;
 
         if (layoutNumber == layoutDoor) {
             roomItemList = room.getDoors();
@@ -213,7 +193,6 @@ public class RoomEditor {
 
     /**
      * Löscht Item über mitgegebene Nummer aus dem Layout
-     *
      * @param layoutNumber
      */
     public void deleteItem(byte layoutNumber) {

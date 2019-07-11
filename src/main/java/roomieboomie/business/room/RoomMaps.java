@@ -13,8 +13,8 @@ import java.util.Map;
  * Die Room-Objekte sind ueber ihren Namen abrufbar (get__Room()) oder komplett in Collections (get__Rooms()) abfragbar
  */
 public class RoomMaps {
-    private HashMap<String, RoomPreview> levelRooms = new HashMap<>();
-    private HashMap<String, RoomPreview> creativeRooms = new HashMap<>();
+    private HashMap<String, RoomPreview> levelRooms;
+    private HashMap<String, RoomPreview> creativeRooms;
 
     /**
      * Neue RoomMaps, die Level-Rooms und Creative-Rooms verwaltet
@@ -124,5 +124,21 @@ public class RoomMaps {
         }
 
         return highscoreList;
+    }
+
+    /**
+     * Setzt die LevelRoom-Map
+     * @param levelRooms HashMap mit RoomPreviews und ihren Namen
+     */
+    public void setLevelRooms(HashMap<String, RoomPreview> levelRooms) {
+        this.levelRooms = levelRooms;
+    }
+
+    /**
+     * Setzt die Creative-Room-Map
+     * @param creativeRooms HashMap mit RoomPreviews und ihren Namen
+     */
+    public void setCreativeRooms(HashMap<String, RoomPreview> creativeRooms) {
+        this.creativeRooms = creativeRooms;
     }
 }

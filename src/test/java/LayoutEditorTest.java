@@ -29,7 +29,8 @@ public class LayoutEditorTest {
         wall = new LayoutItem(LayoutItemType.WALL, 10, 1, Orientation.TOP);
         window = new LayoutItem(LayoutItemType.WINDOW, 4, 1, Orientation.RIGHT);
 
-        testEditor = new RoomEditor("test", false, new ArrayList<PlacableItem>(), new JsonHandler());
+        //testEditor = new RoomEditor("test", false, new ArrayList<PlacableItem>(), new JsonHandler());
+        //TODO mit anderem Konstruktor, weil dieser hier nicht mehr benutzt wird
         musterLayout = testEditor.getRoom().getLayout();
     }
 
