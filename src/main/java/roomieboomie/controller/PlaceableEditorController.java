@@ -377,9 +377,10 @@ public class PlaceableEditorController {
         Pane itemPane = new Pane();
 
         ImageView texture = new ImageView(textureImage);
-        
+
         texture.fitWidthProperty().bind(itemPane.widthProperty());
         texture.fitHeightProperty().bind(itemPane.heightProperty());
+        texture.setPreserveRatio(true);
 
         view.itemPreviewGrid.getChildren().clear();
         /*
