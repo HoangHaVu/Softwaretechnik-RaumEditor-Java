@@ -1,5 +1,6 @@
 package roomieboomie.business.editor;
 
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
@@ -144,10 +145,11 @@ public class RoomEditor {
     public void placeCurrItem(int x, int y) throws WindowMissplaceException, LayoutItemMissplaceException, DoorMissplaceException, WallMissplaceException {
         currLayoutItem.setX(x);
         currLayoutItem.setY(y);
-        if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
-            addItem(currLayoutItem);
-            currLayoutItem = currLayoutItem.clone();
-        }
+        /*if(validator.validateLayoutPlacement(currLayoutItem,getRoom().getLayout())){
+
+        }*/
+        addItem(currLayoutItem);
+        currLayoutItem = currLayoutItem.clone();
 
     }
 
@@ -155,7 +157,7 @@ public class RoomEditor {
      * Validiert den aktuellen Room ueber den Validator. Dabei werden height und width des Rooms gesetzt.
      * @return true, wenn der Raum erfolgreich validiert wurde
      */
-    public boolean validateRoom(){
+    public boolean validateRoom() throws MissingDoorException, MissingWindowException, getIntoRoomException {
 
         boolean sucess = validator.validateRoom(this.room);
         placableEditor.setRoom(this.room);
