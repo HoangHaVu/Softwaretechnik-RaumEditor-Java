@@ -125,6 +125,12 @@ public class ImageHandler {
      * @return JavaFX-Image
      */
     public Image placableItemImage(String filename){
-        return new Image(Config.get().PLACABLEITEMTEXTUREPATH() + filename + FORMAT);
+        try{
+            String path = Config.get().PLACABLEITEMTEXTUREPATH() + filename + "." + FORMAT;
+            return new Image(path);
+        } catch (IllegalArgumentException e){
+            System.err.println("Bild zu " + filename + " konnte nicht gefunden werden");
+            return new Image("img/thumbnails/noPicture.png");
+        }
     }
 }
