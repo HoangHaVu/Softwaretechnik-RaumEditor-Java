@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
+import roomieboomie.business.editor.PlacableItemEditor;
 import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
@@ -39,7 +40,7 @@ public class PlaceableEditorController {
 
     PlacableItem selectedItem;
     RootController switcher;
-    PlaceableEditor placeableEditor;
+    PlacableItemEditor placableItemEditor;
     RoomEditor roomEditor;
     PlaceableEditorView view;
     GridPane raster, interactionRaster, dragRaster;
@@ -63,8 +64,8 @@ public class PlaceableEditorController {
     public PlaceableEditorController(RoomEditor roomEditor) {
         view = new PlaceableEditorView();
         this.roomEditor = roomEditor;
-       // this.placeableEditor = roomEditor.getPlaceableEditor();
-        this.selectedItem = placeableEditor.getCurrentItem();
+        this.placableItemEditor = roomEditor.getPlaceableEditor();
+        this.selectedItem = placableItemEditor.getCurrentItem();
         this.roomPreview = null;
         this.objectName = view.objectName;
         this.raster = view.raster;
@@ -95,7 +96,7 @@ public class PlaceableEditorController {
         listView.setItems(items);
         listView.setOnMouseClicked(event -> {
             selectedItem = listView.getSelectionModel().getSelectedItem();
-            placeableEditor.selectPlaceableItem(selectedItem.getType());
+            placableItemEditor.selectPlaceableItem(selectedItem.getType());
             refreshPreviewObject();
         });
 
@@ -162,11 +163,11 @@ public class PlaceableEditorController {
             GridPane.setConstraints(clearPane, actMouseX, actMouseY);
 
             if (e.getCode() == KeyCode.D) {
-                placeableEditor.getCurrentItem().setLength(placeableEditor.getCurrentItem().getLength() + 1);
+                placableItemEditor.getCurrentItem().setLength(placableItemEditor.getCurrentItem().getLength() + 1);
             } else if (e.getCode() == KeyCode.A) {
-                placeableEditor.getCurrentItem().setLength(placeableEditor.getCurrentItem().getLength() - 1);
+                placableItemEditor.getCurrentItem().setLength(placableItemEditor.getCurrentItem().getLength() - 1);
             } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
-                placeableEditor.rotateItem();
+                placableItemEditor.rotateCurItem();
             }
 
             movePreviewObject(actMouseX, actMouseY, item, clearPane, false);
@@ -257,10 +258,10 @@ public class PlaceableEditorController {
 
         if (onlyDel) return;
 
-        if (placeableEditor.getCurrentItem().getOrientation() == Orientation.TOP || placeableEditor.getCurrentItem().getOrientation() == Orientation.BOTTOM) {
-            GridPane.setConstraints(itemPane, x, y, placeableEditor.getCurrentItem().getWidth(), placeableEditor.getCurrentItem().getLength());
+        if (placableItemEditor.getCurrentItem().getOrientation() == Orientation.TOP || placableItemEditor.getCurrentItem().getOrientation() == Orientation.BOTTOM) {
+            GridPane.setConstraints(itemPane, x, y, placableItemEditor.getCurrentItem().getWidth(), placableItemEditor.getCurrentItem().getLength());
         } else {
-            GridPane.setConstraints(itemPane, x, y, placeableEditor.getCurrentItem().getLength(), placeableEditor.getCurrentItem().getWidth());
+            GridPane.setConstraints(itemPane, x, y, placableItemEditor.getCurrentItem().getLength(), placableItemEditor.getCurrentItem().getWidth());
         }
 
         try {
@@ -310,13 +311,13 @@ public class PlaceableEditorController {
                 dragElement.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
 
                 dragElement.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    if (this.action == Action.PLACE) placeableEditor.placeCurrItem(x, y);
+                    if (this.action == Action.PLACE) placableItemEditor.placeCurrItem(x, y);
                     else if (this.action == Action.DELETE)
                         //roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]); //FIXME TODO
-                        placeableEditor.delete(x,y);
+                        placableItemEditor.delItem(x,y);
                     else if (this.action == Action.EDIT) {
 
-                        placeableEditor.editItem(x,y);
+                        placableItemEditor.editItem(x,y);
                         this.action = Action.PLACE;
                         refreshHighlightedButton();
                         //edit.setStyle("");
@@ -342,7 +343,7 @@ public class PlaceableEditorController {
      */
     public void refreshPreviewObject() {
 
-        PlacableItem item = placeableEditor.getCurrentItem();
+        PlacableItem item = placableItemEditor.getCurrentItem();
         objectName.setText(item.getType().getName());
         int size = 19;
         Image textureImage;
@@ -531,7 +532,7 @@ public class PlaceableEditorController {
         setLayout(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
         setLayout(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
         setLayout(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
-        setItemsIntoView(placeableEditor.getRoom().getPlacableItemList(),layout);
+        setItemsIntoView(roomEditor.getRoom().getPlacableItemList(),layout);
     }
 
     private void showAlert(String title, String message) {

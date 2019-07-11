@@ -13,7 +13,7 @@ public class PlacableItemEditor {
     private Room room;
     private byte [][] layout;
     private ArrayList<PlacableItem> placableItemList;
-    PlacableItem curItem;
+    private PlacableItem curItem;
 
     public PlacableItemEditor(){
         curItem = new PlacableItem(PlacableItemType.TEDDY);
@@ -22,8 +22,12 @@ public class PlacableItemEditor {
     public void setRoom (Room room){
         this.room = room;
         placableItemList = room.getPlacableItemList();
-        curItem = new PlacableItem(PlacableItemType.TEDDY);
+        this.curItem = new PlacableItem(PlacableItemType.TEDDY);
         initializeLayout();
+    }
+
+    public void selectPlaceableItem(PlacableItemType type) {
+        this.curItem = new PlacableItem(type);
     }
 
     public void saveRoom (){
@@ -171,7 +175,7 @@ public class PlacableItemEditor {
         return placableItemList;
     }
 
-    public PlacableItem getCurItem() {
+    public PlacableItem getCurrentItem() {
         return curItem;
     }
 }
