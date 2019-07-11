@@ -184,9 +184,10 @@ public class PlacableItem extends RoomItem {
      * Ruft ueber den ImageHandler die zum Typ und Orientation passende Datei ab
      * @return JavaFX-Image
      */
-    public Image getTexturePath(){
+    public Image getTextureImage(){
         return ImageHandler.get().placableItemTexture(type + "_" + getOrientation());
     }
+
     public void setLayout(byte[][] layout){
         this.layout = layout;
     }
