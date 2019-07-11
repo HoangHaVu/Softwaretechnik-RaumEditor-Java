@@ -1,14 +1,13 @@
 package roomieboomie.controller;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -50,7 +49,7 @@ public class LayoutEditorController {
     int currMouseX = 0, currMouseY = 0;
     String iconTexturePath = Config.get().ICONTEXTUREPATH();
     HashSet<String> currentlyActiveKeys;
-
+    Label messageLabel;
 
     /**
      * Konstruktor des LayoutEditorControllers
@@ -79,6 +78,7 @@ public class LayoutEditorController {
         this.zoomAndScroll = view.zoomAndScroll;
         this.dragRaster = view.dragRaster;
         this.currentlyActiveKeys = view.currentlyActiveKeys;
+        this.messageLabel = view.messageLabel;
         initialize();
     }
 
@@ -102,11 +102,11 @@ public class LayoutEditorController {
                     showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
                 }
             } catch (MissingWindowException ex) {
-                ex.printStackTrace();
+                showAlert("Grundriss noch nicht fertig", ex.getMessage());
             } catch (MissingDoorException ex) {
-                ex.printStackTrace();
+                showAlert("Grundriss noch nicht fertig", ex.getMessage());
             } catch (getIntoRoomException ex) {
-                ex.printStackTrace();
+                showAlert("Grundriss noch nicht fertig", ex.getMessage());
             }
         });
 
@@ -209,6 +209,24 @@ public class LayoutEditorController {
         initInteractionPane();
         refreshHighlightedButton();
         refreshPreview();
+    }
+
+    /**
+     * Zeigt eine Fehlermeldung an und blendet sie nach 2 Sekunden wieder aus
+     * @param message Text, der angezeigt werden soll
+     */
+    private void showMessageLabel(String message){
+        new Thread(() -> {
+            Platform.runLater( () -> messageLabel.setText(message));
+            messageLabel.setVisible(true);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            messageLabel.setVisible(false);
+        }).start();
+        
     }
 
     public void refreshHighlightedButton(){
@@ -381,13 +399,13 @@ public class LayoutEditorController {
                         try {
                             roomEditor.placeCurrItem(x, y);
                         } catch (WindowMissplaceException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         } catch (LayoutItemMissplaceException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         } catch (DoorMissplaceException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         } catch (WallMissplaceException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         }
                     }
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);
