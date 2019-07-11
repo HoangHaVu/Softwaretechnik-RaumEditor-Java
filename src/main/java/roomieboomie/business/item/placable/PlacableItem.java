@@ -113,15 +113,6 @@ public class PlacableItem extends RoomItem {
             startY = temp;
         }
 
-
-
-        if (this.layout[startY][startX] != 0){
-            item.setX(item.getX() - this.getX());
-            item.setY(item.getY() - this.getY());
-            this.next.placeItemOnThis(item);
-            return;
-        }
-
         int endX = startX + item.getLength();
         int endY = startY + item.getWidth();
         byte placeNumber = 1;
