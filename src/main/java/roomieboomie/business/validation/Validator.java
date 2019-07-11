@@ -195,8 +195,12 @@ public class Validator {
                             System.out.println("man kann keine Teppiche aufeinander legen");
                             return false;
                         }
-                        if(item.getType().isStorable()&&placableItems.get(layout[y][x]).getType().isStoragePlace()==false){
+                        if(item.getType().isStorable()&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
                             System.out.println("deko wurde nicht auf Ablage drauf getan");
+                            return false;
+                        }
+                        if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                            System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
                             return false;
                         }
                     }
@@ -227,7 +231,7 @@ public class Validator {
 
         for(int x=item.getX()-1;x<(endX+1);x++){
             for(int y=item.getY()-1;y<(endY+1);y++) {
-                if(layout[y][x]==Config.get().GAMEWINDOWVALUE()&&item.getType().getHeight().getValue()<=2){
+                if(layout[y][x]==Config.get().GAMEWINDOWVALUE()&&item.getType().getHeight().getValue()>2){
                     throw new ObjectToHighInFrontOfWindowException();
                 }
 
