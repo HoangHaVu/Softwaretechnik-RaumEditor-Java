@@ -42,13 +42,13 @@ public class RoomEditor {
     /**
      * Erstellt und initialisiert RoomEditor zum Editieren eines bereits vorhandenen Raumes.
      */
-    public RoomEditor() {
-        this.placableItemList = new ArrayList<PlacableItem>();
-        jsonHandler = new JsonHandler();
+    public RoomEditor(JsonHandler jsonHandler) {
+        this.placableItemList = new ArrayList<>();
+        this.jsonHandler = jsonHandler;
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
         initDefaultPlaceableItem();
-        this.placableItemEditor = new PlacableItemEditor();
+        this.placableItemEditor = new PlacableItemEditor(jsonHandler);
     }
 
     /**
@@ -58,8 +58,8 @@ public class RoomEditor {
      * @param level         true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
      * @param placableItems
      */
-    public RoomEditor(String name, boolean level, ArrayList<PlacableItem> placableItems) {
-        jsonHandler = new JsonHandler();
+    public RoomEditor(String name, boolean level, ArrayList<PlacableItem> placableItems, JsonHandler jsonHandler) {
+        this.jsonHandler = jsonHandler;
         RoomPreview roomPreview = new RoomPreview(name, level, jsonHandler);
 
         this.placableItemList = placableItems;
@@ -69,7 +69,7 @@ public class RoomEditor {
         this.room.setLevel(level);
         this.room.setPlacableItemList(new ArrayList<PlacableItem>());
         selectnewItem(LayoutItemType.WALL);
-        this.placableItemEditor = new PlacableItemEditor();
+        this.placableItemEditor = new PlacableItemEditor(jsonHandler);
     }
 
     public void loadNewRoom(String name, boolean level) {

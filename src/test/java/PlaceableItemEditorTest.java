@@ -8,6 +8,7 @@ import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
+import roomieboomie.persistence.JsonHandler;
 import roomieboomie.persistence.exception.JsonWritingException;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class PlaceableItemEditorTest {
         Room r= new Room(10,10,null);
         r.setLayout(lay);
         //r.addPlacableItem(new PlacableItem(PlacableItemType.CARPET));
-        placeableItemEditor =new PlacableItemEditor();
+        placeableItemEditor = new PlacableItemEditor(new JsonHandler());
 
         teppich=new PlacableItem(3,3, Orientation.TOP,PlacableItemType.CARPET);
         tisch=new PlacableItem(3,3, Orientation.TOP,PlacableItemType.TABLE);
@@ -53,7 +54,11 @@ public class PlaceableItemEditorTest {
         //placeableItemEditor.rotateCurItem();
         //placeableItemEditor.placeCurrItem(1,1);
 
-        placeableItemEditor.saveRoom();
+        try {
+            placeableItemEditor.saveRoom();
+        } catch (JsonWritingException e) {
+            e.printStackTrace();
+        }
         assertTrue(true);
 
     }
@@ -110,7 +115,7 @@ public class PlaceableItemEditorTest {
        ArrayList<PlacableItem> items=new ArrayList<PlacableItem>();
        items.add(new PlacableItem(PlacableItemType.TABLE));
 
-       RoomEditor roomEditor= new RoomEditor("level",true,items);
+       RoomEditor roomEditor= new RoomEditor("level",true,items, new JsonHandler());
         
        try{
         roomEditor.selectnewItem(LayoutItemType.WALL);

@@ -32,11 +32,11 @@ public class RoomieBoomieManager {
      * Konstruktor
      */
     public RoomieBoomieManager() {
+        this.jsonHandler = new JsonHandler();
 
-        this.roomEditor = new RoomEditor();
+        this.roomEditor = new RoomEditor(jsonHandler);
 
         roomEditor.loadNewRoom("meinRaum", false);
-        this.jsonHandler = new JsonHandler();
 
         try {
             this.userMap = new UserMap(jsonHandler.getUserMap());

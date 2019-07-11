@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -63,7 +64,7 @@ public class PlaceableEditorController {
     private RoomPreview roomPreview;
     ListView<PlacableItem> listView;
     ObservableList<PlacableItem> items;
-
+    Label messageLabel;
 
     public PlaceableEditorController(RoomEditor roomEditor) {
         view = new PlaceableEditorView();
@@ -89,6 +90,7 @@ public class PlaceableEditorController {
         this.listView = view.listView;
         this.roomName = view.roomName;
         this.placableRaster = view.placableRaster;
+        this.messageLabel = view.messageLabel;
         initialize();
     }
 
@@ -112,11 +114,16 @@ public class PlaceableEditorController {
 
         finish.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
             if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
-                //TODO Raum noch auf Placeables validieren
                 roomEditor.getRoom().setName(roomName.getText());
-                placableItemEditor.saveRoom();
-                showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
-                switcher.switchView("ChooseEdit");
+
+                try {
+                    placableItemEditor.saveRoom();
+                    showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    switcher.switchView("ChooseEdit");
+                } catch (JsonWritingException ex) {
+                    showAlert("Fehler!", "Dein Raum konnte leider nciht gespeichert werden.");
+                }
+
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
@@ -317,11 +324,11 @@ public class PlaceableEditorController {
                         try {
                             placableItemEditor.placeCurrItem(x, y);
                         } catch (PlaceItemIsNotInInteriorException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         } catch (ObjectToHighInFrontOfWindowException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         } catch (ItemIsTooCloseToDoorException ex) {
-                            System.out.println(ex.getMessage());
+                            showMessageLabel(ex.getMessage());
                         }
                     }
                     else if (this.action == Action.DELETE)
@@ -611,9 +618,10 @@ public class PlaceableEditorController {
             }
         }
 
-        updateItems(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
+
         updateItems(roomEditor.getRoom().getWalls(),roomEditor.getRoom().getLayout());
         updateItems(roomEditor.getRoom().getWindows(),roomEditor.getRoom().getLayout());
+        updateItems(roomEditor.getRoom().getDoors(),roomEditor.getRoom().getLayout());
         //setItemsIntoView(roomEditor.getRoom().getPlacableItemList(),layout);
     }
 
@@ -624,6 +632,23 @@ public class PlaceableEditorController {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Zeigt eine Fehlermeldung an und blendet sie nach 2 Sekunden wieder aus
+     * @param message Text, der angezeigt werden soll
+     */
+    private void showMessageLabel(String message){
+        new Thread(() -> {
+            Platform.runLater( () -> messageLabel.setText(message));
+            messageLabel.setVisible(true);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            messageLabel.setVisible(false);
+        }).start();
     }
 
     public Pane getView() {

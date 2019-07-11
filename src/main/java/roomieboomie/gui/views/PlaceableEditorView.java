@@ -6,22 +6,18 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.SVGPath;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
-public class PlaceableEditorView extends Pane {
+public class PlaceableEditorView extends StackPane {
 
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
@@ -42,7 +38,8 @@ public class PlaceableEditorView extends Pane {
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
     public HBox savePane = new HBox();
-    public ListView<PlacableItem> listView=new ListView<PlacableItem>();
+    public ListView<PlacableItem> listView=new ListView<>();
+    public Label messageLabel = new Label("test"); //Label fuer Fehlermeldungen
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
@@ -157,6 +154,9 @@ public class PlaceableEditorView extends Pane {
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
+        messageLabel.setVisible(false);
+        this.setAlignment(Pos.CENTER);
+        this.getChildren().add(messageLabel);
     }
 
 }

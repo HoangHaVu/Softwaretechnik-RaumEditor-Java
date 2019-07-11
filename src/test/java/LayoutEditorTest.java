@@ -10,6 +10,7 @@ import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.JsonHandler;
 
 import java.util.ArrayList;
 
@@ -28,7 +29,7 @@ public class LayoutEditorTest {
         wall = new LayoutItem(LayoutItemType.WALL, 10, 1, Orientation.TOP);
         window = new LayoutItem(LayoutItemType.WINDOW, 4, 1, Orientation.RIGHT);
 
-        testEditor = new RoomEditor("test", false, new ArrayList<PlacableItem>());
+        testEditor = new RoomEditor("test", false, new ArrayList<PlacableItem>(), new JsonHandler());
         musterLayout = testEditor.getRoom().getLayout();
     }
 

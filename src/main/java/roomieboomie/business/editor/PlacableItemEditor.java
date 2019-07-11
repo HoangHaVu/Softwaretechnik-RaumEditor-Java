@@ -11,6 +11,10 @@ import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.JsonHandler;
+import roomieboomie.persistence.exception.JsonWritingException;
+
+import javax.json.Json;
 
 public class PlacableItemEditor {
 
@@ -19,9 +23,11 @@ public class PlacableItemEditor {
     private ArrayList<PlacableItem> placableItemList;
     private PlacableItem curItem;
     private Validator validator;
+    private JsonHandler jsonHandler;
 
-    public PlacableItemEditor(){
+    public PlacableItemEditor(JsonHandler jsonHandler){
         curItem = new PlacableItem(PlacableItemType.TEDDY);
+        this.jsonHandler = jsonHandler;
     }
 
     public void setValidator(Validator validator){
@@ -39,9 +45,9 @@ public class PlacableItemEditor {
         this.curItem = new PlacableItem(type);
     }
 
-    public void saveRoom (){
-
+    public void saveRoom () throws JsonWritingException {
         this.room.setPlacableItemList(this.placableItemList);
+        jsonHandler.saveRoom(room);
     }
 
 
