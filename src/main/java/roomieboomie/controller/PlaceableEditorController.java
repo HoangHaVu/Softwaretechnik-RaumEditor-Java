@@ -367,7 +367,7 @@ public class PlaceableEditorController {
 
         PlacableItem item = placableItemEditor.getCurrentItem();
         objectName.setText(item.getType().getName());
-        int size = 19;
+        int size = 17;
         Image textureImage = item.getTextureImage();
 
         if (item.getLength() > size) {
@@ -377,11 +377,12 @@ public class PlaceableEditorController {
         Pane itemPane = new Pane();
 
         ImageView texture = new ImageView(textureImage);
+        
         texture.fitWidthProperty().bind(itemPane.widthProperty());
         texture.fitHeightProperty().bind(itemPane.heightProperty());
 
         view.itemPreviewGrid.getChildren().clear();
-
+        /*
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Pane clearPane = new Pane();
@@ -390,14 +391,13 @@ public class PlaceableEditorController {
                 GridPane.setConstraints(clearPane, x, y, 1, 1);
                 view.itemPreviewGrid.getChildren().add(clearPane);
             }
-        }
+        }*/
 
-        //itemPane.prefHeightProperty(texture.getFitWidth());
-        //itemPane.prefWidthProperty(texture.getFitHeight());
-        itemPane.prefHeight(texture.getFitHeight());
-        itemPane.prefWidth(texture.getFitWidth());
+        itemPane.prefHeightProperty().bind(view.itemPreviewGrid.heightProperty());
+        itemPane.prefWidthProperty().bind(view.itemPreviewGrid.widthProperty());
 
-        GridPane.setConstraints(itemPane, size / 2 - item.getLength() / 2, size / 2 - item.getWidth() / 2, item.getLength(), item.getWidth());
+
+        GridPane.setConstraints(itemPane, item.getLength() / 2, item.getWidth() / 2, item.getLength(), item.getWidth());
         if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM) {
             itemPane.setRotate(90);
         }
