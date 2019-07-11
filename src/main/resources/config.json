@@ -6,7 +6,7 @@
     "levelThumbnailPath": "src/main/resources/img/thumbnails/level/",
     "creativeThumbnailPath": "src/main/resources/img/thumbnails/creative/",
     "iconTexturePath": "img/iconsandtextures/",
-    "placableItemTexturePath": "src/main/img/iconsandtextures/placables/",
+    "placableItemTexturePath": "img/iconsandtextures/placeables/",
     "secondsPerItem": "5",
     "maxWidth": "60",
     "maxHeight": "60",
