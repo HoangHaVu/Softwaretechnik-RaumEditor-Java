@@ -39,8 +39,7 @@ public class PlacableItemEditor {
         this.curItem = new PlacableItem(type);
     }
 
-    public void saveRoom (){
-
+    public void setRoomPlacableItemList(){
         this.room.setPlacableItemList(this.placableItemList);
     }
 

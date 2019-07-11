@@ -1,10 +1,12 @@
 package roomieboomie.controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.highscore.HighscoreRecord;
@@ -20,16 +22,16 @@ public class HighscoreController {
     private TableView<HighscoreRecord> scoreTableView;
 
     @FXML
-    private TableColumn<HighscoreRecord, Number> place;
+    private TableColumn<HighscoreRecord, Number> tablePlace;
 
     @FXML
-    private TableColumn<HighscoreRecord, String> username;
+    private TableColumn<HighscoreRecord, String> tableName;
 
     @FXML
-    private TableColumn<HighscoreRecord, Integer> points;
+    private TableColumn<HighscoreRecord, Integer> tableScore;
 
     public void init(){
-        /*highscoreList = new HighscoreList(); //TODO nur zum Testen, solange es noch keine Highscores gibt
+        highscoreList = new HighscoreList(); //TODO nur zum Testen, solange es noch keine Highscores gibt
         User user1;
         User user2;
         HighscoreRecord record1;
@@ -43,8 +45,8 @@ public class HighscoreController {
         record2 = new HighscoreRecord(12,1500, user2.getName());
         highscoreList.addRecord(record2);
 
-        setHighscoreList(highscoreList);*/
-        setHighscoreList(roomieBoomieManager.getOverallHighscore());
+        setHighscoreList(highscoreList);
+        //setHighscoreList(roomieBoomieManager.getOverallHighscore());
 
         for (HighscoreRecord record : highscoreList){
             scoreTableView.getItems().add(record);
@@ -52,17 +54,17 @@ public class HighscoreController {
 
         scoreTableView.setSelectionModel(null);
 
-        place.setSortable(false);
-        username.setSortable(false);
-        points.setSortable(false);
+        tablePlace.setSortable(false);
+        tableName.setSortable(false);
+        tableScore.setSortable(false);
 
-        place.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(scoreTableView.getItems().indexOf(c.getValue()) + 1));
-        username.setCellValueFactory(new PropertyValueFactory<>("username"));
-        points.setCellValueFactory(new PropertyValueFactory<>("points"));
+        tablePlace.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(scoreTableView.getItems().indexOf(c.getValue()) + 1));
+        tableName.setCellValueFactory(new PropertyValueFactory<>("username"));
+        tableScore.setCellValueFactory(new PropertyValueFactory<>("points"));
 
-        place.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.196));
-        username.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.4));
-        points.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.4));
+        tablePlace.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.196));
+        tableName.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.4));
+        tableScore.prefWidthProperty().bind(scoreTableView.widthProperty().multiply(0.4));
     }
 
     public void backToMenu(){
@@ -81,5 +83,11 @@ public class HighscoreController {
     public void setHighscoreList(HighscoreList highscoreList){
         this.highscoreList = highscoreList;
     }
+
+    @FXML
+    void backToMenu(ActionEvent event) {
+    switcher.switchView("MainMenu");
+    }
+
 
 }

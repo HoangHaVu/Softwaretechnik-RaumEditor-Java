@@ -20,7 +20,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import roomieboomie.business.editor.PlacableItemEditor;
-import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
 import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
@@ -114,9 +113,15 @@ public class PlaceableEditorController {
             if (!roomName.getText().equals(roomName.getPromptText()) && !roomName.getText().isEmpty() ){
                 //TODO Raum noch auf Placeables validieren
                 roomEditor.getRoom().setName(roomName.getText());
-                placableItemEditor.saveRoom();
-                showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
-                switcher.switchView("ChooseEdit");
+                placableItemEditor.setRoomPlacableItemList();
+
+                try {
+                    roomEditor.saveRoom();
+                    showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    switcher.switchView("ChooseEdit");
+                } catch (JsonWritingException ex) {
+                    showAlert("Fehler!", "Raum konnte leider nicht gespeichert werden.");
+                }
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
             }
@@ -281,7 +286,7 @@ public class PlaceableEditorController {
      */
     public void initInteraction() {
         Pane itemPane = new Pane();
-        itemPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.3);");
+        itemPane.setStyle("-fx-background-color: rgba(0,45,150,0.3);");
         for (int i = 0; i < roomEditor.getRoom().getLayout().length; i++) {
             for (int j = 0; j < roomEditor.getRoom().getLayout()[0].length; j++) {
 

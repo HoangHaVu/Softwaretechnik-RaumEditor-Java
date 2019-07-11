@@ -1,14 +1,12 @@
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.PlacableItemEditor;
-import roomieboomie.business.editor.PlaceableEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
 import roomieboomie.business.room.Room;
-import roomieboomie.persistence.exception.JsonWritingException;
 
 import java.util.ArrayList;
 
@@ -53,7 +51,7 @@ public class PlaceableItemEditorTest {
         //placeableItemEditor.rotateCurItem();
         //placeableItemEditor.placeCurrItem(1,1);
 
-        placeableItemEditor.saveRoom();
+        placeableItemEditor.setRoomPlacableItemList();
         assertTrue(true);
 
     }

@@ -12,7 +12,7 @@
     <top>
         <AnchorPane prefHeight="140.0" prefWidth="800.0" BorderPane.alignment="CENTER">
             <children>
-                <Button layoutX="14.0" layoutY="29.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="76.0" styleClass="back-button" stylesheets="@../application.css" text="zurück" AnchorPane.leftAnchor="14.0" />
+                <Button layoutX="14.0" layoutY="29.0" mnemonicParsing="false" onAction="#backToMenu" prefHeight="28.0" prefWidth="76.0" styleClass="back-button" stylesheets="@../application.css" text="zurück" AnchorPane.leftAnchor="14.0" />
                 <Label layoutX="260.0" layoutY="17.0" prefHeight="52.0" prefWidth="213.0" text="Rangliste" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="17.0">
                     <font>
                         <Font name="Arial Bold" size="45.0" />
@@ -32,9 +32,9 @@
             <children>
                 <TableView fx:id="scoreTableView" layoutX="98.0" layoutY="23.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="275.0" prefWidth="492.0" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="110.0" AnchorPane.topAnchor="23.0">
                     <columns>
-                        <TableColumn fx:id="tablePlace" prefWidth="75.0" text="Platz" />
-                        <TableColumn fx:id="tableName" prefWidth="158.0" text="Name" />
-                        <TableColumn fx:id="tableScore" prefWidth="186.0" text="Punkte" />
+                        <TableColumn id="place" fx:id="tablePlace" prefWidth="75.0" text="Platz" />
+                        <TableColumn id="username" fx:id="tableName" prefWidth="158.0" text="Name" />
+                        <TableColumn id="point" fx:id="tableScore" prefWidth="186.0" text="Punkte" />
                         <TableColumn prefWidth="174.0" text="Zeit" />
                     </columns>
                 </TableView>
