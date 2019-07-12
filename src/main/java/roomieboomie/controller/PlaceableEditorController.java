@@ -121,12 +121,15 @@ public class PlaceableEditorController {
                 try {
                     roomEditor.saveRoom();
                     showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    SoundHandler.get().SUCCESSSOUND().play();
                     switcher.switchView("ChooseEdit");
                 } catch (JsonWritingException ex) {
                     showAlert("Fehler!", "Raum konnte leider nicht gespeichert werden.");
+                    SoundHandler.get().FAILSOUND().play();
                 }
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
+                SoundHandler.get().FAILSOUND().play();
             }
 
         });

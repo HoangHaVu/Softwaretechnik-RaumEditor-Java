@@ -98,6 +98,7 @@ public class LayoutEditorController {
             refreshView();
             try {
                 if (roomEditor.validateRoom()){
+                    SoundHandler.get().SUCCESSSOUND().play();
                     switcher.switchView("PlaceableEditor");
                 } else{
                     showAlert("Grundriss noch nicht fertig","Fenster, Tuer und geschlossener Raum benoetigt.");
