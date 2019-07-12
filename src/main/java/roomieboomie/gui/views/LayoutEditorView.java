@@ -4,10 +4,7 @@ import java.util.HashSet;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
@@ -25,7 +22,6 @@ import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
 
 public class LayoutEditorView extends StackPane {
-
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
     public GridPane completeEditor = new GridPane();
@@ -58,6 +54,8 @@ public class LayoutEditorView extends StackPane {
         zoomAndScroll.getChildren().addAll(raster, dragRaster, interactionRaster);
         zoomPane = new ZoomableScrollPane(zoomAndScroll, currentlyActiveKeys, "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
+
+
         
         raster.getStyleClass().add("grid");
 
@@ -120,6 +118,12 @@ public class LayoutEditorView extends StackPane {
         window.maxHeightProperty().bind(window.widthProperty());
         window.setMaxWidth(100);
         window.prefWidthProperty().bind(selectItemPane.widthProperty().multiply(0.25));
+
+        messageLabel.prefWidthProperty().bind(selectItemPane.widthProperty());
+        messageLabel.setVisible(false);
+        messageLabel.setStyle("-fx-text-fill: RED");
+        messageLabel.setAlignment(Pos.CENTER);
+
 
         door.minHeightProperty().bind(door.widthProperty());
         door.maxHeightProperty().bind(door.widthProperty());
@@ -187,12 +191,13 @@ public class LayoutEditorView extends StackPane {
         completeEditor.getColumnConstraints().addAll(layoutCol, controlCol);
         controlBox.getRowConstraints().addAll(previewRow, interactionRow);
 
+
         itemPreviewPane.getChildren().add(itemPreviewGrid);
         selectItemPane.getChildren().addAll(window, wall, door);
-        buttonPane.getChildren().addAll(regionVerticalForButtons0, selectItemPane, regionVerticalForButtons1, sliderPane, regionVerticalForButtons2, 
-            objectInteraction, regionVerticalForButtons3, backForward, regionVerticalForButtons4);
         objectInteraction.getChildren().addAll(rotate, edit, delete);
         sliderPane.getChildren().addAll(new Label("L\u00e4nge"), sizeSlider);
+        buttonPane.getChildren().addAll(regionVerticalForButtons0, selectItemPane, messageLabel, regionVerticalForButtons1, sliderPane, regionVerticalForButtons2,
+            objectInteraction, regionVerticalForButtons3, backForward, regionVerticalForButtons4);
         //controlBox.getChildren().addAll(itemPreviewGrid, buttonPane);
         controlBox.add(itemPreviewPane, 0, 0);
         controlBox.add(buttonPane, 0, 1);
@@ -200,9 +205,8 @@ public class LayoutEditorView extends StackPane {
         completeEditor.add(scrollableRaster, 0, 0);
         completeEditor.add(controlBox, 1, 0);
         this.getChildren().add(completeEditor);
-        messageLabel.setVisible(false);
         this.setAlignment(Pos.CENTER);
-        this.getChildren().add(messageLabel);
+
     }
 
     
