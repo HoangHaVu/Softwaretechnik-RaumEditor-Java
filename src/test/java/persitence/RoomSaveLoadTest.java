@@ -100,9 +100,10 @@ public class RoomSaveLoadTest {
         assert roomToSave.getDoors().size() == loadedRoom.getDoors().size();
         assert roomToSave.hashCode() == loadedRoom.hashCode();
         assert roomToSave.getRoomPreview().hashCode() == loadedRoom.getRoomPreview().hashCode();
+        assert success;
     }
 
-    private Room initRoom(HighscoreList list, String name){
+    public Room initRoom(HighscoreList list, String name){
         byte[][] layout = new byte[][]{
                 { 1, 1, 1, 1, 1, 2, 2, 2, 1, 1 },
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
