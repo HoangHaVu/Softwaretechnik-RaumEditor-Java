@@ -96,10 +96,18 @@ public class PlacableItem extends RoomItem {
     }
 
     public boolean hasNextOn(int x, int y){
-        if (this.layout[y][x] != 0){
-            return true;
+        
+        if (this.getOrientation() == Orientation.BOTTOM || this.getOrientation() == Orientation.TOP){
+            if (this.layout[y][x] != 0){
+                return true;
+            }
+            return false;
+        }else{
+            if(this.layout[x][y]!=0){
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     public void placeItemOnThis(PlacableItem item){

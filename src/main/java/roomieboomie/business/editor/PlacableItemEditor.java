@@ -136,15 +136,16 @@ public class PlacableItemEditor {
     }
 
     public void addItem(PlacableItem item){
-        int startX;
-        int startY;
+        int startX = item.getX();
+        int startY= item.getY();
+        /*
         if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
             startX = item.getX();
             startY = item.getY();
         } else{
             startX = item.getY();
             startY = item.getX();
-        }
+        }*/
 
         if (layout[startY][startX] > 0){
             PlacableItem unterItem = placableItemList.get(layout[startY][startX] - 1);
@@ -181,7 +182,7 @@ public class PlacableItemEditor {
 
         for (int i = 0; i < gameLayout.length; i++){
             for (int j = 0; j < gameLayout[0].length; j++){
-                if (gameLayout[i][j] < Config.get().EDITORMAXWINDOWVALUE()){
+                if (gameLayout[i][j]<= Config.get().EDITORMAXWINDOWVALUE()){
                     gameLayout[i][j] = Config.get().GAMEWINDOWVALUE();
                 }
             }

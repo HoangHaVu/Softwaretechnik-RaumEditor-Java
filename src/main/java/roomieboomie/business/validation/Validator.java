@@ -238,7 +238,7 @@ public class Validator {
                 if(layout[y][x]== Config.get().EDITORDOORVALUE()){
                     throw new ItemIsTooCloseToDoorException();
                 }
-                if(x>=item.getX()&&x<(item.getX()+item.getLength())&& y>=item.getY()&&y<(item.getWidth()+item.getY())&&layout[y][x]< Config.get().LAYOUTINTERIORVALUE()){
+                if(x>=item.getX()&&x<endX&& y>=item.getY()&&y<endY&&layout[y][x]< Config.get().LAYOUTINTERIORVALUE()){
                     throw new PlaceItemIsNotInInteriorException();
                 }
 
