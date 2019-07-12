@@ -26,4 +26,20 @@ public enum Orientation {
             return values[this.ordinal() - 1];
         }
     }
+
+    /**
+     * Gibt zurueck, ob eine vertikale Ausrichtung vorliegt (TOP oder BOTTOM)
+     * @return true, wenn Objekt horizontal ausgerichtet ist
+     */
+    public boolean isVertical(){
+        return (this == TOP || this == BOTTOM);
+    }
+
+    /**
+     * Gibt zurueck, ob eine horizontale Ausrichtung vorliegt (RIGHT oder LEFT)
+     * @return true, wenn Objekt vertikal ausgerichtet ist
+     */
+    public boolean isHorizontal(){
+        return (this == RIGHT || this == LEFT);
+    }
 }

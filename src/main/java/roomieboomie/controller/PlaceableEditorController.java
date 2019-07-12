@@ -437,7 +437,7 @@ public class PlaceableEditorController {
         for(PlacableItem placable : placableItems){
 
             PlacableItem cur = placable;
-            int x = 0; 
+            int x = 0;
             int y = 0;
 
             do{
@@ -459,7 +459,7 @@ public class PlaceableEditorController {
                 texture.fitHeightProperty().bind(item.heightProperty());
 
                 item.getChildren().add(texture);
-                
+
                 placableRaster.getChildren().add(item);
 
                 cur = cur.getNext();
@@ -474,7 +474,7 @@ public class PlaceableEditorController {
 
             Pane item = new Pane();
             Image textureImage;
-            
+
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.getStyleClass().add("layout-item");
