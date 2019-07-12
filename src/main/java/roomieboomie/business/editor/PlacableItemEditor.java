@@ -2,9 +2,7 @@ package roomieboomie.business.editor;
 
 import java.util.ArrayList;
 
-import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
-import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
-import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.business.item.placable.PlacableItemType;
@@ -123,7 +121,7 @@ public class PlacableItemEditor {
         item.removeItemFromThis();
     }
 
-    public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException {
+    public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException, ObjectIsNotStorableException, CarpetOnCarpetException, PlaceIsAlreadyTakenException {
         this.curItem.setX(x);
         this.curItem.setY(y);
         if(validator.validatePlaceItemPlacement(curItem,this.layout,room.getPlacableItemList())){

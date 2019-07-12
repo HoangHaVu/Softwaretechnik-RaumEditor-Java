@@ -179,7 +179,7 @@ public class Validator {
      * @throws ObjectToHighInFrontOfWindowException
      * @throws ItemIsTooCloseToDoorException
      */
-    public boolean validatePlaceItemPlacement(PlacableItem item, byte[][]layout, ArrayList<PlacableItem>placableItems) throws PlaceItemIsNotInInteriorException,ObjectToHighInFrontOfWindowException,ItemIsTooCloseToDoorException {
+    public boolean validatePlaceItemPlacement(PlacableItem item, byte[][]layout, ArrayList<PlacableItem>placableItems) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException, CarpetOnCarpetException, ObjectIsNotStorableException, PlaceIsAlreadyTakenException {
         if(!checkLayoutInteractions(item,layout)){
             int endY = item.getY() + item.getWidth();
             int endX = item.getX() + item.getLength();
@@ -192,16 +192,15 @@ public class Validator {
                 for(int y=item.getY();y<endY;y++) {
                     if(placableItems.size()>0){
                         if(item.getType().equals(PlacableItemType.CARPET)&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().equals(PlacableItemType.CARPET)){
-                            System.out.println("man kann keine Teppiche aufeinander legen");
-                            return false;
+                            throw new CarpetOnCarpetException();
+
                         }
                         if(item.getType().isStorable()&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
-                            System.out.println("deko wurde nicht auf Ablage drauf getan");
-                            return false;
+                            throw new ObjectIsNotStorableException();
                         }
                         if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false){
-                            System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
-                            return false;
+
+                            throw new PlaceIsAlreadyTakenException("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
                         }
                     }
                 }

@@ -391,12 +391,16 @@ public class LayoutEditorController {
                             roomEditor.placeCurrItem(x, y);
                         } catch (WindowMissplaceException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (LayoutItemMissplaceException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (DoorMissplaceException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (WallMissplaceException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         }
                     }
                     else if (this.action == Action.DELETE) roomEditor.deleteItem(roomEditor.getRoom().getLayout()[y][x]);

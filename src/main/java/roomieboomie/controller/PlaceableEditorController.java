@@ -23,9 +23,7 @@ import javafx.scene.transform.Scale;
 import javafx.util.Callback;
 import roomieboomie.business.editor.PlacableItemEditor;
 import roomieboomie.business.editor.RoomEditor;
-import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
-import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
-import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
+import roomieboomie.business.exception.validationExceptions.*;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
@@ -34,6 +32,7 @@ import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.PlaceableEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.SoundHandler;
 import roomieboomie.persistence.exception.JsonWritingException;
 
 public class PlaceableEditorController {
@@ -330,10 +329,22 @@ public class PlaceableEditorController {
                             placableItemEditor.placeCurrItem(x, y);
                         } catch (PlaceItemIsNotInInteriorException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (ObjectToHighInFrontOfWindowException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (ItemIsTooCloseToDoorException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (CarpetOnCarpetException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (PlaceIsAlreadyTakenException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (ObjectIsNotStorableException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         }
                     }
                     else if (this.action == Action.DELETE)

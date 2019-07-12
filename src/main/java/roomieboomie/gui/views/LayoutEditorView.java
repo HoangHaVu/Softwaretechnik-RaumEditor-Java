@@ -121,7 +121,8 @@ public class LayoutEditorView extends StackPane {
 
         messageLabel.prefWidthProperty().bind(selectItemPane.widthProperty());
         messageLabel.setVisible(false);
-        messageLabel.setStyle("-fx-text-fill: RED");
+        messageLabel.setStyle("-fx-background-color: RED; -fx-text-fill: WHITE ");
+
         messageLabel.setAlignment(Pos.CENTER);
 
 
