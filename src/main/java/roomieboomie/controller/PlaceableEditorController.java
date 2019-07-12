@@ -183,7 +183,7 @@ public class PlaceableEditorController {
             } else if (e.getCode() == KeyCode.A) {
                 placeableItemEditor.getCurrentItem().setLength(placeableItemEditor.getCurrentItem().getLength() - 1);
             } else if (e.getCode() == KeyCode.W || e.getCode() == KeyCode.S) {
-                placeableItemEditor.rotateCurItem();
+                placeableItemEditor.rotateCurrItem();
             }
 
             String codeString = e.getCode().toString();
@@ -531,7 +531,8 @@ public class PlaceableEditorController {
 
                 if (i % 20 == 0 && j % 20 == 0) {
 
-                    element.setStyle("-fx-background-image: url('" + iconTexturePath + "raufaserTextur.jpg" + "'); " +
+                    String path = iconTexturePath + "raufaserTextur.jpg";
+                    element.setStyle("-fx-background-image: url('" + path + "'); " +
                             "-fx-background-position: center center; " +
                             "-fx-background-repeat: stretch;" +
                             "-fx-background-size: cover; -fx-border-color: rgba(0,0,0, .15);" +

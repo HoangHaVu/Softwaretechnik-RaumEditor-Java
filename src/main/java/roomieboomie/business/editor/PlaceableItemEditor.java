@@ -2,14 +2,14 @@ package roomieboomie.business.editor;
 
 import java.util.ArrayList;
 
-import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
-import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
-import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
+import roomieboomie.business.exception.validationExceptions.*;
+import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.placeable.PlaceableItem;
 import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
+
 
 public class PlaceableItemEditor {
 
@@ -47,14 +47,13 @@ public class PlaceableItemEditor {
         this.currItem = new PlaceableItem(type);
     }
 
-    public void rotateCurItem(){
+    public void rotateCurrItem(){
 
         this.currItem.turnRight();
 
     }
 
     public void editItem(int x, int y){
-
         if (this.layout[y][x] <= 0 ) return;
 
         PlaceableItem item = this.placeableItemList.get(this.layout[y][x] - 1);
@@ -66,8 +65,6 @@ public class PlaceableItemEditor {
     }
 
     public void delItem(int x, int y){
-
-
         if (this.layout[y][x] <= 0 ) return;
 
         int itemNumber = layout[y][x] - 1;
@@ -80,7 +77,7 @@ public class PlaceableItemEditor {
             int endX = startX + item.getLength();
             int endY = startY + item.getWidth();
 
-            if (item.getOrientation().isVertical()){
+            if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
                 endX = startX + item.getWidth();
                 endY = startY + item.getLength();
             }
@@ -102,9 +99,7 @@ public class PlaceableItemEditor {
                 }
             }
 
-
             return;
-
         }
 
 
@@ -116,7 +111,7 @@ public class PlaceableItemEditor {
         item.removeItemFromThis();
     }
 
-    public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException {
+    public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException, ObjectIsNotStorableException, CarpetOnCarpetException, PlaceIsAlreadyTakenException {
         this.currItem.setX(x);
         this.currItem.setY(y);
         if(validator.validatePlaceItemPlacement(currItem,this.layout,room.getPlaceableItemList())){
@@ -124,8 +119,6 @@ public class PlaceableItemEditor {
             this.currItem = currItem.clone();
             return;
         }
-
-
     }
 
     public void addItem(PlaceableItem item){
@@ -152,7 +145,7 @@ public class PlaceableItemEditor {
         int endY = startY + item.getWidth();
         byte placeNumber;
 
-        if (item.getOrientation().isVertical()){
+        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
             endX = startX + item.getWidth();
             endY = startY + item.getLength();
         }
@@ -167,7 +160,6 @@ public class PlaceableItemEditor {
         }
 
     }
-
 
     private void initializeLayout(){
 
@@ -191,7 +183,6 @@ public class PlaceableItemEditor {
         this.layout = gameLayout;
 
     }
-
 
     public ArrayList<PlaceableItem> getPlaceableItemList() {
         return this.placeableItemList;
