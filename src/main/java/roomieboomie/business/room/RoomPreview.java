@@ -29,7 +29,7 @@ public class RoomPreview {
     /**
      * Erstellt einen neues RoomPreview-Objekt.
      * @param name Name des Raums
-     * @param highscoreList Highscore-Liste fuer den Room
+     * @param highscoreList highscore-Liste fuer den Room
      * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
      * @param jsonHandler JsonHandler, um spaeter den ganzen Raum laden zu koennen
@@ -148,7 +148,7 @@ public class RoomPreview {
     }
 
     /**
-     * Fuegt einen neuen Highscore-Eintrag ein
+     * Fuegt einen neuen highscore-Eintrag ein
      */
     public void addHighscoreRecord(int time, int points, String username){
         highscoreList.addRecord(new HighscoreRecord(time, points, username));
@@ -161,7 +161,7 @@ public class RoomPreview {
      * @param name Name der RoomPreview
      * @param neededScore Score, der benoetigt wird, um den Raum zu bestehen
      * @param level true, wenn der Raum im Level-Modus spielbar ist; false, wenn im Kreativ-Modus
-     * @param highscoreList Highscore-Liste fuer den Room
+     * @param highscoreList highscore-Liste fuer den Room
      * @return
      */
     public static int testHash(String name, int neededScore, boolean level, HighscoreList highscoreList) {

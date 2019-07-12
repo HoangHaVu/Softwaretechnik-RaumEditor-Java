@@ -419,14 +419,12 @@ public class PlaceableEditorController {
 
                 GridPane.setConstraints(element, i, j);
 
-
                 placableRaster.getChildren().add(element);
-
             }
         }
+
         for(PlacableItem placable : placableItems){
 
-            
             PlacableItem cur = placable;
             int x = 0; 
             int y = 0;
@@ -439,13 +437,9 @@ public class PlaceableEditorController {
                 x += cur.getX();
                 y += cur.getY();
                 if (cur.getOrientation() == Orientation.TOP || cur.getOrientation() == Orientation.BOTTOM){
-
                     GridPane.setConstraints(item, x, y, cur.getWidth(), cur.getLength());
-
                 } else{
-
                     GridPane.setConstraints(item ,x,y, cur.getLength(), cur.getWidth());
-
                 }
 
                 ImageView texture = new ImageView(textureImage);
@@ -460,12 +454,9 @@ public class PlaceableEditorController {
                 cur = cur.getNext();
 
             } while (cur != null);
-
-
-
-            
         }
     }
+
     public void updateItems(ArrayList<LayoutItem> items, byte[][]layout){
 
         for(LayoutItem w : items){

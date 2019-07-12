@@ -96,7 +96,7 @@ public class RootController {
                     e.printStackTrace();
                 }
                 break;
-            case "Highscore":
+            case "highscore":
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml_views/HighscoreView.fxml"));
                     this.scene = new Scene((Parent) loader.load(), 700, 600);

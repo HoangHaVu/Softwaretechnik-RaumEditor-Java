@@ -147,7 +147,6 @@ public class PlacableItemEditor {
             startY = item.getX();
         }*/
 
-
         if (layout[startY][startX] > 0){
             PlacableItem unterItem = placableItemList.get(layout[startY][startX] - 1);
             item.setX(item.getX() - unterItem.getX());
@@ -156,7 +155,6 @@ public class PlacableItemEditor {
             return;
         }
 
-        
         int endX = startX + item.getLength();
         int endY = startY + item.getWidth();
         byte placeNumber;

@@ -1,5 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
+import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.editor.PlacableItemEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
@@ -115,8 +116,10 @@ public class PlaceableItemEditorTest {
        ArrayList<PlacableItem> items=new ArrayList<PlacableItem>();
        items.add(new PlacableItem(PlacableItemType.TABLE));
 
-       RoomEditor roomEditor= new RoomEditor("level",true,items, new JsonHandler());
-        
+       //RoomEditor roomEditor= new RoomEditor("level",true,items, new JsonHandler());
+       //TODO neuer konstruktor
+       RoomEditor roomEditor = new RoomEditor(new JsonHandler(), new RoomieBoomieManager());
+
        try{
         roomEditor.selectnewItem(LayoutItemType.WALL);
         roomEditor.placeCurrItem(0,0);

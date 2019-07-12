@@ -91,7 +91,7 @@ public class RoomMaps {
     }
 
     /**
-     * Rechnet die Highscore-Werte der Highscores aller Rooms zusammen, um einen gesamt-Hoghscore zu erstellen.
+     * Rechnet die highscore-Werte der Highscores aller Rooms zusammen, um einen gesamt-Hoghscore zu erstellen.
      * Dabei wird pro Room nur der jeweils beste Score eines Users berücksichtigt.
      * @return HighscoreList mit akkumulierten Scores
      */

@@ -24,7 +24,7 @@ public class MainMenuController {
 
     @FXML
     public void toHighscore() {
-        switcher.switchView("Highscore");
+        switcher.switchView("highscore");
     }
 
     public void setSwitcher(RootController rootController) {
