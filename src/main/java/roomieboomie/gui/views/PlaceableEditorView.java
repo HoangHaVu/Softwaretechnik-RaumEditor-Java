@@ -19,7 +19,6 @@ import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
 
 public class PlaceableEditorView extends StackPane {
-    public TextField alerts = new TextField();
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
     public GridPane completeEditor = new GridPane();
@@ -115,10 +114,12 @@ public class PlaceableEditorView extends StackPane {
 
         messageLabel.setVisible(false);
         messageLabel.setAlignment(Pos.CENTER);
-        messageLabel.setStyle("-fx-text-fill: RED");
+        messageLabel.setStyle("-fx-background-color: RED;-fx-text-fill: WHITE");
         messageLabel.prefWidthProperty().bind(buttonPane.widthProperty());
 
         roomName.setPromptText("Raumname");
+        roomName.prefHeightProperty().bind(finish.heightProperty());
+
         finish.setMinWidth(120);
         finish.prefWidthProperty().bind(buttonPane.widthProperty().multiply(0.7));
         finish.minHeightProperty().bind(finish.widthProperty().divide(5));

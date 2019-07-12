@@ -26,6 +26,8 @@ import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
 import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
 import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
+import roomieboomie.business.exception.validationExceptions.*;
+import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.business.item.placeable.PlaceableItem;
@@ -122,12 +124,15 @@ public class PlaceableEditorController {
                 try {
                     roomEditor.saveRoom();
                     showAlert("Super!", "Dein Raum wurde gespeichert und ist jetzt spielbar.");
+                    SoundHandler.get().SUCCESSSOUND().play();
                     switcher.switchView("ChooseEdit");
                 } catch (JsonWritingException ex) {
                     showAlert("Fehler!", "Raum konnte leider nicht gespeichert werden.");
+                    SoundHandler.get().FAILSOUND().play();
                 }
             } else{
                 showAlert("Fehler!", "Bitte gib deinem Raum noch einen Namen.");
+                SoundHandler.get().FAILSOUND().play();
             }
 
         });
@@ -335,6 +340,15 @@ public class PlaceableEditorController {
                             showMessageLabel(ex.getMessage());
                             SoundHandler.get().FAILSOUND().play();
                         } catch (ItemIsTooCloseToDoorException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (CarpetOnCarpetException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (PlaceIsAlreadyTakenException ex) {
+                            showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
+                        } catch (ObjectIsNotStorableException ex) {
                             showMessageLabel(ex.getMessage());
                             SoundHandler.get().FAILSOUND().play();
                         }
