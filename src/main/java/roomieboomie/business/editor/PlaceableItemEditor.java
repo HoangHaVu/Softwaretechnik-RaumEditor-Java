@@ -5,29 +5,22 @@ import java.util.ArrayList;
 import roomieboomie.business.exception.validationExceptions.ItemIsTooCloseToDoorException;
 import roomieboomie.business.exception.validationExceptions.ObjectToHighInFrontOfWindowException;
 import roomieboomie.business.exception.validationExceptions.PlaceItemIsNotInInteriorException;
-import roomieboomie.business.item.Orientation;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.exception.JsonWritingException;
 
-import javax.json.Json;
-
-public class PlacableItemEditor {
+public class PlaceableItemEditor {
 
     private Room room;
     private byte [][] layout;
-    private ArrayList<PlacableItem> placableItemList;
-    private PlacableItem curItem;
+    private ArrayList<PlaceableItem> placeableItemList;
+    private PlaceableItem currItem;
     private Validator validator;
-    private JsonHandler jsonHandler;
 
-    public PlacableItemEditor(JsonHandler jsonHandler){
-        curItem = new PlacableItem(PlacableItemType.TEDDY);
-        this.jsonHandler = jsonHandler;
+    public PlaceableItemEditor(){
+        currItem = new PlaceableItem(PlaceableItemType.TEDDY);
     }
 
     public void setValidator(Validator validator){
@@ -36,27 +29,27 @@ public class PlacableItemEditor {
 
     public void setRoom (Room room){
         this.room = room;
-        placableItemList = room.getPlacableItemList();
-        this.curItem = new PlacableItem(PlacableItemType.TEDDY);
+        placeableItemList = room.getPlaceableItemList();
+        this.currItem = new PlaceableItem(PlaceableItemType.TEDDY);
         initializeLayout();
     }
 
-    public void selectPlaceableItem(PlacableItemType type) {
-        this.curItem = new PlacableItem(type);
+    public void selectPlaceableItem(PlaceableItemType type) {
+        this.currItem = new PlaceableItem(type);
     }
 
-    public void setRoomPlacableItemList(){
-        this.room.setPlacableItemList(this.placableItemList);
+    public void setRoomPlaceableItemList(){
+        this.room.setPlaceableItemList(this.placeableItemList);
     }
 
 
-    public void setCurItem(PlacableItemType type){
-        this.curItem = new PlacableItem(type);
+    public void setCurrItem(PlaceableItemType type){
+        this.currItem = new PlaceableItem(type);
     }
 
     public void rotateCurItem(){
 
-        this.curItem.turnRight();
+        this.currItem.turnRight();
 
     }
 
@@ -64,10 +57,10 @@ public class PlacableItemEditor {
 
         if (this.layout[y][x] <= 0 ) return;
 
-        PlacableItem item = this.placableItemList.get(this.layout[y][x] - 1);
+        PlaceableItem item = this.placeableItemList.get(this.layout[y][x] - 1);
 
-        this.curItem = item.findItemByCoordinates(x, y);
-        this.curItem = item;
+        this.currItem = item.findItemByCoordinates(x, y);
+        this.currItem = item;
         delItem(x, y);
 
     }
@@ -78,8 +71,8 @@ public class PlacableItemEditor {
         if (this.layout[y][x] <= 0 ) return;
 
         int itemNumber = layout[y][x] - 1;
-        PlacableItem delItem = placableItemList.get(itemNumber);
-        PlacableItem item = delItem;
+        PlaceableItem delItem = placeableItemList.get(itemNumber);
+        PlaceableItem item = delItem;
 
         if (!delItem.hasNextOn(x - delItem.getX(), y - delItem.getY())){
             int startX = item.getX();
@@ -87,13 +80,13 @@ public class PlacableItemEditor {
             int endX = startX + item.getLength();
             int endY = startY + item.getWidth();
 
-            if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+            if (item.getOrientation().isVertical()){
                 endX = startX + item.getWidth();
                 endY = startY + item.getLength();
             }
             delItem.removeItemFromThis();
 
-            this.getPlacableItemList().remove(delItem);
+            this.getPlaceableItemList().remove(delItem);
             
             for (int i = startY; i < endY; i++){
                 for (int j = startX; j < endX; j++){
@@ -124,18 +117,18 @@ public class PlacableItemEditor {
     }
 
     public void placeCurrItem(int x, int y) throws PlaceItemIsNotInInteriorException, ObjectToHighInFrontOfWindowException, ItemIsTooCloseToDoorException {
-        this.curItem.setX(x);
-        this.curItem.setY(y);
-        if(validator.validatePlaceItemPlacement(curItem,this.layout,room.getPlacableItemList())){
-            addItem(this.curItem);
-            this.curItem = curItem.clone();
+        this.currItem.setX(x);
+        this.currItem.setY(y);
+        if(validator.validatePlaceItemPlacement(currItem,this.layout,room.getPlaceableItemList())){
+            addItem(this.currItem);
+            this.currItem = currItem.clone();
             return;
         }
 
 
     }
 
-    public void addItem(PlacableItem item){
+    public void addItem(PlaceableItem item){
         int startX = item.getX();
         int startY= item.getY();
         /*
@@ -148,7 +141,7 @@ public class PlacableItemEditor {
         }*/
 
         if (layout[startY][startX] > 0){
-            PlacableItem unterItem = placableItemList.get(layout[startY][startX] - 1);
+            PlaceableItem unterItem = placeableItemList.get(layout[startY][startX] - 1);
             item.setX(item.getX() - unterItem.getX());
             item.setY(item.getY() - unterItem.getY());
             unterItem.placeItemOnThis(item);
@@ -159,13 +152,13 @@ public class PlacableItemEditor {
         int endY = startY + item.getWidth();
         byte placeNumber;
 
-        if (item.getOrientation() == Orientation.TOP || item.getOrientation() == Orientation.BOTTOM){
+        if (item.getOrientation().isVertical()){
             endX = startX + item.getWidth();
             endY = startY + item.getLength();
         }
 
-        placableItemList.add(item);
-        placeNumber = (byte) placableItemList.size();
+        placeableItemList.add(item);
+        placeNumber = (byte) placeableItemList.size();
 
         for (int y = startY; y < endY; y++){
             for (int x = startX; x < endX; x++){
@@ -200,15 +193,15 @@ public class PlacableItemEditor {
     }
 
 
-    public ArrayList<PlacableItem> getPlacableItemList() {
-        return this.placableItemList;
+    public ArrayList<PlaceableItem> getPlaceableItemList() {
+        return this.placeableItemList;
     }  
 
     public byte[][] getLayout(){
         return this.layout;
     }
 
-    public PlacableItem getCurrentItem() {
-        return curItem;
+    public PlaceableItem getCurrentItem() {
+        return currItem;
     }
 }

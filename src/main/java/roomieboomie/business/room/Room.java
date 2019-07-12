@@ -1,23 +1,21 @@
 package roomieboomie.business.room;
 
 import javafx.scene.image.Image;
-import roomieboomie.business.item.Orientation;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placeable.PlaceableItem;
 import roomieboomie.persistence.Config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Raum mit allen Informationen inklusive Grundriss-Array in layout
  */
 public class Room {
     private RoomPreview roomPreview;
-    private ArrayList<PlacableItem> placableItemList;
+    private ArrayList<PlaceableItem> placeableItemList;
     private ArrayList<LayoutItem> walls;
     private ArrayList<LayoutItem> windows;
     private ArrayList<LayoutItem> doors;
@@ -38,7 +36,7 @@ public class Room {
      * das Verwalten weiterer Attribute mitgegeben.
      * @param roomPreview roomPreview des Rooms
      */
-    public Room(RoomPreview roomPreview, byte[][] layout, int startX, int startY, ArrayList<PlacableItem> placableItemList,
+    public Room(RoomPreview roomPreview, byte[][] layout, int startX, int startY, ArrayList<PlaceableItem> placeableItemList,
                 ArrayList<LayoutItem> walls, ArrayList<LayoutItem> windows, ArrayList<LayoutItem> doors) {
         this.roomPreview = roomPreview;
         this.layout = layout;
@@ -46,7 +44,7 @@ public class Room {
         this.startY = startY;
         this.width = layout[0].length;
         this.height = layout.length;
-        this.placableItemList = placableItemList;
+        this.placeableItemList = placeableItemList;
         this.walls = walls;
         this.windows = windows;
         this.doors = doors;
@@ -61,7 +59,7 @@ public class Room {
     public Room(int totalHeight, int totalWidth, RoomPreview roomPreview){
         this.roomPreview = roomPreview;
         this.layout = new byte[totalHeight][totalWidth];
-        placableItemList = new ArrayList<>();
+        placeableItemList = new ArrayList<>();
         walls = new ArrayList<>();
         doors = new ArrayList<>();
         windows = new ArrayList<>();
@@ -88,19 +86,19 @@ public class Room {
     }
 
     /**
-     * Liste mit allen PlacableItems, die im Raum platziert werden muessen
-     * @return List mit PlacalbeItem-Objekten
+     * Liste mit allen PlaceableItems, die im Raum platziert werden muessen
+     * @return List mit PlacealbeItem-Objekten
      */
-    public ArrayList<PlacableItem> getPlacableItemList() {
-        return placableItemList;
+    public ArrayList<PlaceableItem> getPlaceableItemList() {
+        return placeableItemList;
     }
 
     /**
-     * Setzt die Liste mit allen PlacableItems, die im Raum platziert werden muessen
-     * @param placableItemList List mit PlacalbeItems
+     * Setzt die Liste mit allen PlaceableItems, die im Raum platziert werden muessen
+     * @param placeableItemList List mit PlacealbeItems
      */
-    public void setPlacableItemList(ArrayList<PlacableItem> placableItemList) {
-        this.placableItemList = placableItemList;
+    public void setPlaceableItemList(ArrayList<PlaceableItem> placeableItemList) {
+        this.placeableItemList = placeableItemList;
     }
 
     /**
@@ -116,7 +114,7 @@ public class Room {
         int endX = x + item.getLength();
         byte size;
 
-        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+        if (item.getOrientation().isVertical()){
             endY = y + item.getLength();
             endX = x + item.getWidth();
         }
@@ -146,11 +144,11 @@ public class Room {
     }
 
     /**
-     * Fuegt dem Room ein PlacableItem hinzu
-     * @param placableItem PlacableItem
+     * Fuegt dem Room ein PlaceableItem hinzu
+     * @param placeableItem PlaceableItem
      */
-    public void addPlacableItem(PlacableItem placableItem) {
-        placableItemList.add(placableItem);
+    public void addPlaceableItem(PlaceableItem placeableItem) {
+        placeableItemList.add(placeableItem);
     }
 
     /**
@@ -173,7 +171,7 @@ public class Room {
 
         if (item.getType() == LayoutItemType.DOOR || item.getType() == LayoutItemType.WINDOW){
 
-            if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+            if (item.getOrientation().isVertical()){
                 replaceNumber = layout [ item.getY() - 1 ] [ item.getX()];
             } else{
                 replaceNumber = layout [ item.getY()] [ item.getX() -1];
@@ -186,7 +184,7 @@ public class Room {
         int x = item.getX();
         int endY = y + item.getWidth();
         int endX = x + item.getLength();
-        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+        if (item.getOrientation().isVertical()){
             endY = y + item.getLength();
             endX = x + item.getWidth();
         }
@@ -385,17 +383,17 @@ public class Room {
      * Kann statisch den HashCode eines Room-Objektes berechnen. Somit kann ueberprueft werden, welchen Hashcode ein
      * erstelltes Room-Objekt mit diesen Attributen haben wuerde
      * @param layout Byte-Array mit dem Grundriss
-     * @param placableItemList ArrayList mit PlacableItems, die in dem Raum platziert werden sollen
+     * @param placeableItemList ArrayList mit PlaceableItems, die in dem Raum platziert werden sollen
      * @return HashCode
      */
-    public static int testHash(byte[][] layout, ArrayList<PlacableItem> placableItemList, ArrayList<LayoutItem> walls,
+    public static int testHash(byte[][] layout, ArrayList<PlaceableItem> placeableItemList, ArrayList<LayoutItem> walls,
                                ArrayList<LayoutItem> windows, ArrayList<LayoutItem> doors){
-        return Arrays.deepHashCode(layout) * placableItemList.hashCode() * walls.hashCode() * windows.hashCode() * doors.hashCode();
+        return Arrays.deepHashCode(layout) * placeableItemList.hashCode() * walls.hashCode() * windows.hashCode() * doors.hashCode();
     }
 
     @Override
     public int hashCode() {
-        return testHash(layout, placableItemList, walls, windows, doors);
+        return testHash(layout, placeableItemList, walls, windows, doors);
     }
 
 

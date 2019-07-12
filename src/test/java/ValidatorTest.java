@@ -7,8 +7,8 @@ import roomieboomie.business.exception.validationExceptions.WindowMissplaceExcep
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.validation.Validator;
 import roomieboomie.persistence.Config;
@@ -21,7 +21,7 @@ public class ValidatorTest {
     LayoutItem window;
     LayoutItem door;
     Validator validator;
-    PlacableItem dino;
+    PlaceableItem dino;
     byte[][] layout;
 
     @Before
@@ -68,7 +68,7 @@ public class ValidatorTest {
                 { 3, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
                 { 1, 1, 1, 1, 3, 3, 1, 1, 1, 1 }
         };
-        PlacableItem dino = new PlacableItem(PlacableItemType.DINO);
+        PlaceableItem dino = new PlaceableItem(PlaceableItemType.DINO);
 
     }
 }

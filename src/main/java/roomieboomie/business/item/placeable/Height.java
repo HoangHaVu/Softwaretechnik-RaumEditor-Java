@@ -1,7 +1,7 @@
-package roomieboomie.business.item.placable;
+package roomieboomie.business.item.placeable;
 
 /**
- * Hoehe eines PlacalbeItems
+ * Hoehe eines PlacealbeItems
  */
 public enum  Height {
     FLAT(0), SMALL(1), MEDIUM(2), HIGH(3);
@@ -13,7 +13,7 @@ public enum  Height {
     }
 
     /**
-     * Gibt an, ob die Hoehe eines PlacableItems unter eine andere Hoehe passt
+     * Gibt an, ob die Hoehe eines PlaceableItems unter eine andere Hoehe passt
      * @param compareHeight Hohe des Objekts, unter das das Item gestellt werden soll
      * @return ob das Item unter das andere passt
      */

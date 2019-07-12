@@ -7,8 +7,8 @@ import roomieboomie.business.highscore.HighscoreRecord;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.user.User;
@@ -94,7 +94,7 @@ public class RoomSaveLoadTest {
         assert roomToSave.getHeight() == loadedRoom.getHeight();
         assert roomToSave.getWidth() == loadedRoom.getWidth();
         assert roomToSave.getStartX() == loadedRoom.getStartX();
-        assert roomToSave.getPlacableItemList().size() == loadedRoom.getPlacableItemList().size();
+        assert roomToSave.getPlaceableItemList().size() == loadedRoom.getPlaceableItemList().size();
         assert roomToSave.getWalls().size() == loadedRoom.getWalls().size();
         assert roomToSave.getWindows().size() == loadedRoom.getWindows().size();
         assert roomToSave.getDoors().size() == loadedRoom.getDoors().size();
@@ -112,10 +112,10 @@ public class RoomSaveLoadTest {
                 { 1, 1, 1, 1, 3, 3, 1, 1, 1, 1 }
         };
 
-        ArrayList<PlacableItem> placableItemList =  new ArrayList<>();
-        placableItemList.add(new PlacableItem(1,2, Orientation.BOTTOM, PlacableItemType.BED));
-        placableItemList.add(new PlacableItem(7,2, Orientation.TOP, PlacableItemType.CHAIR));
-        placableItemList.add(new PlacableItem(1,2, Orientation.LEFT, PlacableItemType.COUCH));
+        ArrayList<PlaceableItem> placeableItemList =  new ArrayList<>();
+        placeableItemList.add(new PlaceableItem(1,2, Orientation.BOTTOM, PlaceableItemType.BED));
+        placeableItemList.add(new PlaceableItem(7,2, Orientation.TOP, PlaceableItemType.CHAIR));
+        placeableItemList.add(new PlaceableItem(1,2, Orientation.LEFT, PlaceableItemType.COUCH));
 
         ArrayList<LayoutItem> walls = new ArrayList<>();
         walls.add(new LayoutItem(LayoutItemType.WALL, 0, 1, 5, 7, Orientation.TOP));
@@ -133,7 +133,7 @@ public class RoomSaveLoadTest {
         Room room = new Room(Config.get().MAXWIDTH(), Config.get().MAXHEIGHT(), rp);
         room.setLayout(layout);
 
-        room = new Room(rp, layout, 0,0, placableItemList, walls, windows, doors);
+        room = new Room(rp, layout, 0,0, placeableItemList, walls, windows, doors);
 
         return room;
     }

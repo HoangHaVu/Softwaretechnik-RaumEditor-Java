@@ -3,7 +3,7 @@ package roomieboomie.business.item;
 import javafx.scene.image.Image;
 
 /**
- * Oberklasse von PlacalbeItem und LayoutItem. Beinhaltet Positioniertungs-,
+ * Oberklasse von PlacealbeItem und LayoutItem. Beinhaltet Positioniertungs-,
  * Richtungs- und Laengenwerte
  */
 public class RoomItem {
@@ -133,7 +133,8 @@ public class RoomItem {
      * @return
      */
     public String svgToPath(String input){
-        return null; //TODO
+        return null; //
+        // TODO
     }
 
     public Image getImage() {

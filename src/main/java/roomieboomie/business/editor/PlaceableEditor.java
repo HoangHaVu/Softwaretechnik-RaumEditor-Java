@@ -1,19 +1,12 @@
 package roomieboomie.business.editor;
 
-import roomieboomie.business.item.Orientation;
-import roomieboomie.business.item.layout.LayoutItem;
-import roomieboomie.business.item.placable.Height;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.Height;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
-import roomieboomie.business.room.RoomPreview;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.JsonHandler;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static roomieboomie.business.item.placable.PlacableItemType.UNICORN;
 
 public class PlaceableEditor {
 
@@ -22,7 +15,7 @@ public class PlaceableEditor {
     private byte[][] small;
     private byte[][] medium;
     private byte[][] high;
-    private PlacableItem currentItem;
+    private PlaceableItem currentItem;
 
     public PlaceableEditor(Room room) {
         this.room = room;
@@ -38,11 +31,11 @@ public class PlaceableEditor {
         small=new byte[5][5];
         medium= new byte[5][5];
         high=new byte [5][5];
-        currentItem = new PlacableItem(UNICORN); */
+        currentItem = new PlaceableItem(UNICORN); */
     }
 
-    public void selectPlaceableItem(PlacableItemType type) {
-        currentItem = new PlacableItem(type);
+    public void selectPlaceableItem(PlaceableItemType type) {
+        currentItem = new PlaceableItem(type);
     }
 
     public void placeCurrItem(int x, int y) {
@@ -54,8 +47,8 @@ public class PlaceableEditor {
     }
 
 
-    public void addItem(PlacableItem currentItem) {
-        room.addPlacableItem(currentItem);
+    public void addItem(PlaceableItem currentItem) {
+        room.addPlaceableItem(currentItem);
         int endX, endY;
         int itemHeight = currentItem.getType().getHeight().getValue();
         int itemShelterHeight = currentItem.getType().getShelterHeight().getValue();
@@ -65,7 +58,7 @@ public class PlaceableEditor {
 
 
 
-        if (currentItem.getOrientation() == Orientation.TOP || currentItem.getOrientation() == Orientation.BOTTOM) {
+        if (currentItem.getOrientation().isVertical()) {
             endX = currentItem.getX()+currentItem.getWidth();
             endY = currentItem.getY()+currentItem.getLength();
         }
@@ -74,16 +67,16 @@ public class PlaceableEditor {
             for (int j = currentItem.getY(); j <= endY; j++) {
 
                 if (Height.FLAT.getValue() > itemShelterHeight && Height.FLAT.getValue() <= itemHeight || (Height.FLAT.getValue() == itemHeight && Height.FLAT.getValue() == itemShelterHeight)) {
-                    flat[i][j] = (byte) room.getPlacableItemList().size();
+                    flat[i][j] = (byte) room.getPlaceableItemList().size();
                 }
                 if (Height.SMALL.getValue() > itemShelterHeight && Height.SMALL.getValue() <= itemHeight || (Height.SMALL.getValue() == itemHeight && Height.SMALL.getValue() == itemShelterHeight)) {
-                    small[i][j] = (byte) room.getPlacableItemList().size();
+                    small[i][j] = (byte) room.getPlaceableItemList().size();
                 }
                 if (Height.MEDIUM.getValue() > itemShelterHeight && Height.MEDIUM.getValue() <= itemHeight || (Height.MEDIUM.getValue() == itemHeight && Height.MEDIUM.getValue() == itemShelterHeight)) {
-                    medium[i][j] = (byte) room.getPlacableItemList().size();
+                    medium[i][j] = (byte) room.getPlaceableItemList().size();
                 }
                 if (Height.HIGH.getValue() > itemShelterHeight && Height.HIGH.getValue() <= itemHeight || (Height.HIGH.getValue() == itemHeight && Height.HIGH.getValue() == itemShelterHeight)) {
-                    high[i][j] = (byte) room.getPlacableItemList().size();
+                    high[i][j] = (byte) room.getPlaceableItemList().size();
                 }
                 //small[i][j]=(byte)room.getItemList().size();
 
@@ -132,7 +125,7 @@ public class PlaceableEditor {
             itemNumber = flat[x][y];
         }
 
-        currentItem = room.getPlacableItemList().get(itemNumber - 1);
+        currentItem = room.getPlaceableItemList().get(itemNumber - 1);
 
         int itemHeight = currentItem.getType().getHeight().getValue();
         int itemShelterHeight = currentItem.getType().getShelterHeight().getValue();
@@ -142,7 +135,7 @@ public class PlaceableEditor {
         endX = currentItem.getY()+currentItem.getLength();
         endY = currentItem.getX()+currentItem.getWidth();
 
-        if (currentItem.getOrientation() == Orientation.TOP || currentItem.getOrientation() == Orientation.BOTTOM) {
+        if (currentItem.getOrientation().isVertical()) {
             endX = currentItem.getX()+currentItem.getWidth();
             endY = currentItem.getY()+currentItem.getLength();
         }
@@ -182,11 +175,11 @@ public class PlaceableEditor {
             }
         }
 
-        room.getPlacableItemList().remove(currentItem);
+        room.getPlaceableItemList().remove(currentItem);
     }
 
     public void editItem(int x,int y) {
-        List<PlacableItem> roomItemList = room.getPlacableItemList();
+        List<PlaceableItem> roomItemList = room.getPlaceableItemList();
         byte itemNumber = 0;
 
 
@@ -203,9 +196,9 @@ public class PlaceableEditor {
             itemNumber = flat[x][y];
         }
 
-        PlacableItem itemToEdit = room.getPlacableItemList().get(itemNumber-1);
+        PlaceableItem itemToEdit = room.getPlaceableItemList().get(itemNumber-1);
 
-        currentItem = room.getPlacableItemList().get(itemNumber - 1);
+        currentItem = room.getPlaceableItemList().get(itemNumber - 1);
 
         //itemToEdit = roomItemList.get(index);
         delete(x,y);
@@ -217,7 +210,7 @@ public class PlaceableEditor {
         return room;
     }
 
-    public PlacableItem getCurrentItem() {
+    public PlaceableItem getCurrentItem() {
         return currentItem;
     }
     public void printArray(){

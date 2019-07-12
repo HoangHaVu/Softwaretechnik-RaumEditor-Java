@@ -19,10 +19,6 @@ public class LoginController {
     @FXML
     private TextField usernameField;
 
-    public void chooseWhichUser(String username){ //TODO brauchen wir das?
-
-    }
-
     @FXML
     public void toMenu() {
 

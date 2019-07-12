@@ -14,7 +14,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placeable.PlaceableItem;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 
 
@@ -23,7 +23,7 @@ public class PlaceableEditorView extends StackPane {
     public GridPane raster = new GridPane();
     public GridPane interactionRaster = new GridPane();
     public GridPane completeEditor = new GridPane();
-    public GridPane controlBox = new GridPane(), placableRaster = new GridPane();
+    public GridPane controlBox = new GridPane(), placeableRaster = new GridPane();
     public ScrollPane scrollableRaster;
     public GridPane itemPreviewGrid = new GridPane();
     public Button finish = new Button("FERTIG");
@@ -39,14 +39,14 @@ public class PlaceableEditorView extends StackPane {
     public GridPane dragRaster = new GridPane();
     public HBox itemPreviewPane = new HBox();
     public HBox savePane = new HBox();
-    public ListView<PlacableItem> listView=new ListView<>();
+    public ListView<PlaceableItem> listView=new ListView<>();
     public Label messageLabel = new Label("test"); //Label fuer Fehlermeldungen
     public HashSet<String> currentlyActiveKeys = new HashSet<>();
 
 
     public PlaceableEditorView() {
         zoomAndScroll = new StackPane();
-        zoomAndScroll.getChildren().addAll(raster, placableRaster, dragRaster, interactionRaster);
+        zoomAndScroll.getChildren().addAll(raster, placeableRaster, dragRaster, interactionRaster);
         zoomPane = new ZoomableScrollPane(zoomAndScroll, currentlyActiveKeys, "-fx-background-color: #cacaca");
         scrollableRaster = new ScrollPane(zoomPane);
 

@@ -36,4 +36,22 @@ public class OrientationTest {
         testOrientation = testOrientation.getPrev();
         assert testOrientation == Orientation.TOP;
     }
+
+    @Test
+    public void testHorizontalVertical(){
+        assert !testOrientation.isHorizontal();
+        assert testOrientation.isVertical();
+
+        testOrientation = Orientation.BOTTOM;
+        assert !testOrientation.isHorizontal();
+        assert testOrientation.isVertical();
+
+        testOrientation = Orientation.RIGHT;
+        assert !testOrientation.isVertical();
+        assert testOrientation.isHorizontal();
+
+        testOrientation = Orientation.LEFT;
+        assert !testOrientation.isVertical();
+        assert testOrientation.isHorizontal();
+    }
 }

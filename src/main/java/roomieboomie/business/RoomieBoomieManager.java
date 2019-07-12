@@ -4,7 +4,7 @@ import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.game.Game;
 import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.layout.LayoutItem;
-import roomieboomie.business.item.placable.PlacableItem;
+import roomieboomie.business.item.placeable.PlaceableItem;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomMaps;
 import roomieboomie.business.user.User;
@@ -23,9 +23,9 @@ public class RoomieBoomieManager {
     private JsonHandler jsonHandler;
     private RoomMaps roomMaps;
     private UserMap userMap;
-    private User currentUser; //TODO
+    private User currentUser;
     private HighscoreList highscoreListRanked; // TODO
-    private HashMap<String, PlacableItem> placableItemMap;
+    private HashMap<String, PlaceableItem> placeableItemMap;
     private HashMap<String, LayoutItem> layoutItemMap;
 
     /**

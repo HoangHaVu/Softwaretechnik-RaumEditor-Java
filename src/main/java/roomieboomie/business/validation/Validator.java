@@ -1,11 +1,10 @@
 package roomieboomie.business.validation;
 
 import roomieboomie.business.exception.validationExceptions.*;
-import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.persistence.Config;
 
@@ -75,7 +74,7 @@ public class Validator {
         int startY = room.getDoors().get(0).getY();
         boolean field1, field2;
 
-        if (room.getDoors().get(0).getOrientation() == Orientation.TOP || room.getDoors().get(0).getOrientation() == Orientation.BOTTOM) {
+        if (room.getDoors().get(0).getOrientation().isVertical()) {
 
             field1 = validateLayoutField(room.getLayout(), startX - 1, startY);
             field2 = validateLayoutField(room.getLayout(), startX + 1, startY);
@@ -134,7 +133,7 @@ public class Validator {
         int endY = item.getY() + item.getWidth();
         int endX = item.getX() + item.getLength();
 
-        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+        if (item.getOrientation().isVertical()){
             endY = item.getY() + item.getLength();
             endX = item.getX() + item.getWidth();
         }
@@ -173,34 +172,34 @@ public class Validator {
      * Diese Methode ueberprueft ob das platzierte Objekt regelgerecht platziert wurde
      * @param item
      * @param layout
-     * @param placableItems
+     * @param placeableItems
      * @return
      * @throws PlaceItemIsNotInInteriorException
      * @throws ObjectToHighInFrontOfWindowException
      * @throws ItemIsTooCloseToDoorException
      */
-    public boolean validatePlaceItemPlacement(PlacableItem item, byte[][]layout, ArrayList<PlacableItem>placableItems) throws PlaceItemIsNotInInteriorException,ObjectToHighInFrontOfWindowException,ItemIsTooCloseToDoorException {
+    public boolean validatePlaceItemPlacement(PlaceableItem item, byte[][]layout, ArrayList<PlaceableItem> placeableItems) throws PlaceItemIsNotInInteriorException,ObjectToHighInFrontOfWindowException,ItemIsTooCloseToDoorException {
         if(!checkLayoutInteractions(item,layout)){
             int endY = item.getY() + item.getWidth();
             int endX = item.getX() + item.getLength();
 
-            if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+            if (item.getOrientation().isVertical()){
                 endY = item.getY() + item.getLength();
                 endX = item.getX() + item.getWidth();
             }
             for(int x=item.getX();x<endX;x++){
                 for(int y=item.getY();y<endY;y++) {
-                    if(placableItems.size()>0){
-                        if(item.getType().equals(PlacableItemType.CARPET)&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().equals(PlacableItemType.CARPET)){
+                    if(placeableItems.size()>0){
+                        if(item.getType().equals(PlaceableItemType.CARPET)&&layout[y][x]-1>=0&& placeableItems.get(layout[y][x]-1).getType().equals(PlaceableItemType.CARPET)){
                             System.out.println("man kann keine Teppiche aufeinander legen");
                             return false;
                         }
-                        if(item.getType().isStorable()&&layout[y][x]-1>=0&&placableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
+                        if(item.getType().isStorable()&&layout[y][x]-1>=0&& placeableItems.get(layout[y][x]-1).getType().isStoragePlace()==false){
                             System.out.println("deko wurde nicht auf Ablage drauf getan");
                             return false;
                         }
                         if(layout[y][x]>Config.get().LAYOUTINTERIORVALUE()&&item.getType().isStorable()==false){
-                            System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+placableItems.get(layout[y][x]-1).getType().getName());
+                            System.out.println("Objekt kann nicht platziert werden da der Platz für dieses Objekt schon gesetzt ist ->"+ placeableItems.get(layout[y][x]-1).getType().getName());
                             return false;
                         }
                     }
@@ -220,11 +219,11 @@ public class Validator {
      * @throws PlaceItemIsNotInInteriorException - Exception wird geworfen wenn das Item nicht im inneren des Raumes platziert werden
      * @throws ObjectToHighInFrontOfWindowException - Exception wird geworfen wenn das Objekt zu hoch ist um es vor dem Fenster zu platzieren
      */
-    public boolean checkLayoutInteractions(PlacableItem item,byte [][]layout) throws ItemIsTooCloseToDoorException,ObjectToHighInFrontOfWindowException,PlaceItemIsNotInInteriorException{
+    public boolean checkLayoutInteractions(PlaceableItem item, byte [][]layout) throws ItemIsTooCloseToDoorException,ObjectToHighInFrontOfWindowException,PlaceItemIsNotInInteriorException{
         int endY = item.getY() + item.getWidth();
         int endX = item.getX() + item.getLength();
 
-        if (item.getOrientation() == Orientation.BOTTOM || item.getOrientation() == Orientation.TOP){
+        if (item.getOrientation().isVertical()){
             endY = item.getY() + item.getLength();
             endX = item.getX() + item.getWidth();
         }

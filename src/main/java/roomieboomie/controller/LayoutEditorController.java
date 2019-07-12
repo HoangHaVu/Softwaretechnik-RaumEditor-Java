@@ -332,7 +332,7 @@ public class LayoutEditorController {
         
         if (onlyDel) return;
                     
-        if (roomEditor.getCurrLayoutItem().getOrientation() == Orientation.TOP || roomEditor.getCurrLayoutItem().getOrientation() == Orientation.BOTTOM ){
+        if (roomEditor.getCurrLayoutItem().getOrientation().isVertical()){
             GridPane.setConstraints(itemPane, x, y,roomEditor.getCurrLayoutItem().getWidth(),roomEditor.getCurrLayoutItem().getLength());
         } else{
             GridPane.setConstraints(itemPane, x, y, roomEditor.getCurrLayoutItem().getLength(), roomEditor.getCurrLayoutItem().getWidth());
@@ -469,7 +469,7 @@ public class LayoutEditorController {
         itemPane.prefWidthProperty().bind(view.itemPreviewGrid.widthProperty().divide(size));
         
         GridPane.setConstraints(itemPane, size / 2 - item.getLength() / 2, size / 2 - item.getWidth() / 2, item.getLength(), item.getWidth());
-        if (item.getOrientation() == Orientation.TOP|| item.getOrientation() == Orientation.BOTTOM){
+        if (item.getOrientation().isVertical()){
             itemPane.setRotate(90);
         }
         
@@ -494,7 +494,7 @@ public class LayoutEditorController {
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.getStyleClass().add("layout-item");
-            if (w.getOrientation() == Orientation.TOP || w.getOrientation() == Orientation.BOTTOM){
+            if (w.getOrientation().isVertical()){
 
                 GridPane.setConstraints(item, w.getX(), w.getY(), w.getWidth(), w.getLength());
                 if (w.getType() == LayoutItemType.WALL) textureImage = new Image(iconTexturePath + "wallTextureVertical.jpg");

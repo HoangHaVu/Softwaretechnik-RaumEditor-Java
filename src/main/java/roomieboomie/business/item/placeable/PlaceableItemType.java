@@ -1,10 +1,10 @@
-package roomieboomie.business.item.placable;
+package roomieboomie.business.item.placeable;
 
 /**
- * Typ eines PlacableItems mit abrufbaren Eigenschaften wallItem, storagePlace, floorItem, storable, height,
+ * Typ eines PlaceableItems mit abrufbaren Eigenschaften wallItem, storagePlace, floorItem, storable, height,
  * shelterHeight, scorePoints, length und width
  */
-public enum PlacableItemType {
+public enum PlaceableItemType {
 
     DINO(false, false, true, Height.SMALL, Height.FLAT, 30, 1, 1, "Dino"),
     UNICORN(false, false, true, Height.SMALL, Height.FLAT, 30, 1, 1, "Einhorn"),
@@ -44,8 +44,8 @@ public enum PlacableItemType {
      * @param width         Breite
      * @param name          Name fuer GUI-Darstellung
      */
-    PlacableItemType(boolean storagePlace, boolean floorItem, boolean storable,
-                     Height height, Height shelterHeight, int scorePoints, int length, int width, String name) {
+    PlaceableItemType(boolean storagePlace, boolean floorItem, boolean storable,
+                      Height height, Height shelterHeight, int scorePoints, int length, int width, String name) {
         this.storagePlace = storagePlace;
         this.floorItem = floorItem;
         this.storable = storable;

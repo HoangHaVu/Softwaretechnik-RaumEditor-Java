@@ -8,11 +8,7 @@ import roomieboomie.business.exception.validationExceptions.WindowMissplaceExcep
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
 import roomieboomie.persistence.Config;
-import roomieboomie.persistence.JsonHandler;
-
-import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +25,7 @@ public class LayoutEditorTest {
         wall = new LayoutItem(LayoutItemType.WALL, 10, 1, Orientation.TOP);
         window = new LayoutItem(LayoutItemType.WINDOW, 4, 1, Orientation.RIGHT);
 
-        //testEditor = new RoomEditor("test", false, new ArrayList<PlacableItem>(), new JsonHandler());
+        //testEditor = new RoomEditor("test", false, new ArrayList<PlaceableItem>(), new JsonHandler());
         //TODO mit anderem Konstruktor, weil dieser hier nicht mehr benutzt wird
         musterLayout = testEditor.getRoom().getLayout();
     }

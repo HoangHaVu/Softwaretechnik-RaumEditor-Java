@@ -2,12 +2,11 @@ package roomieboomie.business.editor;
 
 import roomieboomie.business.RoomieBoomieManager;
 import roomieboomie.business.exception.validationExceptions.*;
-import roomieboomie.business.highscore.HighscoreList;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.validation.Validator;
@@ -26,14 +25,14 @@ import java.util.List;
 public class RoomEditor {
 
     private RoomieBoomieManager roomieBoomieManager;
-    private ArrayList<PlacableItem> placableItemList;
+    private ArrayList<PlaceableItem> placeableItemList;
     private Validator validator;
     private Room room;
     private JsonHandler jsonHandler;
     private LayoutItem currLayoutItem;
     public final int MAXITEMLENGTH = Config.get().MAXITEMLENGTH();
 
-    private PlacableItemEditor placableItemEditor;
+    private PlaceableItemEditor placeableItemEditor;
 
     byte layoutDoor = Config.get().EDITORDOORVALUE();
     byte layoutInterior = Config.get().LAYOUTINTERIORVALUE();
@@ -45,12 +44,12 @@ public class RoomEditor {
      * Erstellt und initialisiert RoomEditor
      */
     public RoomEditor(JsonHandler jsonHandler, RoomieBoomieManager roomieBoomieManager) {
-        this.placableItemList = new ArrayList<>();
+        this.placeableItemList = new ArrayList<>();
         this.jsonHandler = jsonHandler;
         this.validator = new Validator();
         selectnewItem(LayoutItemType.WALL);
         initDefaultPlaceableItem();
-        this.placableItemEditor = new PlacableItemEditor(jsonHandler);
+        this.placeableItemEditor = new PlaceableItemEditor();
         this.roomieBoomieManager = roomieBoomieManager;
     }
 
@@ -74,10 +73,10 @@ public class RoomEditor {
             }
 
             room.setLayout(unvalidatedLayout);
-            room.setPlacableItemList(new ArrayList<PlacableItem>());
+            room.setPlaceableItemList(new ArrayList<PlaceableItem>());
         }
-        if(room.getPlacableItemList().size()!=0){
-            this.placableItemList = room.getPlacableItemList();
+        if(room.getPlaceableItemList().size()!=0){
+            this.placeableItemList = room.getPlaceableItemList();
         }
 
     }
@@ -128,8 +127,6 @@ public class RoomEditor {
             currLayoutItem = currLayoutItem.clone();
             return;
         }
-
-
     }
 
     /**
@@ -138,8 +135,8 @@ public class RoomEditor {
      */
     public boolean validateRoom() throws MissingDoorException, MissingWindowException, getIntoRoomException {
         boolean sucess = validator.validateRoom(this.room);
-        placableItemEditor.setRoom(this.room);
-        placableItemEditor.setValidator(validator);
+        placeableItemEditor.setRoom(this.room);
+        placeableItemEditor.setValidator(validator);
 
         return sucess;
     }
@@ -207,19 +204,18 @@ public class RoomEditor {
         return currLayoutItem;
     }
 
-    public ArrayList<PlacableItem> getPlacableItemList() {
-        return placableItemList;
+    public ArrayList<PlaceableItem> getPlaceableItemList() {
+        return placeableItemList;
     }
 
     public void initDefaultPlaceableItem() {
-        for (PlacableItemType i : PlacableItemType.values()) {
-            this.placableItemList.add(new PlacableItem(i));
+        for (PlaceableItemType i : PlaceableItemType.values()) {
+            this.placeableItemList.add(new PlaceableItem(i));
         }
     }
 
-
-    public PlacableItemEditor getPlaceableEditor() {
-        return placableItemEditor;
+    public PlaceableItemEditor getPlaceableEditor() {
+        return placeableItemEditor;
     }
 
     public void setRoom(Room room) {

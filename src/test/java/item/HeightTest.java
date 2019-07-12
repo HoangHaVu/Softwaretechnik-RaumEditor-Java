@@ -2,7 +2,7 @@ package item;
 
 import org.junit.Before;
 import org.junit.Test;
-import roomieboomie.business.item.placable.Height;
+import roomieboomie.business.item.placeable.Height;
 
 public class HeightTest {
 

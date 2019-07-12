@@ -120,13 +120,13 @@ public class ImageHandler {
     }
 
     /**
-     * Gibt ein Bild aus dem Ordner der PlacableImage-Texturen zurueck
+     * Gibt ein Bild aus dem Ordner der PlaceableImage-Texturen zurueck
      * @param filename Name der Datei ohne .Endung
      * @return JavaFX-Image
      */
-    public Image placableItemImage(String filename){
+    public Image placeableItemImage(String filename){
         try{
-            String path = Config.get().PLACABLEITEMTEXTUREPATH() + filename + "." + FORMAT;
+            String path = Config.get().PLACEABLEITEMTEXTUREPATH() + filename + "." + FORMAT;
             return new Image(path);
         } catch (IllegalArgumentException e){
             System.err.println("Bild zu " + filename + " konnte nicht gefunden werden");

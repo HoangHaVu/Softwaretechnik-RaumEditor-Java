@@ -4,8 +4,8 @@ import javafx.scene.image.Image;
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.item.Orientation;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 
 public class ImageHandlerTest {
     @Before
@@ -14,9 +14,9 @@ public class ImageHandlerTest {
     }
 
     @Test
-    public void testPlacableImage(){
+    public void testPlaceableImage(){
         boolean success = true;
-        PlacableItem item = new PlacableItem(0,0, Orientation.TOP, PlacableItemType.DINO);
+        PlaceableItem item = new PlaceableItem(0,0, Orientation.TOP, PlaceableItemType.DINO);
         try{
             Image img = item.getTextureImage();
         }catch (IllegalArgumentException e){

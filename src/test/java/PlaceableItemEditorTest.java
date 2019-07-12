@@ -1,15 +1,14 @@
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.RoomieBoomieManager;
-import roomieboomie.business.editor.PlacableItemEditor;
+import roomieboomie.business.editor.PlaceableItemEditor;
 import roomieboomie.business.editor.RoomEditor;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.persistence.JsonHandler;
-import roomieboomie.persistence.exception.JsonWritingException;
 
 import java.util.ArrayList;
 
@@ -17,25 +16,25 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PlaceableItemEditorTest {
-    PlacableItem table;
+    PlaceableItem table;
     byte[][] layout;
-    PlacableItemEditor placeableItemEditor;
-    PlacableItem dino;
-    PlacableItem tisch;
-    PlacableItem teppich;
-    PlacableItem tisch2;
+    PlaceableItemEditor placeableItemEditor;
+    PlaceableItem dino;
+    PlaceableItem tisch;
+    PlaceableItem teppich;
+    PlaceableItem tisch2;
     @Before
     public void init(){
         byte[][] lay=new byte[10][10];
         Room r= new Room(10,10,null);
         r.setLayout(lay);
-        //r.addPlacableItem(new PlacableItem(PlacableItemType.CARPET));
-        placeableItemEditor = new PlacableItemEditor(new JsonHandler());
+        //r.addPlaceableItem(new PlaceableItem(PlaceableItemType.CARPET));
+        placeableItemEditor = new PlaceableItemEditor();
 
-        teppich=new PlacableItem(3,3, Orientation.TOP,PlacableItemType.CARPET);
-        tisch=new PlacableItem(3,3, Orientation.TOP,PlacableItemType.TABLE);
-        tisch2=new PlacableItem(3,3, Orientation.RIGHT,PlacableItemType.TABLE);
-        dino=new PlacableItem(3,4, Orientation.TOP,PlacableItemType.DINO);
+        teppich=new PlaceableItem(3,3, Orientation.TOP, PlaceableItemType.CARPET);
+        tisch=new PlaceableItem(3,3, Orientation.TOP, PlaceableItemType.TABLE);
+        tisch2=new PlaceableItem(3,3, Orientation.RIGHT, PlaceableItemType.TABLE);
+        dino=new PlaceableItem(3,4, Orientation.TOP, PlaceableItemType.DINO);
     }
 
 
@@ -43,10 +42,10 @@ public class PlaceableItemEditorTest {
     @Test
 
     public void placePlaceableItem(){
-        tisch=new PlacableItem(1,1, Orientation.TOP,PlacableItemType.TABLE);
-       // tisch2=new PlacableItem(5,5, Orientation.RIGHT,PlacableItemType.TABLE);
-        PlacableItem bild= new PlacableItem(1,1 ,Orientation.TOP,PlacableItemType.BED);
-       // PlacableItem bild2= new PlacableItem(5,5 ,Orientation.RIGHT,PlacableItemType.WALLPICTURE);
+        tisch=new PlaceableItem(1,1, Orientation.TOP, PlaceableItemType.TABLE);
+       // tisch2=new PlaceableItem(5,5, Orientation.RIGHT,PlaceableItemType.TABLE);
+        PlaceableItem bild= new PlaceableItem(1,1 ,Orientation.TOP, PlaceableItemType.BED);
+       // PlaceableItem bild2= new PlaceableItem(5,5 ,Orientation.RIGHT,PlaceableItemType.WALLPICTURE);
 
         placeableItemEditor.addItem(tisch);
         placeableItemEditor.addItem(bild);
@@ -54,7 +53,7 @@ public class PlaceableItemEditorTest {
         //placeableItemEditor.rotateCurItem();
         //placeableItemEditor.placeCurrItem(1,1);
 
-        /*placeableItemEditor.setRoomPlacableItemList();
+        /*placeableItemEditor.setRoomPlaceableItemList();
         try {
             placeableItemEditor.saveRoom();
         } catch (JsonWritingException e) {
@@ -71,8 +70,8 @@ public class PlaceableItemEditorTest {
     public void placeItems(){
         placeableItemEditor.addItem(tisch);
         placeableItemEditor.addItem(dino);
-        assertTrue(!placeableItemEditor.getPlacableItemList().isEmpty());
-        assertTrue(placeableItemEditor.getPlacableItemList().get(0)!=null);//TODO Bedingung hinzufuegen (hasNext ungleich null)
+        assertTrue(!placeableItemEditor.getPlaceableItemList().isEmpty());
+        assertTrue(placeableItemEditor.getPlaceableItemList().get(0)!=null);//TODO Bedingung hinzufuegen (hasNext ungleich null)
         assertTrue(true);//TODO Bedingung hinzufuegen
     }
 
@@ -100,10 +99,10 @@ public class PlaceableItemEditorTest {
 
         placeableItemEditor.editItem(3,3);
         //Liste sollte leer sein weil Dino auf dem Tisch liegt
-        assertTrue(placeableItemEditor.getPlacableItemList().isEmpty());
+        assertTrue(placeableItemEditor.getPlaceableItemList().isEmpty());
         //aktueller Gegenstand sollte dann der Tisch sein
         try{
-            assertTrue(placeableItemEditor.getCurrentItem().getType().equals(PlacableItemType.TABLE));
+            assertTrue(placeableItemEditor.getCurrentItem().getType().equals(PlaceableItemType.TABLE));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -113,8 +112,8 @@ public class PlaceableItemEditorTest {
 
    @Test
     public void saveRoom(){
-       ArrayList<PlacableItem> items=new ArrayList<PlacableItem>();
-       items.add(new PlacableItem(PlacableItemType.TABLE));
+       ArrayList<PlaceableItem> items=new ArrayList<PlaceableItem>();
+       items.add(new PlaceableItem(PlaceableItemType.TABLE));
 
        //RoomEditor roomEditor= new RoomEditor("level",true,items, new JsonHandler());
        //TODO neuer konstruktor

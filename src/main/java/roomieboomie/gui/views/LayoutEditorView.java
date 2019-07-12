@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-import javafx.scene.image.Image;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,11 +14,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.SVGPath;
 import roomieboomie.business.item.layout.LayoutItemType;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
-
 
 public class LayoutEditorView extends StackPane {
     public GridPane raster = new GridPane();
@@ -31,7 +27,7 @@ public class LayoutEditorView extends StackPane {
     public Button finish = new Button("WEITER");
     public Slider sizeSlider = new Slider(0, 1, 0.5);
     public HBox sliderPane = new HBox();
-    public Button backToMenu = new Button("ZURUECK");
+    public Button backToMenu = new Button("ZUR\u00dcCK");
     public HBox backForward = new HBox();
     public Button rotate = new Button();
     public Button delete = new Button();

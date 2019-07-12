@@ -1,4 +1,4 @@
-package roomieboomie.business.item.placable;
+package roomieboomie.business.item.placeable;
 
 import javafx.scene.image.Image;
 import roomieboomie.business.item.Orientation;
@@ -8,24 +8,24 @@ import roomieboomie.persistence.ImageHandler;
 /**
  * Platzierbares Objekt fuer ein Spiel
  */
-public class PlacableItem extends RoomItem {
-    private PlacableItemType type;
-    private PlacableItem next;
+public class PlaceableItem extends RoomItem {
+    private PlaceableItemType type;
+    private PlaceableItem next;
     private byte[][] layout;
 
     /**
-     * Neues PlacableItem
+     * Neues PlaceableItem
      * @param x x-Koordinate
      * @param y y-Koordinate
      * @param orientation Richtung
      * @param type Typ des Items
      */
-    public PlacableItem(int x, int y, Orientation orientation, PlacableItemType type) {
+    public PlaceableItem(int x, int y, Orientation orientation, PlaceableItemType type) {
         super(x, y,type.getLength(),type.getWidth(), orientation);
         this.type = type;
         this.next = null;
 
-        if (this.getOrientation() == Orientation.TOP || this.getOrientation() == Orientation.BOTTOM){
+        if (this.getOrientation().isVertical()){
             this.layout = new byte[this.getLength()][this.getWidth()];
             for (int i = 0; i < this.getLength(); i++){
                 for (int j = 0; j < this.getWidth(); j++){
@@ -43,14 +43,14 @@ public class PlacableItem extends RoomItem {
     }
 
     /**
-     * Neues PlacableItem ohne Informationen zu Platzierung
+     * Neues PlaceableItem ohne Informationen zu Platzierung
      * @param type Typ des Items
      */
-    public PlacableItem(PlacableItemType type){
+    public PlaceableItem(PlaceableItemType type){
         super(type.getLength(),type.getWidth(),Orientation.TOP);
         this.type = type;
         this.next = null;
-        if (this.getOrientation() == Orientation.TOP || this.getOrientation() == Orientation.BOTTOM){
+        if (this.getOrientation().isVertical()){
             this.layout = new byte[this.getLength()][this.getWidth()];
             for (int i = 0; i < this.getLength(); i++){
                 for (int j = 0; j < this.getWidth(); j++){
@@ -75,12 +75,12 @@ public class PlacableItem extends RoomItem {
         return true;
     }
 
-    public PlacableItem getNext(){
+    public PlaceableItem getNext(){
         return this.next;
     }
 
 
-    public PlacableItem findItemByCoordinates(int x, int y){
+    public PlaceableItem findItemByCoordinates(int x, int y){
 
 
         x = x - this.getX();
@@ -97,7 +97,7 @@ public class PlacableItem extends RoomItem {
 
     public boolean hasNextOn(int x, int y){
 
-        if (this.getOrientation() == Orientation.BOTTOM || this.getOrientation() == Orientation.TOP){
+        if (this.getOrientation().isVertical()){
             if (this.layout[y][x] != 0){
                 return true;
             }
@@ -110,12 +110,12 @@ public class PlacableItem extends RoomItem {
         }
     }
 
-    public void placeItemOnThis(PlacableItem item){
+    public void placeItemOnThis(PlaceableItem item){
         removeItemFromThis();
         this.next = item;
         int startX = item.getX();
         int startY = item.getY();
-        if (item.getOrientation() == Orientation.LEFT|| item.getOrientation() == Orientation.RIGHT){
+        if (item.getOrientation().isHorizontal()){
             int temp = startX;
             startX = startY;
             startY = temp;
@@ -125,7 +125,7 @@ public class PlacableItem extends RoomItem {
         int endY = startY + item.getWidth();
         byte placeNumber = 1;
 
-        if (item.getOrientation() == Orientation.LEFT || item.getOrientation() == Orientation.RIGHT){
+        if (item.getOrientation().isHorizontal()){
             endX = startX + item.getWidth();
             endY = startY + item.getLength();
         }
@@ -154,7 +154,7 @@ public class PlacableItem extends RoomItem {
     /**
      * @return Typ des Items
      */
-    public PlacableItemType getType() {
+    public PlaceableItemType getType() {
         return type;
     }
 
@@ -163,7 +163,7 @@ public class PlacableItem extends RoomItem {
      * @param compareItem Item, unter das dieses gestellt werden soll
      * @return Ob die Unterstellhoehe hoch genug ist
      */
-    public boolean fitsBeneath(PlacableItem compareItem){
+    public boolean fitsBeneath(PlaceableItem compareItem){
         return this.type.getHeight().fitsBeneath(compareItem.getType().getHeight());
     }
 
@@ -171,7 +171,7 @@ public class PlacableItem extends RoomItem {
     public int hashCode() {
         return type.toString().hashCode();
     }
-    public void setNext(PlacableItem item){
+    public void setNext(PlaceableItem item){
         this.next = item;
     }
 
@@ -180,7 +180,7 @@ public class PlacableItem extends RoomItem {
      * @return JavaFX-Image
      */
     public Image getTextureImage(){
-        return ImageHandler.get().placableItemImage(type + "_" + getOrientation());
+        return ImageHandler.get().placeableItemImage(type + "_" + getOrientation());
     }
 
     public void setLayout(byte[][] layout){
@@ -190,9 +190,9 @@ public class PlacableItem extends RoomItem {
     /**
      * @return Kopie des Objekts mit X, Y, Orientation und Typ
      */
-    public PlacableItem clone(){
+    public PlaceableItem clone(){
 
-        PlacableItem newItem = new PlacableItem(this.getType());
+        PlaceableItem newItem = new PlaceableItem(this.getType());
         return  newItem;
 
     }

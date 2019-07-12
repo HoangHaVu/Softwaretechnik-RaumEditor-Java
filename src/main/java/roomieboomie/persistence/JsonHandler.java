@@ -5,8 +5,8 @@ import roomieboomie.business.highscore.HighscoreRecord;
 import roomieboomie.business.item.Orientation;
 import roomieboomie.business.item.layout.LayoutItem;
 import roomieboomie.business.item.layout.LayoutItemType;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.business.room.RoomPreview;
 import roomieboomie.business.user.User;
@@ -84,7 +84,7 @@ public class JsonHandler {
      */
     private Room loadRoom(String fullPath, RoomPreview roomPreview) throws JsonValidatingException, JsonLoadingException {
         int totalWidth, totalHeight, startX, startY;
-        JsonArray layoutsArrays, placableitemArray;
+        JsonArray layoutsArrays, placeableitemArray;
         ArrayList<LayoutItem> walls, windows, doors;
 
         JsonObject jsonObject = loadFromJson(fullPath);
@@ -96,7 +96,7 @@ public class JsonHandler {
             startX = jsonObject.getInt("startX");
             startY = jsonObject.getInt("startY");
             layoutsArrays = jsonObject.getJsonArray("layout");
-            placableitemArray = jsonObject.getJsonArray("placableItemList");
+            placeableitemArray = jsonObject.getJsonArray("placableItemList");
 
             walls = getLayoutItemArray(jsonObject.getJsonArray("walls")); //Walls
             windows = getLayoutItemArray(jsonObject.getJsonArray("windows")); //Windows
@@ -128,17 +128,17 @@ public class JsonHandler {
         }
 
         //itemList
-        ArrayList<PlacableItem> placableItemsList = new ArrayList<>();
-        for (JsonValue value : placableitemArray) {
+        ArrayList<PlaceableItem> placeableItemsList = new ArrayList<>();
+        for (JsonValue value : placeableitemArray) {
             String str = String.valueOf(value).replace("\"", "");
-            PlacableItemType type = PlacableItemType.valueOf(str);
-            placableItemsList.add(new PlacableItem(type));
+            PlaceableItemType type = PlaceableItemType.valueOf(str);
+            placeableItemsList.add(new PlaceableItem(type));
         }
 
-        if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placableItemsList, walls, windows, doors)) {
+        if (jsonObject.getInt("roomHash") != Room.testHash(jLayout, placeableItemsList, walls, windows, doors)) {
             throw new JsonValidatingException();
         } else {
-            return new Room(roomPreview, jLayout, startX, startY, placableItemsList, walls, windows, doors);
+            return new Room(roomPreview, jLayout, startX, startY, placeableItemsList, walls, windows, doors);
         }
     }
 
@@ -183,7 +183,7 @@ public class JsonHandler {
         }
         JsonArray jLayout = jLayoutArrBuilder.build();
 
-        JsonArray jPlacableItemArray = getJsonArrayPlacable(room.getPlacableItemList()); //PlacableItems
+        JsonArray jPlaceableItemArray = getJsonArrayPlaceable(room.getPlaceableItemList()); //PlaceableItems
 
         JsonArray jWallArray = getJsonArrayLayout(room.getWalls()); //Walls
 
@@ -216,7 +216,7 @@ public class JsonHandler {
                 .add("startY", room.getStartY())
                 .add("totalWidth", room.getLayout()[0].length)
                 .add("totalHeight", room.getLayout().length)
-                .add("placableItemList", jPlacableItemArray)
+                .add("placableItemList", jPlaceableItemArray)
                 .add("walls", jWallArray)
                 .add("windows", jWindowArray)
                 .add("doors", jDoorArray)
@@ -234,16 +234,16 @@ public class JsonHandler {
     }
 
     /**
-     * Erstellt ein JsonArray aus einer PlacableItem-ArrayList
-     * @param arrayList ArrayList mit PlacableItems
+     * Erstellt ein JsonArray aus einer PlaceableItem-ArrayList
+     * @param arrayList ArrayList mit PlaceableItems
      * @return JsonArray, das den type des Items als String enthaelt
      */
-    private JsonArray getJsonArrayPlacable(ArrayList<PlacableItem> arrayList) {
-        JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
-        for (PlacableItem item : arrayList) {
-            jPlacableItemArrBuilder.add(item.getType().toString());
+    private JsonArray getJsonArrayPlaceable(ArrayList<PlaceableItem> arrayList) {
+        JsonArrayBuilder jPlaceableItemArrBuilder = Json.createArrayBuilder();
+        for (PlaceableItem item : arrayList) {
+            jPlaceableItemArrBuilder.add(item.getType().toString());
         }
-        return jPlacableItemArrBuilder.build();
+        return jPlaceableItemArrBuilder.build();
     }
 
     /**
@@ -253,7 +253,7 @@ public class JsonHandler {
      * @return JsonArray, mit den Werten type (String), x, y, orientation (String), length und width
      */
     private JsonArray getJsonArrayLayout(ArrayList<LayoutItem> arrayList) {
-        JsonArrayBuilder jPlacableItemArrBuilder = Json.createArrayBuilder();
+        JsonArrayBuilder jPlaceableItemArrBuilder = Json.createArrayBuilder();
         for (LayoutItem item : arrayList) {
             JsonObject itemObject = Json.createObjectBuilder()
                     .add("type", item.getType().toString())
@@ -263,9 +263,9 @@ public class JsonHandler {
                     .add("length", item.getLength())
                     .add("width", item.getWidth())
                     .build();
-            jPlacableItemArrBuilder.add(itemObject);
+            jPlaceableItemArrBuilder.add(itemObject);
         }
-        return jPlacableItemArrBuilder.build();
+        return jPlaceableItemArrBuilder.build();
     }
 
     /**

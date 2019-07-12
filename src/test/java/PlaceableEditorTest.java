@@ -1,22 +1,22 @@
 import org.junit.Before;
 import org.junit.Test;
 import roomieboomie.business.editor.PlaceableEditor;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class PlaceableEditorTest {
-    PlacableItem table;
+    PlaceableItem table;
     PlaceableEditor placeableEditor;
     byte[][] layout;
 
     @Before
     public void init(){
         Room r= new Room(60,60,null);
-        table=new PlacableItem(PlacableItemType.TABLE);
+        table=new PlaceableItem(PlaceableItemType.TABLE);
         placeableEditor= new PlaceableEditor(r);
         layout=placeableEditor.getRoom().getLayout();
 
@@ -36,10 +36,10 @@ public class PlaceableEditorTest {
         int endX=table.getLength();
         int endY=table.getWidth();
 
-        placeableEditor.selectPlaceableItem(PlacableItemType.COUCH);
+        placeableEditor.selectPlaceableItem(PlaceableItemType.COUCH);
         placeableEditor.placeCurrItem(x,y);
 
-        placeableEditor.selectPlaceableItem(PlacableItemType.CARPET);
+        placeableEditor.selectPlaceableItem(PlaceableItemType.CARPET);
         placeableEditor.placeCurrItem(x,y);
 
         //placeableEditor.delete(x,y);
@@ -74,9 +74,9 @@ public class PlaceableEditorTest {
    }
    @Test
     public void placeTest(){
-        placeableEditor.selectPlaceableItem(PlacableItemType.CARPET);
+        placeableEditor.selectPlaceableItem(PlaceableItemType.CARPET);
         placeableEditor.placeCurrItem(2,2);
-        placeableEditor.selectPlaceableItem(PlacableItemType.TABLE);
+        placeableEditor.selectPlaceableItem(PlaceableItemType.TABLE);
         placeableEditor.placeCurrItem(2,2);
 
    }

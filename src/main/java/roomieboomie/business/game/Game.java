@@ -1,15 +1,13 @@
 package roomieboomie.business.game;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import roomieboomie.business.item.Orientation;
-import roomieboomie.business.item.placable.PlacableItem;
-import roomieboomie.business.item.placable.PlacableItemType;
+import roomieboomie.business.item.placeable.PlaceableItem;
+import roomieboomie.business.item.placeable.PlaceableItemType;
 import roomieboomie.business.room.Room;
 import roomieboomie.persistence.Config;
 
@@ -20,7 +18,7 @@ public class Game {
 
     private Room room;
     byte[][] gameLayout;
-    private ArrayList<PlacableItem> placedItems;
+    private ArrayList<PlaceableItem> placedItems;
     private final int SECONDSPERITEM = Config.get().SECONDSPERITEM() * 100;
     private int count;
     private SimpleIntegerProperty countProperty = new SimpleIntegerProperty();
@@ -35,29 +33,29 @@ public class Game {
         this.room = room;
         testSetRoom();
 
-        numberOfItems = room.getPlacableItemList().size();
+        numberOfItems = room.getPlaceableItemList().size();
         this.gameLayout = room.getLayout();
         countProperty.set(SECONDSPERITEM);
 
         initTimer();
 
-        PlacableItem item1 = popItem();
-        PlacableItem item2 = popItem();
-        PlacableItem item3 = popItem();
-        PlacableItem item4 = popItem();
+        PlaceableItem item1 = popItem();
+        PlaceableItem item2 = popItem();
+        PlaceableItem item3 = popItem();
+        PlaceableItem item4 = popItem();
     }
 
     /**
      * Test
      */
     private void testSetRoom(){
-        ArrayList<PlacableItem> placableItemList =  new ArrayList<>();
-        placableItemList.add(new PlacableItem(PlacableItemType.BED));
-        placableItemList.add(new PlacableItem(PlacableItemType.COUCH));
-        placableItemList.add(new PlacableItem(PlacableItemType.DINO));
-        placableItemList.add(new PlacableItem(PlacableItemType.TEDDY));
+        ArrayList<PlaceableItem> placeableItemList =  new ArrayList<>();
+        placeableItemList.add(new PlaceableItem(PlaceableItemType.BED));
+        placeableItemList.add(new PlaceableItem(PlaceableItemType.COUCH));
+        placeableItemList.add(new PlaceableItem(PlaceableItemType.DINO));
+        placeableItemList.add(new PlaceableItem(PlaceableItemType.TEDDY));
 
-        room.setPlacableItemList(placableItemList);
+        room.setPlaceableItemList(placeableItemList);
     }
 
     /**
@@ -118,12 +116,12 @@ public class Game {
     //TODO 3er queue
 
     /**
-     * Holt eine Kopie des ersten PlacableItem aus dem Room und loescht es aus dem Array
-     * @return PlacableItem, das als naechstes im Spiel platzier werden muss
+     * Holt eine Kopie des ersten PlaceableItem aus dem Room und loescht es aus dem Array
+     * @return PlaceableItem, das als naechstes im Spiel platzier werden muss
      */
-    private PlacableItem popItem(){
-        PlacableItem returnItem = room.getPlacableItemList().get(0).clone();
-        room.getPlacableItemList().remove(0);
+    private PlaceableItem popItem(){
+        PlaceableItem returnItem = room.getPlaceableItemList().get(0).clone();
+        room.getPlaceableItemList().remove(0);
         //TODO evl Vorschaubilder aktualisieren
         return returnItem;
     }
