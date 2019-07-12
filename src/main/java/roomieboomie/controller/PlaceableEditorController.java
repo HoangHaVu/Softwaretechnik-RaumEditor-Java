@@ -1,4 +1,4 @@
-﻿package roomieboomie.controller;
+package roomieboomie.controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,6 +34,7 @@ import roomieboomie.business.room.RoomPreview;
 import roomieboomie.gui.views.PlaceableEditorView;
 import roomieboomie.gui.zoompane.ZoomableScrollPane;
 import roomieboomie.persistence.Config;
+import roomieboomie.persistence.SoundHandler;
 import roomieboomie.persistence.exception.JsonWritingException;
 
 public class PlaceableEditorController {
@@ -330,10 +331,13 @@ public class PlaceableEditorController {
                             placableItemEditor.placeCurrItem(x, y);
                         } catch (PlaceItemIsNotInInteriorException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (ObjectToHighInFrontOfWindowException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         } catch (ItemIsTooCloseToDoorException ex) {
                             showMessageLabel(ex.getMessage());
+                            SoundHandler.get().FAILSOUND().play();
                         }
                     }
                     else if (this.action == Action.DELETE)
@@ -426,7 +430,7 @@ public class PlaceableEditorController {
         for(PlacableItem placable : placableItems){
 
             PlacableItem cur = placable;
-            int x = 0; 
+            int x = 0;
             int y = 0;
 
             do{
@@ -448,7 +452,7 @@ public class PlaceableEditorController {
                 texture.fitHeightProperty().bind(item.heightProperty());
 
                 item.getChildren().add(texture);
-                
+
                 placableRaster.getChildren().add(item);
 
                 cur = cur.getNext();
@@ -463,7 +467,7 @@ public class PlaceableEditorController {
 
             Pane item = new Pane();
             Image textureImage;
-            
+
             item.prefHeightProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.prefWidthProperty().bind(view.raster.widthProperty().divide(layout[0].length));
             item.getStyleClass().add("layout-item");
