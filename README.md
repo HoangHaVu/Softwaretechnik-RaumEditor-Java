@@ -18,4 +18,4 @@ Interaktiver Bemöbelungsplaner
 Projektaufgabe: Abgaben
 - Spezifikation - was soll gebaut werden -> Pflichtenheft
 - Design - wie wird's gebaut; „Bauplan“; -> Designdokument
-Implementierung - Umsetzung
+- Implementierung - Umsetzung
